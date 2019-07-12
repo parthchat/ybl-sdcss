@@ -1,0 +1,39 @@
+<!-- *ngIf="Showstatus" -->
+<div class="form-section align-items-center" *ngIf="Showstatus">
+    <div class="login-page-inner">
+        <div class="row justify-content-md-center">
+            <div class="col-12 text-center logo-image"><img src="assets/images/logo.png"></div>
+            <mat-card class="col-12 form-card">
+                <mat-card-content>
+                    <div class="form-container">
+                        <mat-form-field>
+                                <input matInput placeholder="Enter your OTP here" [(ngModel)]="otp" (keypress)="keyPress($event)" minlength=6 maxlength=6>
+                            <!-- <input matInput placeholder="Enter your OTP here" id="username" type="text" name="username"
+                                [(ngModel)]="otp"> -->
+                                
+                        </mat-form-field>
+                        <span class="red" *ngIf="errorstatus">Invalid OTP</span>
+                        <div class="button-row text-right form-btn">
+                            <button mat-raised-button color="warn" class="text-uppercase" (click)="submitOtp()">Enter</button>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+        </div>
+        <p class="copyright-text">
+            Copyright © 2019-2020 YES BANK. All Rights Reserved.
+        </p>
+    </div>
+</div>
+
+
+<!-- Error Message -->
+<div class="d-flex" *ngIf="error=='401'">
+    <h5 class="error text-center">Invalid link. Either the link has already been used or session expired</h5>
+</div>
+<div class="d-flex" *ngIf="refIdfail">
+    <h5 class="error text-center">Unable to Authenticate</h5>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
+</ngx-loading>

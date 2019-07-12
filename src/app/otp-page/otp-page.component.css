@@ -1,0 +1,129 @@
+.form-container>* {
+    width: 100%;
+}
+
+
+.mat-icon.material-icons {
+    margin-right: 15px;
+}
+
+.form-card {
+    max-width: 500px;
+    padding: 21px 30px;
+    border-radius: 5px;
+}
+
+.form-btn {
+    margin: 15px 0 5px;
+}
+.error{
+    color: red;
+    margin-top: 180px;
+}
+
+.logo-image {
+    margin: 0px 0 20px;
+}
+
+.form-container .mat-form-field {
+    margin: 15px 0 5px;
+}
+
+.login-page-inner {
+    width: 100%;
+}
+
+.adfs-button {
+    margin-top: 20px;
+}
+
+.form-section {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    overflow: auto;
+    background: linear-gradient(to top, #0d5a96, #4e7fae, #80a5c7, #b3ccdf, #eaf3f9);
+    text-align: center;
+    color: #9b9b9b;
+    padding: 3em;
+}
+
+.password-icon,
+.login-icon,
+.password--show-icon {
+    position: relative;
+    top: 0px;
+}
+
+.copyright-text {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    color: #8bb1ce;
+    font-size: 14px;
+    right:0;
+}
+.red{
+    color: red;
+    display: -webkit-inline-box;
+}
+.d-flex{
+    height: calc(100vh - 64px);
+    display: flex;
+    align-items:baseline;
+    justify-content: center;
+    background: linear-gradient(to top, #0d5a96, #4e7fae, #80a5c7, #b3ccdf, #eaf3f9);
+    color: white;   
+}
+
+
+
+:host /deep/ .mat-form-field-appearance-legacy .mat-form-field-infix {
+    position: relative;
+    top: -6px;
+}
+
+.hide{
+  display: none;
+}
+.show{
+  display: block;
+}
+
+.mybutton {
+  position: fixed;
+  bottom: -4px;
+  right: 10px;
+}
+
+.colorBtn{
+  background:rgba(13, 90, 150,0);
+  color:rgba(13, 90, 150,0);
+  cursor: auto;
+  box-shadow: none !important;
+}
+
+@media(max-width:767px) and (orientation : landscape){
+    .copyright-text{
+        position: relative;
+        bottom:-20px;
+    }
+    .form-section{
+        position: relative;
+        padding:1em;
+
+    }
+    .form-card{
+        margin:0 auto;
+    }
+}
+@media(max-width:767px){
+    .copyright-text {
+        position: relative;
+        margin-top:77px;
+    }
+}

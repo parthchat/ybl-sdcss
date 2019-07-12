@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+@font-face {
+	font-family: '33535gillsansmt';
+	src: url('../src/assets/fonts/33535gillsansmt.eot');
+	src: local('33535gillsansmt'), url('../src/assets/fonts/33535gillsansmt.woff') format('woff'), url('../src/assets/fonts/33535gillsansmt.ttf') format('truetype');
+}
+html,
+body {    height: 100%;}
+body {
+    margin: 0;
+    font-family: '33535gillsansmt', sans-serif !important;
+}
+p, h1, h2, h3, h4, h5, h6, b, span, button, label, div{
+    font-family: '33535gillsansmt', sans-serif !important;
+}
+.logo{
+    display: flex;
+    justify-content: center;
+}
