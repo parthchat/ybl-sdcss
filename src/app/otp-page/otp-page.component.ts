@@ -27,14 +27,14 @@ export class OtpPageComponent implements OnInit {
   ngOnInit() {
     // FOR LOCALHOST
 
-    if (window.location.pathname == '/t') {
-      this.mobileRoute = true;
-    }
-
-    //FOR UAT or PROD
-    // if(window.location.pathname=='/sdcss/d/t'){
+    // if (window.location.pathname == '/t') {
     //   this.mobileRoute = true;
     // }
+
+    //FOR UAT or PROD
+    if(window.location.pathname=='/sdcss/d/t'){
+      this.mobileRoute = true;
+    }
     this.getSessiondetails(); //get session id and all
   }
 

@@ -8,14 +8,14 @@
                     <div class="form-container">
                         <mat-form-field *ngIf="!mobileRoute">
                             <input matInput placeholder="Enter your OTP here" [(ngModel)]="otp"
-                                (keypress)="keyPress($event)" minlength=6 maxlength=6 autsfocus>
+                                (keypress)="keyPress($event)" (keyup.enter)="submitOtp()" minlength=6 maxlength=6 autsfocus>
                             <mat-hint class="red" *ngIf="errorstatus">Invalid OTP</mat-hint>
                             <mat-hint align="end" class="resend" (click)="resendOtp()">Resend OTP</mat-hint>
                         </mat-form-field>
                         <!--  -->
                         <mat-form-field *ngIf="mobileRoute">
                             <input matInput placeholder="Enter Last 6 Digits Of Mobile Number" [(ngModel)]="otp"
-                                (keypress)="keyPress($event)" minlength=6 maxlength=6 autsfocus>
+                                (keypress)="keyPress($event)" (keyup.enter)="submitOtp()" minlength=6 maxlength=6 autsfocus>
                             <mat-hint class="red" *ngIf="errorstatus">Invalid Number</mat-hint>
                         </mat-form-field>
                         <!-- <span class="red" *ngIf="errorstatus">Invalid OTP</span> -->

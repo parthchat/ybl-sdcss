@@ -8,7 +8,7 @@
           <div class="form-container">
             <mat-form-field>
               <input matInput placeholder="Enter your OTP here" [(ngModel)]="otp" (keypress)="keyPress($event)"
-                minlength=6 maxlength=6>
+                minlength=6 maxlength=6 (keyup.enter)="submitOtp()" autsfocus>
 
             </mat-form-field>
             <span class="red" *ngIf="errorstatus">Invalid OTP</span>
