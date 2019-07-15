@@ -25,9 +25,16 @@ export class OtpPageComponent implements OnInit {
   constructor(private otpPageService: OtpPageService, private tokenStorage: TokenStorage, private router: Router, private route: ActivatedRoute, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
+    // FOR LOCALHOST
+
     if (window.location.pathname == '/t') {
       this.mobileRoute = true;
     }
+
+    //FOR UAT or PROD
+    // if(window.location.pathname=='/sdcss/d/t'){
+    //   this.mobileRoute = true;
+    // }
     this.getSessiondetails(); //get session id and all
   }
 
