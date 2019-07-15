@@ -102,7 +102,7 @@ export class FilterInterceptor implements HttpInterceptor {
         event => {
           if (event instanceof HttpResponse) {
             //if(!environment.production)
-            console.log(this.decryptResponse(event));
+           // console.log(this.decryptResponse(event));
             if (this.decryptResponse(event)) {
               event = event.clone({ body: JSON.parse(this.decryptResponse(event)) });
               if (event.headers.get('ACCESS_TOKEN')) {

@@ -21,10 +21,13 @@ export class OtpPageComponent implements OnInit {
   refIdfail = false;
   public href: string = "";
   apiUniqueKey = "";
+  mobileRoute = false;
   constructor(private otpPageService: OtpPageService, private tokenStorage: TokenStorage, private router: Router, private route: ActivatedRoute, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.href = this.router.url;
+    if (window.location.pathname == '/t') {
+      this.mobileRoute = true;
+    }
     this.getSessiondetails(); //get session id and all
   }
 
@@ -33,7 +36,7 @@ export class OtpPageComponent implements OnInit {
       let details = { ...params.keys, ...params };
       this.getsession = details['params'];
       if (!this.getsession['sessionId']) {
-       this.sendError();
+        this.errorPage();
         return
       }
       this.tokenStorage.setSessionId(this.getsession['sessionId']);
@@ -41,19 +44,33 @@ export class OtpPageComponent implements OnInit {
     });
   }
 
+  resendOtp(){
+    this.getAuth();
+    this._snackBar.open('OTP has been sent you', 'Resend OTP', {
+      duration: 4000,
+    });
+    return;
+  }
+
   sendError() {
+    this.tokenStorage.clear();
     this.Showstatus = false;
     this.error = '401';
     this.loading = false;
   }
 
+  errorPage() {
+    this.router.navigate(['error']);
+    this.tokenStorage.clear();
+  }
+
+
   // 1st call auth call
   getAuth() {
     this.apiUniqueKey = new Date().getTime().toString();
     this.otpPageService.getAuth(this.apiUniqueKey).subscribe(res => {
-      if(!res['status']){
-        this.sendError();
-        this.loading = false;
+      if (!res['status']) {
+        this.errorPage();
         return;
       }
       if (res['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] != this.apiUniqueKey) {
@@ -62,28 +79,22 @@ export class OtpPageComponent implements OnInit {
         });
         return;
       }
-      if (res['login_required'] == true) {
-        this.sendError();
-        this.loading = false;
-        return;
-      }
       this.Showstatus = res['status'];
       if (!this.Showstatus || res['login_required'] == true) {
-        this.sendError();
-        this.loading = false;
+        this.errorPage();
         return;
       }
       if (res['payload']['processResponse']['ProcessVariables']['authRefId']) {
         this.refId = res['payload']['processResponse']['ProcessVariables']['authRefId'];
+        console.log(this.refId,'refid');
       } else {
-        this.refIdfail = true;
-        this.loading = false;
+        this.errorPage();
         return;
       }
       this.loading = false;
     }, error => {
-      this.error = error.status;
-      this.loading = false;
+      this.errorPage();
+      return;
     })
   }
 
@@ -110,7 +121,7 @@ export class OtpPageComponent implements OnInit {
     this.otpPageService.verifyOtp(this.refId, this.otp, this.apiUniqueKey).subscribe(
       res => {
         if (!res['status']) {
-          this.sendError();
+          this.errorPage();
           this.loading = false;
           return;
         }
@@ -120,8 +131,7 @@ export class OtpPageComponent implements OnInit {
           return;
         }
         if (res['login_required'] == true) {
-          this.sendError();
-          this.loading = false;
+          this.errorPage();
           return;
         }
         if (!res['payload']['processResponse']['ProcessVariables']['isAuthValidated']) {
@@ -130,19 +140,17 @@ export class OtpPageComponent implements OnInit {
           this.otp = '';
           return;
         }
-        this.tokenStorage.setAccessToken(res['payload']['processResponse']['authentication-token']);
-        this.tokenStorage.setSrId(res['payload']['processResponse']['ProcessVariables']['srId']);
         if (res['payload']['processResponse']['authentication-token']) {
+          this.tokenStorage.setAccessToken(res['payload']['processResponse']['authentication-token']);
+          this.tokenStorage.setSrId(res['payload']['processResponse']['ProcessVariables']['srId']);
           this.router.navigate(['customer']);
           this.loading = false;
         } else {
-          this.sendError();
-          this.loading = false;
+          this.errorPage();
           return
         }
       }, error => {
-        this.loading = false;
-        this.sendError();
+        this.errorPage();
       }
     )
   }

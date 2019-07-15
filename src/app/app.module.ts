@@ -52,6 +52,8 @@ import { EmailverifyComponent } from './emailverify/emailverify.component';
 import { MobileVerifyComponent } from './mobile-verify/mobile-verify.component';
 import { FilterInterceptor } from './core/utils/filter.interceptor';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
+import { MydirectDirective } from './directives/mydirect.directive';
+import { ErrorpageComponent } from './errorpage/errorpage.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import { NotFoundComponent } from './core/components/not-found/not-found.compone
     AcceptRejectComponent,
     EmailverifyComponent,
     MobileVerifyComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    MydirectDirective,
+    ErrorpageComponent
   ],
   imports: [
     NgbModule.forRoot(),

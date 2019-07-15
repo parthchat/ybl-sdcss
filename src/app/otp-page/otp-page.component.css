@@ -33,10 +33,6 @@
     width: 100%;
 }
 
-.adfs-button {
-    margin-top: 20px;
-}
-
 .form-section {
     position: absolute;
     left: 0;
@@ -67,9 +63,15 @@
     font-size: 14px;
     right:0;
 }
+.resend{
+    color: blue;
+    font-size: 14px;
+    cursor: pointer;
+}
 .red{
     color: red;
     display: -webkit-inline-box;
+    font-size: 13px;
 }
 .d-flex{
     height: calc(100vh - 64px);
@@ -80,31 +82,13 @@
     color: white;   
 }
 
-
-
 :host /deep/ .mat-form-field-appearance-legacy .mat-form-field-infix {
     position: relative;
     top: -6px;
 }
 
-.hide{
-  display: none;
-}
 .show{
   display: block;
-}
-
-.mybutton {
-  position: fixed;
-  bottom: -4px;
-  right: 10px;
-}
-
-.colorBtn{
-  background:rgba(13, 90, 150,0);
-  color:rgba(13, 90, 150,0);
-  cursor: auto;
-  box-shadow: none !important;
 }
 
 @media(max-width:767px) and (orientation : landscape){

@@ -46,6 +46,11 @@ export class MobileVerifyComponent implements OnInit {
     this.error = '401';
   }
 
+  errorPage() {
+    this.router.navigate(['error']);
+    this.tokenStorage.clear();
+  }
+
   succes(){
     this.successMsg = true;
     this.Showstatus = false;
@@ -66,19 +71,16 @@ export class MobileVerifyComponent implements OnInit {
     this.apiUniqueKey = new Date().getTime().toString();
     this.mobileVerifyService.getAuthMobile(this.apiUniqueKey).subscribe(res => {
       if (res['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] != this.apiUniqueKey) {
-        this.sendError();
-        this.loading = false;
+        this.errorPage();
         return;
       }
       if (res['login_required'] == true) {
-        this.sendError();
-        this.loading = false;
+        this.errorPage();
         return;
       }
       this.Showstatus = res['status'];
       if (!this.Showstatus || res['login_required'] == true) {
-        this.sendError();
-        this.loading = false;
+        this.errorPage();
         return;
       }
       this.loading = false;
@@ -101,13 +103,11 @@ export class MobileVerifyComponent implements OnInit {
     this.mobileVerifyService.verifyMobileOtp(this.refId, this.otp, this.apiUniqueKey).subscribe(
       res => {
         if (res['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] != this.apiUniqueKey) {
-          this.sendError();
-          this.loading = false;
+          this.errorPage();
           return;
         }
         if (res['login_required'] == true) {
-          this.sendError();
-          this.loading = false;
+          this.errorPage();
           return;
         }
         if (!res['payload']['processResponse']['ProcessVariables']['isAuthValidated']) {
@@ -123,7 +123,7 @@ export class MobileVerifyComponent implements OnInit {
       }, error => {
         this.loading = false;
         console.log(error);
-        this.sendError();
+        this.errorPage();
       }
     )
   }
@@ -133,16 +133,13 @@ export class MobileVerifyComponent implements OnInit {
     this.service.completeSR(this.apiUniqueKey).subscribe(res => {
       if (res['ErrorCode'] == 200) {
         this.succes();
-        this.loading = false;
         return;
       } else {
-        this.sendError();
-        this.loading = false;
+        this.errorPage();
         return;
       }
     }, error => {
-      this.sendError();
-      this.loading = false;
+      this.errorPage();
       return;
     })
   }

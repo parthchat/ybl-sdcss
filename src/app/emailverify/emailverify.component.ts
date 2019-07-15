@@ -42,6 +42,11 @@ export class EmailverifyComponent implements OnInit {
     return;
   }
 
+  errorPage() {
+    this.router.navigate(['error']);
+    this.tokenStorage.clear();
+  }
+
   getSessiondetails() {
     this.route.queryParamMap.subscribe(params => {
       let details = { ...params.keys, ...params };
@@ -65,11 +70,11 @@ export class EmailverifyComponent implements OnInit {
         return;
       }
       if (res['login_required'] == true) {
-        this.sendError();
+        this.errorPage();
         return;
       }
       if (!res['status']) {
-        this.sendError();
+        this.errorPage();
         return;
       }
       this.refId = res['payload']['processResponse']['ProcessVariables']['authRefId'];
@@ -93,12 +98,12 @@ export class EmailverifyComponent implements OnInit {
       if (res['payload']['processResponse']['ProcessVariables']['isAuthValidated'] && res['payload']['processResponse']['authentication-token']) {
         this.verified();
       } else {
-        this.sendError();
+        this.errorPage();
         return;
       }
 
     }, error => {
-      this.sendError();
+      this.errorPage();
       return
     })
   }

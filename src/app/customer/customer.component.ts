@@ -73,7 +73,7 @@ export class CustomerComponent implements OnInit {
         res => {
           this.res_ = res;
           if (res['login_required'] == true) {
-            this.errorMsg();
+            this.errorPage();
             return;
           }
           if (res['ProcessVariables']['apiUniqueReqId'] != this.apiUniqueKey) {
@@ -82,7 +82,12 @@ export class CustomerComponent implements OnInit {
             });
             return;
           }
-          this.sr_type = this.res_['ProcessVariables']['srDetails']['srType'];
+          if(this.res_['ProcessVariables']['srDetails']['srType']){
+            this.sr_type = this.res_['ProcessVariables']['srDetails']['srType'];
+          }else{
+            this.errorPage();
+            return;
+          }
           this.rejectReasonTxt = res['ProcessVariables']['srDetails']['rejectReason'];
           if (this.sr_type == 1008) {
             this.old_Dob = this.res_['ProcessVariables']['dobUpdate']['oldDob'];
@@ -109,14 +114,20 @@ export class CustomerComponent implements OnInit {
       )
     }
     else {
-      this.showStatus = false;
-      this.loading = false;
+      this.errorPage();
+      return;
     }
   }
 
   errorMsg() {
+    this.tokenStorage.clear();
     this.showStatus = false;
     this.loading = false;
+  }
+
+  errorPage() {
+    this.router.navigate(['error']);
+    this.tokenStorage.clear();
   }
 
   getDropDownOptions(srtype: any) {
@@ -147,6 +158,7 @@ export class CustomerComponent implements OnInit {
   }
 
   Onselect_Dob_ImgPrimary(type: any) {
+    this.imgURL =  this.imgURL4 = '';
     this.show_DoB_Img = true;
     this.dob_pg_count = type.pageCount;
     this.dob_doc_type = type.docType;
@@ -154,6 +166,7 @@ export class CustomerComponent implements OnInit {
   }
 
   Onselect(type: any) {
+    this.imgURL2 = this.imgURL3 = '';
     this.showImg = true;
     this.otherDocType = type.docType;
     this.pageCount = type.pageCount;
@@ -172,7 +185,7 @@ export class CustomerComponent implements OnInit {
     this.customerService.uploadImg(this.img4, this.dob_backimg_Name).subscribe(
       res => {
         if (res['login_required'] == true) {
-          this.errorMsg();
+          this.errorPage();
           this.loading = false;
           return;
         }
@@ -200,7 +213,7 @@ export class CustomerComponent implements OnInit {
     this.customerService.uploadImg(this.img1, this.panImgName).subscribe(
       res => {
         if (res['login_required'] == true) {
-          this.errorMsg();
+          this.errorPage();
           this.loading = false;
           return;
         }
@@ -234,7 +247,7 @@ export class CustomerComponent implements OnInit {
     this.customerService.uploadImg(this.img2, this.frontImg).subscribe(
       res => {
         if (res['login_required'] == true) {
-          this.errorMsg();
+          this.errorPage();
           this.loading = false;
           return;
         }
@@ -263,7 +276,7 @@ export class CustomerComponent implements OnInit {
     this.customerService.uploadImg(this.img3, this.backImg).subscribe(
       res => {
         if (res['login_required'] == true) {
-          this.errorMsg();
+          this.errorPage();
           this.loading = false;
           return;
         }
@@ -422,7 +435,7 @@ export class CustomerComponent implements OnInit {
     this.img_id4 = doc['docId'];
     this.baseAPIService.getImage(doc['docId']).subscribe(res => {
       if (res['login_required'] == true) {
-        this.errorMsg();
+        this.errorPage();
         this.loading = false;
         return;
       }
@@ -510,7 +523,7 @@ export class CustomerComponent implements OnInit {
       .subscribe(
         res => {
           if (res['login_required'] == true) {
-            this.errorMsg();
+            this.errorPage();
             this.loading = false;
             return;
           }
@@ -523,7 +536,7 @@ export class CustomerComponent implements OnInit {
           this.loading = false;
           let Error = res['Error'];
           if (Error == 1) {
-            this.errorMsg();
+            this.errorPage();
             return;
           }
           let accept_status = res['ProcessVariables']['response'][0]['statusCode'];
@@ -531,13 +544,13 @@ export class CustomerComponent implements OnInit {
             this.tokenStorage.clear();
             this.router.navigate(['result']);
           } else {
-            this.errorMsg();
+            this.errorPage();
             return;
           }
         }, error => {
           console.log(error);
           this.loading = false;
-          this.errorMsg();
+          this.errorPage();
           this._snackBar.open('Error in Server', 'Error', {
             duration: 4000,
           });
@@ -564,7 +577,7 @@ export class CustomerComponent implements OnInit {
     }, error => {
       console.log(error);
       this.loading = false;
-      this.errorMsg();
+      this.errorPage();
       this._snackBar.open('Error in Server', 'Error', {
         duration: 4000,
       });
@@ -578,10 +591,11 @@ export class CustomerComponent implements OnInit {
 
   // Reject reason after select option than submit 
   submit() {
+    this.loading = true;
     this.apiUniqueKey = new Date().getTime().toString();
     this.customerService.reject(this.approved, this.reasonId, this.apiUniqueKey).subscribe(res => {
       if (res['login_required'] == true) {
-        this.errorMsg();
+        this.errorPage();
         this.loading = false;
         return;
       }
@@ -600,6 +614,8 @@ export class CustomerComponent implements OnInit {
         return;
       }
       this.router.navigate(['result']);
+      this.tokenStorage.clear();
+      
     }, error => {
       this.loading = false;
       console.log("error", error);
