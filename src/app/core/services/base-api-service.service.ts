@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Constants } from 'src/app/app.constant';
 
-const SERVER_URL = environment.apiUrl;
+//const SERVER_URL = environment.apiUrl;
 @Injectable({
   providedIn: 'root'
 })
@@ -12,13 +12,13 @@ export class BaseAPIService {
   baseUrl = environment.apiUrl;
   constructor(private http: HttpClient) { }
 
-  get(endpoint, params) {
-    if (Object.keys(params).length) {
-      return this.http.get(`${SERVER_URL}${endpoint}/${params}`);
-    } else {
-      return this.http.get(`${SERVER_URL}${endpoint}`);
-    }
-  }
+  // get(endpoint, params) {
+  //   if (Object.keys(params).length) {
+  //     return this.http.get(`${SERVER_URL}${endpoint}/${params}`);
+  //   } else {
+  //     return this.http.get(`${SERVER_URL}${endpoint}`);
+  //   }
+  // }
 
   loginpost(endpoint, params, httpOptions) {
     return this.http.post(`${endpoint}`, JSON.stringify(params), httpOptions);
@@ -47,13 +47,13 @@ export class BaseAPIService {
     return this.http.get(environment.documentUrl + fileId, { responseType: "blob" });
   }
   
-  put(endpoint, params): Observable<Object> {
-    const body = new HttpParams().set(
-      `processVariables`,
-      JSON.stringify(params)
-    );
-    return this.http.post(`${SERVER_URL}${endpoint}/`,  JSON.stringify(params));
-  }
+  // put(endpoint, params): Observable<Object> {
+  //   const body = new HttpParams().set(
+  //     `processVariables`,
+  //     JSON.stringify(params)
+  //   );
+  //   return this.http.post(`${SERVER_URL}${endpoint}/`,  JSON.stringify(params));
+  // }
 
   getStatusCode(resp) {
     const statusCode = resp['ProcessVariables']['response'][0].statusCode;

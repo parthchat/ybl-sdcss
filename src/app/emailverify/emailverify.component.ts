@@ -63,10 +63,19 @@ export class EmailverifyComponent implements OnInit {
   getAuth() {
     this.apiUniqueKey = new Date().getTime().toString();
     this.emailverifyService.authEmail(this.apiUniqueKey).subscribe(res => {
+      console.log(res);
+      if (res['payload']['error']['code'] == 2001) {
+        this.errorPage();
+        return;
+      }
       if (res['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] != this.apiUniqueKey) {
         this._snackBar.open('Invalid Authentication', 'Error', {
           duration: 4000,
         });
+        return;
+      }
+      if (res['payload']['error']['code'] == 2001) {
+        this.errorPage();
         return;
       }
       if (res['login_required'] == true) {

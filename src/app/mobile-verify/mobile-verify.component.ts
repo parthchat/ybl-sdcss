@@ -32,7 +32,7 @@ export class MobileVerifyComponent implements OnInit {
     this.route.queryParamMap.subscribe(params => {
       let details = { ...params.keys, ...params };
       this.getsession = details['params'];
-      if(!this.getsession['sessionId']){
+      if (!this.getsession['sessionId']) {
         this.router.navigate(['404']);
         return
       }
@@ -51,11 +51,11 @@ export class MobileVerifyComponent implements OnInit {
     this.tokenStorage.clear();
   }
 
-  succes(){
+  succes() {
     this.successMsg = true;
     this.Showstatus = false;
   }
-    // On OTP validation
+  // On OTP validation
   keyPress(event: any) {
     this.errorstatus = false;
     const pattern = /[0-9\+\-\ ]/;
@@ -66,10 +66,15 @@ export class MobileVerifyComponent implements OnInit {
     }
   }
 
-    // 1st call auth call
+  // 1st call auth call
   getAuth() {
     this.apiUniqueKey = new Date().getTime().toString();
     this.mobileVerifyService.getAuthMobile(this.apiUniqueKey).subscribe(res => {
+      console.log(res);
+      if (res['payload']['error']['code'] == 2001) {
+        this.errorPage();
+        return;
+      }
       if (res['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] != this.apiUniqueKey) {
         this.errorPage();
         return;
@@ -117,7 +122,7 @@ export class MobileVerifyComponent implements OnInit {
           return;
         }
         this.tokenStorage.setAccessToken(res['payload']['processResponse']['authentication-token']);
-        if(res['payload']['processResponse']['authentication-token']){
+        if (res['payload']['processResponse']['authentication-token']) {
           this.mobileTokenVerify();
         }
       }, error => {
@@ -128,7 +133,7 @@ export class MobileVerifyComponent implements OnInit {
     )
   }
 
-  mobileTokenVerify(){
+  mobileTokenVerify() {
     this.apiUniqueKey = new Date().getTime().toString();
     this.service.completeSR(this.apiUniqueKey).subscribe(res => {
       if (res['ErrorCode'] == 200) {
