@@ -70,7 +70,6 @@ export class MobileVerifyComponent implements OnInit {
   getAuth() {
     this.apiUniqueKey = new Date().getTime().toString();
     this.mobileVerifyService.getAuthMobile(this.apiUniqueKey).subscribe(res => {
-      console.log(res);
       if (res['payload']['error']['code'] == 2001) {
         this.errorPage();
         return;
@@ -127,7 +126,6 @@ export class MobileVerifyComponent implements OnInit {
         }
       }, error => {
         this.loading = false;
-        console.log(error);
         this.errorPage();
       }
     )

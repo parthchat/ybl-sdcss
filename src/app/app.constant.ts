@@ -11,11 +11,18 @@ export class Constants {
     public static PROJECT_ID = 'ff0ae4a6884711e9b16676fb2f2488b6';
     public static PARAM_DATA = 'prms';
     public static InterceptorSkipHeader = 'X-Skip-Interceptor';
+    public static VALIDATION_ALPHANUMERIC = /^[a-zA-Z0-9]+$/;
+    public static VALIDATION_PASSWORD = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{1,}$";
 }
-  
+
 export module APIConstants {
     export enum Auth_init_otp {
         PROCESS_ID = '5166f5ee89d511e9b12c2eca4ea5bb5f',
+        WORKFLOW_ID = '90dc3ec288f511e9b12c2eca4ea5bb5f',
+    }
+
+    export enum Auth_reinit_otp {
+        PROCESS_ID = 'e2fc2278ad3311e9b432da7aa4ddfb2b',
         WORKFLOW_ID = '90dc3ec288f511e9b12c2eca4ea5bb5f',
     }
 

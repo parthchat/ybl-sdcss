@@ -70,7 +70,7 @@ export class FilterInterceptor implements HttpInterceptor {
     //   });
     // }
 
-    if (request.url.toString().indexOf('auth_init') !== -1 || request.url.toString().indexOf('auth_validate') !== -1) {
+    if (request.url.toString().indexOf('auth_init') !== -1 || request.url.toString().indexOf('auth_validate') !== -1 || request.url.toString().indexOf('auth_reinit') !== -1) {
       request = request.clone({
         setHeaders: {
           'X-AUTH-SESSIONID': this.tokenStorage.getSessionId()
@@ -101,8 +101,7 @@ export class FilterInterceptor implements HttpInterceptor {
       map(
         event => {
           if (event instanceof HttpResponse) {
-            //if(!environment.production)
-           // console.log(this.decryptResponse(event));
+           console.log("Resp ",JSON.parse(this.decryptResponse(event)));
             if (this.decryptResponse(event)) {
               event = event.clone({ body: JSON.parse(this.decryptResponse(event)) });
               if (event.headers.get('ACCESS_TOKEN')) {

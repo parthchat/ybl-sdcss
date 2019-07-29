@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TokenStorage } from '../../services/auth/token-storage.service';
 
 @Component({
   selector: 'app-not-found',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotFoundComponent implements OnInit {
 
-  constructor() { }
+  constructor(private tokenStorage: TokenStorage) { }
 
   ngOnInit() {
+    this.tokenStorage.clear();
   }
 
 }

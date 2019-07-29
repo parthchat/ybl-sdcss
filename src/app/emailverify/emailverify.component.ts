@@ -63,7 +63,6 @@ export class EmailverifyComponent implements OnInit {
   getAuth() {
     this.apiUniqueKey = new Date().getTime().toString();
     this.emailverifyService.authEmail(this.apiUniqueKey).subscribe(res => {
-      console.log(res);
       if (res['payload']['error']['code'] == 2001) {
         this.errorPage();
         return;

@@ -1,0 +1,24 @@
+<div class="page form-section align-items-center d-flex">
+    <div class="login-page-inner">
+        <div class="row justify-content-md-center">
+            <mat-card class="col-12 form-card">
+                <mat-card-content>
+                    <form [formGroup]="otpLoginForm">
+                        <div class="form-container">
+                            <mat-form-field>
+                                <mat-icon matPrefix class="login-icon"></mat-icon>
+                                <input matInput (input)="inputValidator($event)" placeholder="Enter OTP here"
+                                    pattern="\d*" maxlength="6" formControlName="mobileOTP" type="text" required>
+                                <mat-error class="left-space">{{getMobileOTPErrorMessage()}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>
+
+
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
+</ngx-loading>
