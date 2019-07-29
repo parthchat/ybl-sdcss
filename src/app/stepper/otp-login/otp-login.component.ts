@@ -20,7 +20,7 @@ export class OtpLoginComponent implements OnInit {
   subscriptions: Subscription;
   apiUniqueKey: string;
   loading: boolean;
-
+  customLoadingTemplate:any;
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private commonFunctions: CommonFunctions, private stepperService: StepperService, private tokenStorage: TokenStorage, private router: Router) { }
 
   ngOnInit() {

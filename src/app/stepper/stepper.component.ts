@@ -24,6 +24,7 @@ export class StepperComponent implements OnInit {
   index: any;
   isShowSubmitBtn: boolean = false;
   selectedOption: string;
+  customLoadingTemplate: any;
   constructor(private router: Router, private authService: AuthService, private commonFunctions: CommonFunctions, private stepperService: StepperService, private tokenStorage: TokenStorage, private route: ActivatedRoute) { }
 
   ngOnInit() {

@@ -19,6 +19,7 @@ export class DebitCardComponent implements OnInit {
   cardNumber: any;
   loading: boolean;
   apiUniqueKey: string;
+  customLoadingTemplate: any;
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private commonFunctions: CommonFunctions, private stepperService: StepperService, private tokenStorage: TokenStorage, private router: Router) { }
 
   ngOnInit() {
