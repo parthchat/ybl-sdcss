@@ -21,7 +21,6 @@ export class RetailNetBankingComponent implements OnInit {
   isLoginButton: boolean = false;
   custIdPattern =  /^[a-zA-Z0-9]$/;
   rnbLoginForm: FormGroup;
-  subscriptions: Subscription;
   loading: boolean;
   apiUniqueKey: string;
   salt: any;
@@ -72,7 +71,7 @@ export class RetailNetBankingComponent implements OnInit {
   showPassField() {
     this.loading = true;
     this.apiUniqueKey = new Date().getTime().toString();
-    this.subscriptions = this.stepperService.auth_reinit(this.apiUniqueKey, 1, this.rnbLoginForm.controls.custId.value).subscribe(
+    this.stepperService.auth_reinit(this.apiUniqueKey, 1, this.rnbLoginForm.controls.custId.value).subscribe(
       response => {
         this.loading = false;
         if(response['status']){

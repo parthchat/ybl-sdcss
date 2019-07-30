@@ -20,7 +20,6 @@ export class StepperComponent implements OnInit {
   getsession: any;
   loading: boolean;
   arrLoginType: any;
-  subscriptions: Subscription;
   index: any;
   isShowSubmitBtn: boolean = false;
   selectedOption: string;
@@ -47,7 +46,7 @@ export class StepperComponent implements OnInit {
 
   getAuth() {
     this.apiUniqueKey = new Date().getTime().toString();
-    this.subscriptions = this.stepperService.getAuth(this.apiUniqueKey).subscribe(
+    this.stepperService.getAuth(this.apiUniqueKey).subscribe(
       response => {
         this.loading = false;
         if(response['status']){
@@ -110,7 +109,7 @@ export class StepperComponent implements OnInit {
   generateOtp() {
     this.loading = true;
     this.apiUniqueKey = new Date().getTime().toString();
-    this.subscriptions = this.stepperService.auth_reinit(this.apiUniqueKey, 3, '').subscribe(
+    this.stepperService.auth_reinit(this.apiUniqueKey, 3, '').subscribe(
       response => {
         this.loading = false;
         if(response['status']){
@@ -139,9 +138,5 @@ export class StepperComponent implements OnInit {
       this.commonFunctions.showErrorPage();
       return;
     })
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
   }
 }

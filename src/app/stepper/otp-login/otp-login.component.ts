@@ -16,8 +16,7 @@ import { AlertMessages } from 'src/app/app.constant';
 export class OtpLoginComponent implements OnInit {
   hide = true;
   otpLoginForm: FormGroup;
-  otpPattern = /^[0-9]{6}$/
-  subscriptions: Subscription;
+  otpPattern = /^[0-9]{6}$/;
   apiUniqueKey: string;
   loading: boolean;
   customLoadingTemplate:any;
@@ -61,7 +60,7 @@ export class OtpLoginComponent implements OnInit {
     this.loading = true;
     this.apiUniqueKey = new Date().getTime().toString();
     if(this.stepperService.otpAuthRefId){
-      this.subscriptions = this.stepperService.verifyDetails(3, '', '', '', '', this.stepperService.otpAuthRefId, this.otpLoginForm.controls.mobileOTP.value, this.apiUniqueKey).subscribe(
+      this.stepperService.verifyDetails(3, '', '', '', '', this.stepperService.otpAuthRefId, this.otpLoginForm.controls.mobileOTP.value, this.apiUniqueKey).subscribe(
         response => {
           this.loading = false;
           if(response['status']){

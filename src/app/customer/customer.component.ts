@@ -105,7 +105,6 @@ export class CustomerComponent implements OnInit {
           this.loading = false;
         },
         error => {
-          console.log("error", error);
           this._snackBar.open('Server Error', 'Error', {
             duration: 4000,
           });
@@ -193,7 +192,6 @@ export class CustomerComponent implements OnInit {
         this.dob_backimg_Name = res['info']['filename'];
         this.uploadImg1();
       }, error => {
-        console.log(error);
         this.loading = false;
         this._snackBar.open(this.imgError, 'Image Error', {
           duration: 4000,
@@ -222,7 +220,6 @@ export class CustomerComponent implements OnInit {
         this.panImgName = res['info']['filename'];
         this.uploadImg2();
       }, error => {
-        console.log(error);
         this.loading = false;
         this._snackBar.open(this.imgError, 'Image Error', {
           duration: 4000,
@@ -256,7 +253,6 @@ export class CustomerComponent implements OnInit {
         this.frontImg = res['info']['filename'];
         this.uploadImg3()
       }, error => {
-        console.log(error);
         this.loading = false;
         this._snackBar.open(this.imgError, 'Image Error', {
           duration: 4000,
@@ -285,7 +281,6 @@ export class CustomerComponent implements OnInit {
         this.backImg = res['info']['filename'];
         this.accept();
       }, error => {
-        console.log(error);
         this.loading = false;
         this._snackBar.open(this.imgError, 'Image Error', {
           duration: 4000,
@@ -392,7 +387,6 @@ export class CustomerComponent implements OnInit {
       let finalUrl = this.sanitizer.bypassSecurityTrustUrl(unsafeUrl);
       this.imgURL = finalUrl;
     }, error => {
-      console.log("error", error);
       this.loading = false;
       this._snackBar.open(this.imgError, 'Image Error', {
         duration: 4000,
@@ -411,7 +405,6 @@ export class CustomerComponent implements OnInit {
       this.imgURL2 = finalUrl;
     }, error => {
       this.loading = false;
-      console.log("error", error);
       return;
     })
   }
@@ -425,7 +418,6 @@ export class CustomerComponent implements OnInit {
       this.imgURL3 = finalUrl;
     }, error => {
       this.loading = false;
-      console.log("error", error);
       return;
     })
   }
@@ -444,7 +436,6 @@ export class CustomerComponent implements OnInit {
       this.imgURL4 = finalUrl;
     }, error => {
       this.loading = false;
-      console.log("error", error);
       return
     })
   }
@@ -548,7 +539,6 @@ export class CustomerComponent implements OnInit {
             return;
           }
         }, error => {
-          console.log(error);
           this.loading = false;
           this.errorPage();
           this._snackBar.open('Error in Server', 'Error', {
@@ -575,7 +565,6 @@ export class CustomerComponent implements OnInit {
       }
       this.Rejectedoptions = res['ProcessVariables']['rejectReasons'];
     }, error => {
-      console.log(error);
       this.loading = false;
       this.errorPage();
       this._snackBar.open('Error in Server', 'Error', {
@@ -618,7 +607,6 @@ export class CustomerComponent implements OnInit {
       
     }, error => {
       this.loading = false;
-      console.log("error", error);
       return;
     })
   }

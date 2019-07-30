@@ -3,6 +3,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { MobileVerifyService } from './mobile-verify.service';
 import { TokenStorage } from '../core/services/auth/token-storage.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { CommonFunctions } from '../core/utils/common-functions';
+import { AuthService } from '../core/services/auth/auth.service';
+import { AlertMessages } from '../app.constant';
 
 @Component({
   selector: 'app-mobile-verify',
@@ -11,9 +15,9 @@ import { TokenStorage } from '../core/services/auth/token-storage.service';
 })
 export class MobileVerifyComponent implements OnInit {
   loading = true;
-  otp: string;
+  otpLoginForm: FormGroup;
+  otpPattern = /^[0-9]{6}$/;
   getsession: any;
-  Showstatus: any = false;
   refId: any;
   successMsg = false;
   errorMsg = false;
@@ -21,9 +25,20 @@ export class MobileVerifyComponent implements OnInit {
   errorstatus = false;
   customLoadingTemplate: any;
   apiUniqueKey = "";
-  constructor(private tokenStorage: TokenStorage, private mobileVerifyService: MobileVerifyService, private router: Router, private route: ActivatedRoute, private service: DataService) { }
+  constructor(private authService: AuthService, private commonFunctions: CommonFunctions, private formBuilder: FormBuilder, private tokenStorage: TokenStorage, private mobileVerifyService: MobileVerifyService, private router: Router, private route: ActivatedRoute, private service: DataService) { }
 
   ngOnInit() {
+    this.otpLoginForm = this.formBuilder.group({
+      mobileOTP: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(6),
+          Validators.minLength(6),
+          Validators.pattern(this.otpPattern)
+        ]
+      ]
+    });
     this.getSessiondetails()
   }
 
@@ -42,18 +57,11 @@ export class MobileVerifyComponent implements OnInit {
   }
 
   sendError() {
-    this.Showstatus = false;
     this.error = '401';
-  }
-
-  errorPage() {
-    this.router.navigate(['error']);
-    this.tokenStorage.clear();
   }
 
   succes() {
     this.successMsg = true;
-    this.Showstatus = false;
   }
   // On OTP validation
   keyPress(event: any) {
@@ -69,80 +77,103 @@ export class MobileVerifyComponent implements OnInit {
   // 1st call auth call
   getAuth() {
     this.apiUniqueKey = new Date().getTime().toString();
-    this.mobileVerifyService.getAuthMobile(this.apiUniqueKey).subscribe(res => {
-      if (res['payload']['error']['code'] == 2001) {
-        this.errorPage();
-        return;
-      }
-      if (res['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] != this.apiUniqueKey) {
-        this.errorPage();
-        return;
-      }
-      if (res['login_required'] == true) {
-        this.errorPage();
-        return;
-      }
-      this.Showstatus = res['status'];
-      if (!this.Showstatus || res['login_required'] == true) {
-        this.errorPage();
-        return;
-      }
+    this.mobileVerifyService.getAuthMobile(this.apiUniqueKey).subscribe(response => {
       this.loading = false;
-      this.refId = res['payload']['processResponse']['ProcessVariables']['authRefId'];
-    }, error => {
-      this.error = error.status;
+      if(response['status']){
+        if(response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
+          if(response['payload']['processResponse']['ProcessVariables']['authRefId']) { // set auth token
+            this.refId = response['payload']['processResponse']['ProcessVariables']['authRefId'];
+          } else {
+            this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+            this.commonFunctions.showErrorPage();
+          }
+        } else {
+          this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+          this.commonFunctions.showErrorPage();
+        }
+      } else {
+        this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+        this.commonFunctions.showErrorPage();
+      }
+    },
+    error => {
       this.loading = false;
-    })
+      this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+      this.commonFunctions.showErrorPage();
+      return;
+    });
+  }
+
+  public inputValidator(event: any) {
+    const pattern = /^[0-9]*$/;
+    if (!pattern.test(event.target.value)) {
+      event.target.value = event.target.value.replace(/[^0-9]/g, "");
+      // invalid character, prevent input
+    } else {
+      if(event.target.value.length == 6){
+        this.submitOtp();
+      }
+    }
+  }
+
+  getMobileOTPErrorMessage() {
+    const formCntrl = this.otpLoginForm.controls;
+    return formCntrl.mobileOTP.hasError('required') ? 'Please enter the OTP sent on your registered mobile.' : 
+      formCntrl.mobileOTP.hasError('maxlength') ? 'Only 6 digit OTP allowed.' : 
+      formCntrl.mobileOTP.hasError('minlength') ? 'Enter 6 digit OTP.' : 
+      '';
   }
 
 
   submitOtp() {
-    if (this.otp.length !== 6) {
-      this.errorstatus = true;
-      return;
-    }
     this.loading = true;
-    this.otp.toString();
     this.apiUniqueKey = new Date().getTime().toString();
-    this.mobileVerifyService.verifyMobileOtp(this.refId, this.otp, this.apiUniqueKey).subscribe(
-      res => {
-        if (res['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] != this.apiUniqueKey) {
-          this.errorPage();
-          return;
-        }
-        if (res['login_required'] == true) {
-          this.errorPage();
-          return;
-        }
-        if (!res['payload']['processResponse']['ProcessVariables']['isAuthValidated']) {
-          this.errorstatus = true;
-          this.loading = false;
-          this.otp = '';
-          return;
-        }
-        this.tokenStorage.setAccessToken(res['payload']['processResponse']['authentication-token']);
-        if (res['payload']['processResponse']['authentication-token']) {
-          this.mobileTokenVerify();
-        }
-      }, error => {
+    this.mobileVerifyService.verifyMobileOtp(this.refId, this.otpLoginForm.controls.mobileOTP.value, this.apiUniqueKey).subscribe(
+      response => {
         this.loading = false;
-        this.errorPage();
-      }
-    )
+        if(response['status']){
+          if(response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
+            if(response['payload']['processResponse']['authentication-token']) { // set auth token
+              this.tokenStorage.setAccessToken(response['payload']['processResponse']['authentication-token']);
+              this.tokenStorage.setSrId(response['payload']['processResponse']['ProcessVariables']['srId']);
+              this.mobileTokenVerify();
+              // this.router.navigate(['customer']);
+            } else {
+              this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+              this.commonFunctions.showErrorPage();
+            }
+          } else {
+            this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+            this.commonFunctions.showErrorPage();
+          }
+        } else {
+          this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+          this.commonFunctions.showErrorPage();
+        }
+    }, 
+    error => {
+      this.loading = false;
+      this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+      this.commonFunctions.showErrorPage();
+      return;
+    })
   }
 
   mobileTokenVerify() {
     this.apiUniqueKey = new Date().getTime().toString();
+    this.loading = true;
     this.service.completeSR(this.apiUniqueKey).subscribe(res => {
+      this.loading = false;
       if (res['ErrorCode'] == 200) {
         this.succes();
         return;
       } else {
-        this.errorPage();
+        this.commonFunctions.showErrorPage();
         return;
       }
     }, error => {
-      this.errorPage();
+      this.loading = true;
+      this.commonFunctions.showErrorPage();
       return;
     })
   }

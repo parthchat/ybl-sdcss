@@ -6,6 +6,9 @@ import { Observable, fromEvent, merge, of } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 import { TokenStorage } from '../core/services/auth/token-storage.service';
 import { EmailverifyService } from './emailverify.service';
+import { CommonFunctions } from '../core/utils/common-functions';
+import { AuthService } from '../core/services/auth/auth.service';
+import { AlertMessages } from '../app.constant';
 
 @Component({
   selector: 'app-emailverify',
@@ -24,7 +27,7 @@ export class EmailverifyComponent implements OnInit {
   token: any;
   emailResult: boolean;
   customLoadingTemplate: any;
-  constructor(private emailverifyService: EmailverifyService, private tokenStorage: TokenStorage, private service: DataService, private route: ActivatedRoute, private router: Router, private _snackBar: MatSnackBar) {
+  constructor(private authService: AuthService, private commonFunctions: CommonFunctions, private emailverifyService: EmailverifyService, private tokenStorage: TokenStorage, private service: DataService, private route: ActivatedRoute, private router: Router, private _snackBar: MatSnackBar) {
     this.online = merge(
       of(navigator.onLine),
       fromEvent(window, 'online').pipe(mapTo(true)),
@@ -42,11 +45,6 @@ export class EmailverifyComponent implements OnInit {
     return;
   }
 
-  errorPage() {
-    this.router.navigate(['error']);
-    this.tokenStorage.clear();
-  }
-
   getSessiondetails() {
     this.route.queryParamMap.subscribe(params => {
       let details = { ...params.keys, ...params };
@@ -62,63 +60,73 @@ export class EmailverifyComponent implements OnInit {
 
   getAuth() {
     this.apiUniqueKey = new Date().getTime().toString();
-    this.emailverifyService.authEmail(this.apiUniqueKey).subscribe(res => {
-      if (res['payload']['error']['code'] == 2001) {
-        this.errorPage();
-        return;
-      }
-      if (res['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] != this.apiUniqueKey) {
-        this._snackBar.open('Invalid Authentication', 'Error', {
-          duration: 4000,
-        });
-        return;
-      }
-      if (res['payload']['error']['code'] == 2001) {
-        this.errorPage();
-        return;
-      }
-      if (res['login_required'] == true) {
-        this.errorPage();
-        return;
-      }
-      if (!res['status']) {
-        this.errorPage();
-        return;
-      }
-      this.refId = res['payload']['processResponse']['ProcessVariables']['authRefId'];
-      this.emailVerify()
-    }, error => {
-      this.error = error.status;
+    this.emailverifyService.authEmail(this.apiUniqueKey).subscribe(response => {
       this.loading = false;
-    })
+      if(response['status']){
+        if(response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
+          if(response['payload']['processResponse']['ProcessVariables']['authRefId']) { // set auth token
+            this.refId = response['payload']['processResponse']['ProcessVariables']['authRefId'];
+            this.emailVerify()
+          } else {
+            this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+            this.commonFunctions.showErrorPage();
+          }
+        } else {
+          this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+          this.commonFunctions.showErrorPage();
+        }
+      } else {
+        this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+        this.commonFunctions.showErrorPage();
+      }
+    },
+    error => {
+      this.loading = false;
+      this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+      this.commonFunctions.showErrorPage();
+      return;
+    });
   }
 
   emailVerify() {
+    this.loading = true;
     this.apiUniqueKey = new Date().getTime().toString();
-    this.emailverifyService.verifyemail(this.refId, this.apiUniqueKey).subscribe(res => {
-      if (res['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] != this.apiUniqueKey) {
-        this._snackBar.open('Invalid', 'Error', {
-          duration: 4000,
-        });
-        return;
-      }
-      this.tokenStorage.setAccessToken(res['payload']['processResponse']['authentication-token']);
-      if (res['payload']['processResponse']['ProcessVariables']['isAuthValidated'] && res['payload']['processResponse']['authentication-token']) {
-        this.verified();
-      } else {
-        this.errorPage();
-        return;
-      }
-
-    }, error => {
-      this.errorPage();
-      return
+    this.emailverifyService.verifyemail(this.refId, this.apiUniqueKey).subscribe(
+      response => {
+        this.loading = false;
+        if(response['status']){
+          if(response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
+            if(response['payload']['processResponse']['authentication-token']) { // set auth token
+              this.tokenStorage.setAccessToken(response['payload']['processResponse']['authentication-token']);
+              this.tokenStorage.setSrId(response['payload']['processResponse']['ProcessVariables']['srId']);
+              this.verified();
+              // this.router.navigate(['customer']);
+            } else {
+              this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+              this.commonFunctions.showErrorPage();
+            }
+          } else {
+            this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+            this.commonFunctions.showErrorPage();
+          }
+        } else {
+          this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+          this.commonFunctions.showErrorPage();
+        }
+    }, 
+    error => {
+      this.loading = false;
+      this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+      this.commonFunctions.showErrorPage();
+      return;
     })
   }
 
   verified() {
+    this.loading = true;
     this.apiUniqueKey = new Date().getTime().toString();
     this.service.completeSR(this.apiUniqueKey).subscribe(res => {
+      this.loading = false;
       if (res['ErrorCode'] == 200) {
         this.Showstatus = true;
         this.loading = false;
@@ -128,10 +136,11 @@ export class EmailverifyComponent implements OnInit {
         this.emailResult = true;
         return;
       }
-
-    }, error => {
+    }, 
+    error => {
       this.loading = false;
-      this.emailResult = true;
+      // this.emailResult = true;
+      this.commonFunctions.showErrorPage();
       return;
     })
   }
