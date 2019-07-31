@@ -1,0 +1,120 @@
+.page {
+    /* background: linear-gradient(to top, #0d5a96, #4e7fae, #80a5c7, #b3ccdf, #eaf3f9); */
+    /* .flex{ */
+        height: calc(100vh - 64px);
+        background: linear-gradient(to top, #0d5a96, #4e7fae, #80a5c7, #b3ccdf, #eaf3f9);
+        color: white; 
+        position: relative;  
+    /* } */
+}
+
+.copyright-text {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    left: 0;
+    color: #8bb1ce;
+    font-size: 14px;
+    right: 0;
+}
+
+.heading {
+    text-align: center;
+    color: gray;
+    padding-top: 30px;
+}
+
+.flex{
+    color: white; 
+    position: relative;  
+    display: inline;
+    justify-content: center;
+    padding-top: 45px;
+    overflow: hidden;
+}
+
+.container {
+    margin: 0px;
+    justify-content: center;
+}
+
+.cards{
+    margin: 10px;
+    cursor: pointer;
+    text-align: center;
+    padding: 25px;
+    border: #5e8bb6 3px solid;
+}
+
+.card-wrapper{
+    display: flex;
+    justify-content: center;
+}
+
+.submitBtn{
+  width: 175px;
+}
+
+.submit-btn {
+    text-align: center;
+    margin: 15px;
+}
+
+.hint-msg {
+    color: #c4261d;
+}
+
+.alert-msg {
+    padding: 10px;
+    text-align: center;
+}
+
+.logins{
+    margin: 20px;
+}
+
+.mat-icon{
+    color: darkblue;
+}
+
+.cards-bg{
+    background: linear-gradient(to top, #0d5a96, #4e7fae, #80a5c7, #b3ccdf, #eaf3f9);
+    border: #005190 3px solid;
+}
+
+@media screen and (max-width: 768px) {
+    .logins{
+        margin-top: 20%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .cards{
+        height: 110px;
+        width: 175px;
+    }
+    .colscard{
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media(max-width:767px) {
+    .page {
+        height: calc(100vh - 0px);
+    }
+    
+    .copyright-text{
+        bottom: 0px;
+    }
+}
+
+@media(max-width:767px) and (orientation : landscape){
+    .page {
+        height: calc(100vh - 0px);
+    }
+
+    .copyright-text{
+        bottom: 0px;
+    }
+}

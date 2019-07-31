@@ -1,38 +1,9 @@
 import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatGridListModule, MatCardModule, MatMenuModule, MatTableModule, MatPaginatorModule, MatFormFieldModule, MatSortModule, MatSelectModule, MatInputModule, MatBadgeModule, MatDialogModule, MatSnackBarModule, MatProgressSpinnerModule, MatCheckboxModule, MatProgressBarModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, MatRadioModule, MatAutocompleteModule, MatExpansionModule, MatStepperModule, MatBottomSheetModule, MatButtonToggleModule, MatChipsModule, MatDividerModule, MatRippleModule, MatSliderModule, MatSlideToggleModule, MatTabsModule, MatTreeModule, MAT_DIALOG_DEFAULT_OPTIONS, MAT_SNACK_BAR_DEFAULT_OPTIONS, MAT_DATE_LOCALE } from '@angular/material';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { LOCALE_ID, NgModule } from '@angular/core';
-import {
-  MAT_DATE_LOCALE,
-  MAT_DIALOG_DEFAULT_OPTIONS,
-  MAT_SNACK_BAR_DEFAULT_OPTIONS,
-  MatAutocompleteModule,
-  MatBadgeModule,
-  MatButtonModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatFormFieldModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatNativeDateModule,
-  MatPaginatorModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSnackBarModule,
-  MatSortModule,
-  MatTableModule,
-  MatToolbarModule,
-  MatTooltipModule,
-  MatExpansionModule,
-  MatStepperModule
-} from '@angular/material';
 
 const materialModules = [
   LayoutModule,
@@ -59,13 +30,21 @@ const materialModules = [
   MatTooltipModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatCardModule,
   MatRadioModule,
-  MatIconModule,
-  MatDatepickerModule,
   MatAutocompleteModule,
   MatExpansionModule,
-  MatStepperModule
+  MatStepperModule,
+  MatBottomSheetModule,
+  MatButtonToggleModule,
+  MatChipsModule,
+  MatDividerModule,
+  MatRippleModule,
+  MatSliderModule,
+  MatSlideToggleModule,
+  MatTabsModule,
+  MatTreeModule,
+  FormsModule,
+  HttpClientModule,
 ];
 @NgModule({
   imports: [

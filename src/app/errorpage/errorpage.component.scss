@@ -6,7 +6,13 @@
     background: linear-gradient(to top, #0d5a96, #4e7fae, #80a5c7, #b3ccdf, #eaf3f9);
     color: white;   
 }
-.error{
-    color: red;
+
+.error {
+    color: #c4261d;
     margin-top: 180px;
+}
+
+.d-flex-c{
+    display: flex;
+    justify-content: center;
 }

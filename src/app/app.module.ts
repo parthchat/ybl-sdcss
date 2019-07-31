@@ -1,59 +1,29 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCheckboxModule} from '@angular/material';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgxLoadingModule } from 'ngx-loading';
-import { Ng2ImgMaxModule } from 'ng2-img-max';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {
-  
-  MatAutocompleteModule,
-  MatBadgeModule,
-  MatBottomSheetModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatChipsModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatDividerModule,
-  MatExpansionModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatNativeDateModule,
-  MatPaginatorModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatRippleModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSliderModule,
-  MatSlideToggleModule,
-  MatSnackBarModule,
-  MatSortModule,
-  MatStepperModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule,
-  MatTreeModule,
-} from '@angular/material';
+import { DatePipe } from '@angular/common';
+import { CommonFunctions } from './core/utils/common-functions';
+import { FilterInterceptor } from './core/utils/filter.interceptor';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthService } from './core/services/auth/auth.service';
+import { NgModule } from '@angular/core';
 import { OtpPageComponent } from './otp-page/otp-page.component';
 import { CustomerComponent } from './customer/customer.component';
 import { AcceptRejectComponent } from './accept-reject/accept-reject.component';
 import { EmailverifyComponent } from './emailverify/emailverify.component';
 import { MobileVerifyComponent } from './mobile-verify/mobile-verify.component';
-import { FilterInterceptor } from './core/utils/filter.interceptor';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 import { MydirectDirective } from './directives/mydirect.directive';
 import { ErrorpageComponent } from './errorpage/errorpage.component';
+import { StepperComponent } from './stepper/stepper.component';
+import { RetailNetBankingComponent } from './stepper/retail-net-banking/retail-net-banking.component';
+import { DebitCardComponent } from './stepper/debit-card/debit-card.component';
+import { OtpLoginComponent } from './stepper/otp-login/otp-login.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { CoreModule } from './core/core.module';
+import { AppRoutingModule } from './app-routing.module';
+import { MatSidenavModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
   declarations: [
@@ -65,59 +35,32 @@ import { ErrorpageComponent } from './errorpage/errorpage.component';
     MobileVerifyComponent,
     NotFoundComponent,
     MydirectDirective,
-    ErrorpageComponent
+    ErrorpageComponent,
+    StepperComponent,
+    RetailNetBankingComponent,
+    DebitCardComponent,
+    OtpLoginComponent
   ],
   imports: [
-    NgbModule.forRoot(),
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
-    MatAutocompleteModule,
-    MatBadgeModule,
-    MatBottomSheetModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatStepperModule,
-    MatDatepickerModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatMenuModule,
-    MatNativeDateModule,
-    MatPaginatorModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatRadioModule,
-    MatRippleModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatSliderModule,
-    MatSlideToggleModule,
-    MatSnackBarModule,
-    MatSortModule,
-    MatTableModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    MatTreeModule,
-    FormsModule,
     HttpClientModule,
-    Ng2ImgMaxModule,
-    NgxLoadingModule.forRoot({})
+    CoreModule,
+    AppRoutingModule,
+    MatSidenavModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxLoadingModule.forRoot({}),
   ],
   providers: [
+    AuthService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: FilterInterceptor,
       multi: true
-    }
+    },
+    DatePipe,
+    CommonFunctions
   ],
   bootstrap: [AppComponent]
 })

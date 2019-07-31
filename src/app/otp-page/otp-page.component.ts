@@ -93,7 +93,6 @@ export class OtpPageComponent implements OnInit {
       }
       if (res['payload']['processResponse']['ProcessVariables']['authRefId']) {
         this.refId = res['payload']['processResponse']['ProcessVariables']['authRefId'];
-        console.log(this.refId,'refid');
       } else {
         this.errorPage();
         return;

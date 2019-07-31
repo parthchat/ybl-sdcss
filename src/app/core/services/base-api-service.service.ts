@@ -39,6 +39,10 @@ export class BaseAPIService {
     return this.http.post(`${environment.apiUrl}session/auth_init`, JSON.stringify(params));
   }
 
+  getAuthReInitPost(params) {
+    return this.http.post(`${environment.apiUrl}session/auth_reinit`, JSON.stringify(params));
+  }
+
   validateAuthPost(params) {
     return this.http.post(`${environment.apiUrl}session/auth_validate`, JSON.stringify(params));
   }

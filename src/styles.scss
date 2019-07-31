@@ -19,3 +19,13 @@ p, h1, h2, h3, h4, h5, h6, b, span, button, label, div{
     display: flex;
     justify-content: center;
 }
+
+.page {
+    /* background: linear-gradient(to top, #0d5a96, #4e7fae, #80a5c7, #b3ccdf, #eaf3f9); */
+    /* .flex{ */
+        height: calc(100vh - 64px);
+        background: linear-gradient(to top, #0d5a96, #4e7fae, #80a5c7, #b3ccdf, #eaf3f9);
+        color: white; 
+        position: relative;  
+    /* } */
+}
