@@ -24,6 +24,8 @@ export class StepperComponent implements OnInit {
   isShowSubmitBtn: boolean = false;
   selectedOption: string;
   customLoadingTemplate: any;
+  isConstructionMsg: boolean = false;
+  isSelectedMsg: boolean = false;
   constructor(private router: Router, private authService: AuthService, private commonFunctions: CommonFunctions, private stepperService: StepperService, private tokenStorage: TokenStorage, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -79,9 +81,11 @@ export class StepperComponent implements OnInit {
   }
 
   selected(i:any){
+    console.log("Test", i);
     this.index = i;
     this.isShowSubmitBtn = true;
-
+    this.isConstructionMsg = false;
+    this.isSelectedMsg = true;
     if(this.index == 0) {
       this.selectedOption = "Retail Net Banking Login";
     }
@@ -90,6 +94,16 @@ export class StepperComponent implements OnInit {
     }
     if(this.index == 2) {
       this.selectedOption = "OTP Login";
+    }
+    if(this.index == 3) {
+      this.selectedOption = "Credit Card Login";
+      this.isShowSubmitBtn = false;
+      this.isConstructionMsg = true;
+    }
+    if(this.index == 4) {
+      this.selectedOption = "Aadhar Card Login";
+      this.isShowSubmitBtn = false;
+      this.isConstructionMsg = true;
     }
     
   }
