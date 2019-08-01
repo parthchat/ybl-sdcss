@@ -106,7 +106,8 @@ export class RetailNetBankingComponent implements OnInit {
   }
 
   rnbLogin() {
-    var key512Bits1000Iterations = CryptoJS.PBKDF2(this.rnbLoginForm.controls.password.value, this.salt, { keySize: 512 / 32, iterations: 600 });
+    // old keysize -> { keySize: 512 / 32, iterations: 600 }
+    var key512Bits1000Iterations = CryptoJS.PBKDF2(this.rnbLoginForm.controls.password.value, this.salt, { keySize: 256/32, iterations: 500 });
     var encryptedPassword = key512Bits1000Iterations.toString();
     this.loading = true;
     this.apiUniqueKey = new Date().getTime().toString();
