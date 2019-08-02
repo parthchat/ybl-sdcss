@@ -53,7 +53,11 @@ export class StepperComponent implements OnInit {
           if(response['payload']['processResponse']['Error'] == '0' && response['payload']['processResponse']['ErrorCode'] == '200'){
             if(response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
               if(response['payload']['processResponse']['ProcessVariables']['validMols']) {
-                this.arrLoginType = response['payload']['processResponse']['ProcessVariables']['validMols'];
+                if(((response['payload']['processResponse']['ProcessVariables']['validMols']).length) == 1){
+                  this.generateOtp();
+                } else {
+                  this.arrLoginType = response['payload']['processResponse']['ProcessVariables']['validMols'];
+                }
               } else {
                 this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
                 this.commonFunctions.showErrorPage();

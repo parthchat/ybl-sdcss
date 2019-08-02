@@ -11,8 +11,8 @@ export class Constants {
     public static PROJECT_ID = 'ff0ae4a6884711e9b16676fb2f2488b6';
     public static PARAM_DATA = 'prms';
     public static InterceptorSkipHeader = 'X-Skip-Interceptor';
-    public static VALIDATION_ALPHANUMERIC = /^[a-zA-Z0-9]+$/;
-    public static VALIDATION_PASSWORD = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{1,}$";
+    public static VALIDATION_ALPHANUMERIC = /^[a-zA-Z0-9]+$/;    //!~{}|[]^_;:?()*,-.=@#$
+    public static VALIDATION_PASSWORD = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!~^_;:,-.=*#?|])[A-Za-z\\d@$!~^_;:,-.=*#?|]{1,}$";
 }
 
 export module APIConstants {
