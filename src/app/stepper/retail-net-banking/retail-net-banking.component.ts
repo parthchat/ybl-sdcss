@@ -19,7 +19,7 @@ export class RetailNetBankingComponent implements OnInit {
   isShowPasswordField: boolean = false;
   isNextButton: boolean = true;
   isLoginButton: boolean = false;
-  custIdPattern =  /^[a-zA-Z0-9]$/;
+  custIdPattern = /^[a-zA-Z0-9]$/;
   rnbLoginForm: FormGroup;
   loading: boolean;
   apiUniqueKey: string;
@@ -34,8 +34,9 @@ export class RetailNetBankingComponent implements OnInit {
         [
           Validators.required,
           Validators.maxLength(20),
-          Validators.minLength(6),
-          Validators.pattern(Constants.VALIDATION_ALPHANUMERIC)
+          Validators.minLength(7),
+          Validators.pattern("^[0-9]*$"),
+          // Validators.pattern(Constants.VALIDATION_ALPHANUMERIC)
         ]
       ],
       password: [
@@ -53,19 +54,18 @@ export class RetailNetBankingComponent implements OnInit {
   getCustIdErrorMessage() {
     const formCntrl = this.rnbLoginForm.controls;
     return formCntrl.custId.hasError('required') ? 'This field is required.' :
-      formCntrl.custId.hasError('pattern') ? 'Special characters not allowed.' :
-      formCntrl.custId.hasError('minlength') ? 'Minimum limit 6 characters.' :
-      formCntrl.custId.hasError('maxlength') ? 'Maximum limit 20 characters.' :
-        '';
+        formCntrl.custId.hasError('minlength') ? 'Minimum limit 7 characters.' :
+          formCntrl.custId.hasError('maxlength') ? 'Maximum limit 20 characters.' :
+            '';
   }
 
   getPasswordErrorMessage() {
     const formCntrl = this.rnbLoginForm.controls;
-    return  formCntrl.password.hasError('required') ? 'This field is required.' :
+    return formCntrl.password.hasError('required') ? 'This field is required.' :
       formCntrl.password.hasError('pattern') ? 'Password should contains at least 1 uppercase, 1 lowercase, 1 numeric & 1 special characters.' :
-      formCntrl.password.hasError('minlength') ? 'Minimum limit 10 characters.' :
-      formCntrl.password.hasError('maxlength') ? 'Maximum limit 14 characters.' :
-        '';
+        formCntrl.password.hasError('minlength') ? 'Minimum limit 10 characters.' :
+          formCntrl.password.hasError('maxlength') ? 'Maximum limit 14 characters.' :
+            '';
   }
 
   showPassField() {
@@ -74,10 +74,10 @@ export class RetailNetBankingComponent implements OnInit {
     this.stepperService.auth_reinit(this.apiUniqueKey, 1, this.rnbLoginForm.controls.custId.value).subscribe(
       response => {
         this.loading = false;
-        if(response['status']){
-          if(response['payload']['processResponse']['Error'] == '0' && response['payload']['processResponse']['ErrorCode'] == '200'){
-            if(response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
-              if(response['payload']['processResponse']['ProcessVariables']['iSalt']) {
+        if (response['status']) {
+          if (response['payload']['processResponse']['Error'] == '0' && response['payload']['processResponse']['ErrorCode'] == '200') {
+            if (response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
+              if (response['payload']['processResponse']['ProcessVariables']['iSalt']) {
                 this.salt = response['payload']['processResponse']['ProcessVariables']['iSalt'];
                 this.isShowPasswordField = true;
                 this.isNextButton = false;
@@ -85,65 +85,102 @@ export class RetailNetBankingComponent implements OnInit {
                 this.rnbLoginForm.controls.custId.disable();
               }
             } else {
-              this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+              //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
               this.commonFunctions.showErrorPage();
             }
           } else {
-            this.authService.alertToUser(response['payload']['processResponse']['ErrorMessage']);
+            //this.authService.alertToUser(response['payload']['processResponse']['ErrorMessage']);
             this.commonFunctions.showErrorPage();
           }
         } else {
-          this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+          //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
           this.commonFunctions.showErrorPage()
         }
-    }, 
-    error => {
-      this.loading = false;
-      this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
-      this.commonFunctions.showErrorPage();
-      return;
-    })
+      },
+      error => {
+        this.loading = false;
+        //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+        this.commonFunctions.showErrorPage();
+        return;
+      })
+  }
+
+  addPrefix(val){
+   console.log("len",val.length)
+   if(val.length == 1){
+     this.rnbLoginForm.controls.custId.setValue('000000'+val);
+   }
+   if(val.length==2){
+    this.rnbLoginForm.controls.custId.setValue('00000'+val);
+   }
+   if(val.length==3){
+    this.rnbLoginForm.controls.custId.setValue('0000'+val);
+   }
+   if(val.length==4){
+    this.rnbLoginForm.controls.custId.setValue('000'+val);
+   } 
+   if(val.length==5){
+    this.rnbLoginForm.controls.custId.setValue('00'+val);
+   }
+   if(val.length==6){
+    this.rnbLoginForm.controls.custId.setValue('0'+val);
+   }
+   if(val.length > 6){
+    this.rnbLoginForm.controls.custId.setValue(val);
+   }
+  }
+
+  public inputValidator(event: any) {
+    const pattern = /^[0-9]*$/;
+    if (!pattern.test(event.target.value)) {
+      event.target.value = event.target.value.replace(/[^0-9]/g, "");
+      // invalid character, prevent input
+    } else {
+      let val = event.target.value.replace(/^0+/, '');
+     // console.log("val", val, event.target.value);
+      this.addPrefix(val);
+    }
   }
 
   rnbLogin() {
     // old keysize -> { keySize: 512 / 32, iterations: 600 }
-    var key512Bits1000Iterations = CryptoJS.PBKDF2(this.rnbLoginForm.controls.password.value, this.salt, { keySize: 256/32, iterations: 500 });
+    var key512Bits1000Iterations = CryptoJS.PBKDF2(this.rnbLoginForm.controls.password.value, this.salt, { keySize: 256 / 32, iterations: 500 });
     var encryptedPassword = key512Bits1000Iterations.toString();
     this.loading = true;
     this.apiUniqueKey = new Date().getTime().toString();
     this.stepperService.verifyDetails(1, this.rnbLoginForm.controls.custId.value, encryptedPassword, '', '', '', '', this.apiUniqueKey).subscribe(
       response => {
         this.loading = false;
-        if(response['status']){
-          if(response['payload']['processResponse']['Error'] == '0' && response['payload']['processResponse']['ErrorCode'] == '200'){
-            if(response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
-              if(response['payload']['processResponse']['authentication-token']) { // set auth token
+        if (response['status']) {
+          if (response['payload']['processResponse']['Error'] == '0' && response['payload']['processResponse']['ErrorCode'] == '200') {
+            if (response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
+              if (response['payload']['processResponse']['authentication-token']) { // set auth token
                 this.tokenStorage.setAccessToken(response['payload']['processResponse']['authentication-token']);
                 this.tokenStorage.setSrId(response['payload']['processResponse']['ProcessVariables']['srId']);
                 this.router.navigate(['customer']);
               } else {
-                this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+                //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
                 this.commonFunctions.showErrorPage();
               }
             } else {
-              this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+              //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
               this.commonFunctions.showErrorPage();
             }
           } else {
-            this.authService.alertToUser(response['payload']['processResponse']['ErrorMessage']);
+            //this.authService.alertToUser(response['payload']['processResponse']['ErrorMessage']);
             this.commonFunctions.showErrorPage();
-          }  
+          }
         } else {
-          this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+          //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
           this.commonFunctions.showErrorPage();
         }
-    }, 
-    error => {
-      this.loading = false;
-      this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
-      this.commonFunctions.showErrorPage();
-      return;
-    })
+      },
+      error => {
+        this.loading = false;
+        //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+        this.commonFunctions.showErrorPage();
+        return;
+      })
   }
 
 }

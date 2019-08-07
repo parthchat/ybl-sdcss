@@ -59,24 +59,24 @@ export class StepperComponent implements OnInit {
                   this.arrLoginType = response['payload']['processResponse']['ProcessVariables']['validMols'];
                 }
               } else {
-                this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+                //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
                 this.commonFunctions.showErrorPage();
               }
             } else {
-              this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+              //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
               this.commonFunctions.showErrorPage();
             }
           } else {
-            this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+            //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
             this.commonFunctions.showErrorPage();
           }
         } else {
-          this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+          //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
           this.commonFunctions.showErrorPage()
         }
     }, 
     error => {
-      this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+      //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
       this.commonFunctions.showErrorPage();
       return;
     })
@@ -124,21 +124,21 @@ export class StepperComponent implements OnInit {
                 this.router.navigate(['otpLogin']);
               }
             } else {
-              this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+              //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
               this.commonFunctions.showErrorPage();
             }
           } else {
-            this.authService.alertToUser(response['payload']['processResponse']['ErrorMessage']);
+            //this.authService.alertToUser(response['payload']['processResponse']['ErrorMessage']);
             this.commonFunctions.showErrorPage();
           }
         } else {
-          this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+          //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
           this.commonFunctions.showErrorPage()
         }
     }, 
     error => {
       this.loading = false;
-      this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+      //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
       this.commonFunctions.showErrorPage();
       return;
     })

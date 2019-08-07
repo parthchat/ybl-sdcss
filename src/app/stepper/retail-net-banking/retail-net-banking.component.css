@@ -49,7 +49,7 @@
 .mat-icon.material-icons.login-icon {
     background: url(../../../assets/images/login-icon-default.png) 0 0 no-repeat;
     width: 20px;
-    height: 23px;
+    /* height: 23px; */
     display: inline-block;
 }
 
