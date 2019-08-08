@@ -7,7 +7,11 @@
                         <div class="form-container">
                             <mat-form-field>
                                 <mat-icon matPrefix class="login-icon"></mat-icon>
-                                <input matInput maxlength="20" minlength="6" placeholder="Retail Net Banking ID" formControlName="custId" type="text" required>
+                                <!-- <span matPrefix>{{preFixval}}</span> -->
+                                <!-- <input matInput maxlength="20" minlength="7" placeholder="Enter Customer ID" formControlName="custId" type="text" required> -->
+
+                                <input matInput (input)="inputValidator($event)" placeholder="Enter Customer ID"
+                                    pattern="\d*" maxlength="20" minlength="7" formControlName="custId" type="text" required>
                                 <mat-error class="left-space">{{ getCustIdErrorMessage() }}</mat-error>
                             </mat-form-field>
 
