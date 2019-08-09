@@ -9,6 +9,7 @@ import { CommonService } from '../common.service';
   providedIn: 'root'
 })
 export class AuthService {
+  isCheckRoute = false;
   loggedIn = false;
   brokerLoggedIn = false;
   brokerVerified = false;

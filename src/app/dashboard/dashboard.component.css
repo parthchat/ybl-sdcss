@@ -1,0 +1,22 @@
+.main-page-container {
+    margin: 70px;
+}
+
+.dashboad-container {
+    padding: 30px;
+}
+
+.radio-button {
+    margin-top: 10px;
+    margin-right: 20px;
+}
+
+.mb-0{
+    margin-bottom:0;
+}
+
+@media(max-width:767px){
+    .step-row{
+        margin:0
+    }
+}

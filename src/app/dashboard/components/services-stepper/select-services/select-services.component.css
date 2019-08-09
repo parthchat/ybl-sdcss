@@ -1,0 +1,18 @@
+.dashboard-title {
+    margin-left: 26px;
+  }
+  .action-btn{
+    margin-bottom: 15px;
+  }
+  .page-content{
+    padding-left: 25px;
+  }
+  @media (max-width: 767px) {
+    .dashboard-title{
+        margin-left:15px;
+    }
+    .page-content{
+      padding-left: 25px;
+    }
+  }
+  

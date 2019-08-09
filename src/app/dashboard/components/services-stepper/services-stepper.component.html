@@ -1,0 +1,79 @@
+<div class="main-page-container stepper-page t-0">
+    <div class="dashboad-header">
+        <h3 class="heading">Customer Service</h3>
+    </div>
+    <div class="form-div">
+        <form>
+            <div class="desktop-stepper">
+                <mat-horizontal-stepper [linear]="isLinear" #stepper>
+                    <mat-step>
+                        <ng-template matStepLabel><b>Select Service</b></ng-template>
+                        <app-select-services></app-select-services>
+                        <!--<app-step-two (notify)='onNotifyStepTwo($event)' *ngIf="isStepValidate == 2"></app-step-two>
+                        <app-customer-id  *ngIf="isStepValidate == 3" (notify)='onNotifyCustId($event)'></app-customer-id>
+                        <app-customer-search [custId]="custId" *ngIf="isStepValidate == 4" (notify)='onNotifyCustSearch($event)'></app-customer-search>
+                        <app-customer-otp-screen [objCustSearchData]="objCustSearchData" *ngIf="isStepValidate == 5" (notify)='onNotifyOTPVerify($event, stepper)'></app-customer-otp-screen> -->
+                    </mat-step>
+                    <mat-step>
+                            <ng-template matStepLabel><b>Validate Yourself</b></ng-template>
+                            <!--<app-step-two (notify)='onNotifyStepTwo($event)' *ngIf="isStepValidate == 2"></app-step-two>
+                            <app-customer-id  *ngIf="isStepValidate == 3" (notify)='onNotifyCustId($event)'></app-customer-id>
+                            <app-customer-search [custId]="custId" *ngIf="isStepValidate == 4" (notify)='onNotifyCustSearch($event)'></app-customer-search>
+                            <app-customer-otp-screen [objCustSearchData]="objCustSearchData" *ngIf="isStepValidate == 5" (notify)='onNotifyOTPVerify($event, stepper)'></app-customer-otp-screen> -->
+                        </mat-step>
+                    <mat-step>
+                        <ng-template matStepLabel><b>Confirm Details</b></ng-template>
+                        <!-- <app-customer-details-view (notify)='onNotifyCustDetailView($event, stepper)'></app-customer-details-view> -->
+                    </mat-step>
+                    <mat-step>
+                        <ng-template matStepLabel><b>Upload Documents</b></ng-template>
+                        <!-- <app-upload-poi *ngIf="isStepUpload == 0" (notify)='onNotifyUploadPOI($event)'></app-upload-poi>
+                        <app-upload-poa *ngIf="isStepUpload == 1" (notify)='onNotifyUploadPOA($event)'></app-upload-poa>
+                        <app-upload-photo *ngIf="isStepUpload == 2" (notify)='onNotifyUploadPhoto($event)'></app-upload-photo>
+                        <app-customer-details-edit *ngIf="isStepUpload == 3" (notify)='onNotifyCustDetailEdit($event, stepper)'></app-customer-details-edit> -->
+                    </mat-step>
+                    <mat-step>
+                        <ng-template matStepLabel><b>Confirm Request</b></ng-template>
+                        <!-- <app-authorise-kyc *ngIf="isStepConfirm == 0" (notify)='onNotifyAuthKYC($event)'></app-authorise-kyc>
+                        <app-service-request *ngIf="isStepConfirm == 1"></app-service-request> -->
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </div>
+            <div class="mobile-stepper">
+                <mat-vertical-stepper [linear]="isLinear" #stepper>
+                    <mat-step>
+                        <ng-template matStepLabel><b>Select Service</b></ng-template>
+                        <app-select-services></app-select-services>
+                        <!--<app-step-two (notify)='onNotifyStepTwo($event)' *ngIf="isStepValidate == 2"></app-step-two>
+                        <app-customer-id  *ngIf="isStepValidate == 3" (notify)='onNotifyCustId($event)'></app-customer-id>
+                        <app-customer-search [custId]="custId" *ngIf="isStepValidate == 4" (notify)='onNotifyCustSearch($event)'></app-customer-search>
+                        <app-customer-otp-screen [objCustSearchData]="objCustSearchData" *ngIf="isStepValidate == 5" (notify)='onNotifyOTPVerify($event, stepper)'></app-customer-otp-screen> -->
+                    </mat-step>
+                    <mat-step>
+                            <ng-template matStepLabel><b>Validate Yourself</b></ng-template>
+                            <!--<app-step-two (notify)='onNotifyStepTwo($event)' *ngIf="isStepValidate == 2"></app-step-two>
+                            <app-customer-id  *ngIf="isStepValidate == 3" (notify)='onNotifyCustId($event)'></app-customer-id>
+                            <app-customer-search [custId]="custId" *ngIf="isStepValidate == 4" (notify)='onNotifyCustSearch($event)'></app-customer-search>
+                            <app-customer-otp-screen [objCustSearchData]="objCustSearchData" *ngIf="isStepValidate == 5" (notify)='onNotifyOTPVerify($event, stepper)'></app-customer-otp-screen> -->
+                        </mat-step>
+                    <mat-step>
+                        <ng-template matStepLabel><b>Confirm Details</b></ng-template>
+                        <!-- <app-customer-details-view (notify)='onNotifyCustDetailView($event, stepper)'></app-customer-details-view> -->
+                    </mat-step>
+                    <mat-step>
+                        <ng-template matStepLabel><b>Upload Documents</b></ng-template>
+                        <!-- <app-upload-poi *ngIf="isStepUpload == 0" (notify)='onNotifyUploadPOI($event)'></app-upload-poi>
+                        <app-upload-poa *ngIf="isStepUpload == 1" (notify)='onNotifyUploadPOA($event)'></app-upload-poa>
+                        <app-upload-photo *ngIf="isStepUpload == 2" (notify)='onNotifyUploadPhoto($event)'></app-upload-photo>
+                        <app-customer-details-edit *ngIf="isStepUpload == 3" (notify)='onNotifyCustDetailEdit($event, stepper)'></app-customer-details-edit> -->
+                    </mat-step>
+                    <mat-step>
+                        <ng-template matStepLabel><b>Confirm Request</b></ng-template>
+                        <!-- <app-authorise-kyc *ngIf="isStepConfirm == 0" (notify)='onNotifyAuthKYC($event)'></app-authorise-kyc>
+                        <app-service-request *ngIf="isStepConfirm == 1"></app-service-request> -->
+                    </mat-step>
+                </mat-vertical-stepper>
+            </div>
+        </form>
+    </div>
+</div>

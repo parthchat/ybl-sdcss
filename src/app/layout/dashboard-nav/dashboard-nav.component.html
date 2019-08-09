@@ -1,0 +1,89 @@
+<mat-sidenav-container class="sidenav-container" autosize>
+    <mat-sidenav id="sidebar" [ngClass]="{active: isActive}" class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+        [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
+        <mat-nav-list class="text-right menu-list">
+            <a id="sidebarCollapse" (click)="activeC()">
+                <i class="material-icons menu-icon"></i>
+            </a>
+        </mat-nav-list>
+
+        <mat-nav-list>
+            <a mat-list-item>
+                Service Center
+            </a>
+            <a *ngIf="isBankOldCustomer" mat-list-item (click)="activeSubmenuOne('clickIn')">
+                <mat-icon class="mat-icon">open_in_new</mat-icon>
+                <span class="list-text">
+                    Service Request
+                </span>
+                <span class="submenu-icon" [ngClass]="{submenurotate: isMenuActiveOne}"></span>
+            </a>
+            <div *ngIf="isBankOldCustomer" class="submenu" (click)="activeSubmenuOne('clickOut')" [ngClass]="{submenuactive: isMenuActiveOne}">
+                <mat-nav-list>
+                    <a mat-list-item (click)="getServices(i)" *ngFor="let serviceType of arrServiceTypes; let i = index">
+                        <span class="submenu-icon submenu-arrow"></span>{{ serviceType }}
+                    </a>
+                </mat-nav-list>
+            </div>
+
+            <a *ngIf="isBankNewCustomer" mat-list-item (click)="activeSubmenuOne('clickIn')">
+                <mat-icon class="mat-icon">open_in_new</mat-icon>
+                <span class="list-text">
+                    New Customer
+                </span>
+                <span class="submenu-icon" [ngClass]="{submenurotate: isMenuActiveOne}"></span>
+            </a>
+            <div *ngIf="isBankNewCustomer" class="submenu" (click)="activeSubmenuOne('clickOut')" [ngClass]="{submenuactive: isMenuActiveOne}">
+                <mat-nav-list>
+                    <a mat-list-item *ngFor="let type of arrNewCustomer; let i = index">
+                        <span class="submenu-icon submenu-arrow"></span>{{ type }}
+                    </a>
+                </mat-nav-list>
+            </div>
+        </mat-nav-list>
+    </mat-sidenav>
+    
+    <mat-sidenav-content>
+        <mat-toolbar color="primary" class="sidenav-header" [ngClass]="{active: isActive}">
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
+                <mat-icon aria-label="Side nav toggle icon"></mat-icon>
+            </button>
+            <mat-nav-list class="menu-list menu-list-mobile">
+                <a id="sidebarCollapse" (click)="activeC()" class="material-icons menu-icon"></a>
+            </mat-nav-list>
+            <a class="navbar-brand" title="Yes Bank"></a>
+        </mat-toolbar>
+
+        <!-- Add Content Here -->
+        <div class="container-fluid main-container" (click)="activeSubmenu('clickOut')">
+        <!-- question part -->
+            <div *ngIf="isShowQuestion" class="main-page-container">
+                <div class="row  text-center justify-content-center step-row">
+                    <mat-card class="dashboad-container  col-xl-5 col-lg-5 col-md-6 col-12 mb-3">
+                        <div class="row justify-content-center">
+                            <div class="col form-field">
+                                <label id="radio-group-label">
+                                    Are you an existing YES BANK Customer ?
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col form-field mb-0">
+                                <mat-radio-group aria-labelledby="radio-group-label" class="radio-group" (change)="onNotify($event)">
+                                    <mat-radio-button class="radio-button" color="primary" value="1">
+                                    Yes
+                                    </mat-radio-button>
+                                    <mat-radio-button class="radio-button" color="primary" value="0">
+                                    No
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+                    
+            <ng-content></ng-content>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

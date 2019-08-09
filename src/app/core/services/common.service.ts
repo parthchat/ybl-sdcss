@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable, of as observableOf, Subject, BehaviorSubject, of } from "rxjs";
+import { Observable, of as observableOf, Subject} from "rxjs";
 import { BaseAPIService } from 'src/app/core/services/base-api-service.service';
 import { Constants } from '../../app.constant';
 import { TokenStorage } from './auth/token-storage.service';
-import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
-  private requestParams: Object;
   arr: any;
   routeArray:any = [];
   queryParamsData:any = [];

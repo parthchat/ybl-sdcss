@@ -10,7 +10,6 @@ import { CustomerComponent } from './customer/customer.component';
 import { AcceptRejectComponent } from './accept-reject/accept-reject.component';
 import { EmailverifyComponent } from './emailverify/emailverify.component';
 import { MobileVerifyComponent } from './mobile-verify/mobile-verify.component';
-import { NotFoundComponent } from './core/components/not-found/not-found.component';
 import { MydirectDirective } from './directives/mydirect.directive';
 import { ErrorpageComponent } from './errorpage/errorpage.component';
 import { StepperComponent } from './stepper/stepper.component';
@@ -24,6 +23,9 @@ import { MatSidenavModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxLoadingModule } from 'ngx-loading';
+import { AuthGuard } from './core/guard/auth.guard';
+import { DashboardNavComponent } from './layout/dashboard-nav/dashboard-nav.component';
+import { SelectServicesComponent } from './dashboard/components/services-stepper/select-services/select-services.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,6 @@ import { NgxLoadingModule } from 'ngx-loading';
     AcceptRejectComponent,
     EmailverifyComponent,
     MobileVerifyComponent,
-    NotFoundComponent,
     MydirectDirective,
     ErrorpageComponent,
     StepperComponent,
@@ -54,6 +55,8 @@ import { NgxLoadingModule } from 'ngx-loading';
   ],
   providers: [
     AuthService,
+    AuthGuard,
+    DashboardNavComponent,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: FilterInterceptor,

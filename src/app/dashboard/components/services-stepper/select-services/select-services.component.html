@@ -1,0 +1,10 @@
+<div>
+<div class="dashboad-header">
+  <h3 class="heading dashboard-title">Select Service</h3>
+</div>
+  <div class="page-content">
+    <button mat-raised-button (click)="goToNext(service.id)" class="action-btn" *ngFor="let service of arrServiceList; let i = index">
+      {{ service.name }}
+    </button>
+  </div>
+</div>
