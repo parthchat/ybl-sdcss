@@ -6,7 +6,6 @@ import { NgModule } from '@angular/core';
 import { NewCustomerComponent } from './components/new-customer/new-customer.component';
 import { AuthGuard } from '../core/guard/auth.guard';
 import { ServicesStepperComponent } from './components/services-stepper/services-stepper.component';
-import { SelectServicesComponent } from './components/services-stepper/select-services/select-services.component';
 
 const routes: Routes = [
   {
@@ -19,25 +18,22 @@ const routes: Routes = [
         data: {title: "My Dashboard"},
       },
       {
-        path: 'services-stepper',
+        path: 'services-stepper/financial',
         component: ServicesStepperComponent,
         data: {title: "Services Stepper"},
-        canActivate: [AuthGuard],
-        children : [
-          {
-            path: 'financial',
-            component: SelectServicesComponent
-          },
-          {
-            path: 'non-financial',
-            component: SelectServicesComponent
-          },
-          {
-            path: 'regulatory',
-            component: SelectServicesComponent
-          }
-          
-        ]
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'services-stepper/regulatory',
+        component: ServicesStepperComponent,
+        data: {title: "Services Stepper"},
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'services-stepper/non-financial',
+        component: ServicesStepperComponent,
+        data: {title: "Services Stepper"},
+        canActivate: [AuthGuard]
       },
       {
         path: 'newCust',

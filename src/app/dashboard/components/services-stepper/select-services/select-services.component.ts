@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from 'src/app/dashboard/dashboard.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-select-services',
@@ -47,11 +46,8 @@ export class SelectServicesComponent implements OnInit {
     }
   ];
   arrServiceList: any;
-  // constructor(private router: ActivatedRoute) { }
 
-  constructor( private router: Router, private activatedRoute: ActivatedRoute ) {
-    console.log("test fsfwferw");
-  }
+  constructor( private router: Router) {}
 
   ngOnInit() {
     console.log("this.router.url.toString()", this.router.url.toString(), this.router.url.toString().indexOf("financial"));

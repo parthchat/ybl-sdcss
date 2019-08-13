@@ -7,9 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ServicesStepperComponent implements OnInit {
   isLinear: boolean = false;
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
+    console.log("IN Stepper Component");
   }
 
 }

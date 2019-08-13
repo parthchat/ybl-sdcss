@@ -7,8 +7,6 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { MatDialog } from '@angular/material';
 import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
-import { DashboardService } from 'src/app/dashboard/dashboard.service';
-import { SelectServicesComponent } from 'src/app/dashboard/components/services-stepper/select-services/select-services.component';
 
 @Component({
   selector: 'dashboard-nav',
