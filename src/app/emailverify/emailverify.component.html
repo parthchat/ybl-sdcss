@@ -1,0 +1,12 @@
+<!-- <p  [(ngModel)]="check">{{online | async}}</p> -->
+<div class="d-flex" *ngIf="Showstatus">
+  <h5 class="error-true text-center">Email validated</h5>
+</div>
+<div class="d-flex" *ngIf="emailResult">
+  <h5 class="error text-center">Email Validation Fail</h5>
+</div>
+<div class="d-flex" *ngIf="error=='401'">
+  <h5 class="error text-center">Invalid link. Either the link has already been used or session expired</h5>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
+</ngx-loading>

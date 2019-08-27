@@ -1,0 +1,36 @@
+<div class="form-section align-items-center" *ngIf="!successMsg">
+  <div class="login-page-inner">
+    <div class="row justify-content-md-center">
+      <div class="col-12 text-center logo-image"><img src="assets/images/logo.png"></div>
+      <mat-card class="col-12 form-card">
+        <mat-card-content>
+          <form [formGroup]="otpLoginForm">
+          <div class="form-container">
+            <mat-form-field>
+                <mat-icon matPrefix class="login-icon"></mat-icon>
+                <input matInput (input)="inputValidator($event)" placeholder="Enter OTP here"
+                    pattern="\d*" maxlength="6" formControlName="mobileOTP" type="text" required>
+                <mat-error class="left-space">{{getMobileOTPErrorMessage()}}</mat-error>
+            </mat-form-field>
+          </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+    <p class="copyright-text">
+      Copyright © 2019-2020 YES BANK. All Rights Reserved.
+    </p>
+  </div>
+</div>
+
+
+<!-- Error Message -->
+<div class="d-flex" *ngIf="error=='401'">
+  <h5 class="error text-center">Invalid link. Either the link has already been used or session expired</h5>
+</div>
+<div class="d-flex" *ngIf="successMsg">
+  <h5 class="error-true text-center">Mobile Verified Successfully</h5>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
+</ngx-loading>
