@@ -24,6 +24,8 @@ import { MatSidenavModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxLoadingModule } from 'ngx-loading';
+import { CreditCardComponent } from './stepper/credit-card/credit-card.component';
+import { AadharCardComponent } from './stepper/aadhar-card/aadhar-card.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { NgxLoadingModule } from 'ngx-loading';
     StepperComponent,
     RetailNetBankingComponent,
     DebitCardComponent,
-    OtpLoginComponent
+    OtpLoginComponent,
+    CreditCardComponent,
+    AadharCardComponent
   ],
   imports: [
     BrowserModule,

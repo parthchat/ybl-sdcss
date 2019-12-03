@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonFunctions } from '../core/utils/common-functions';
 import { AuthService } from '../core/services/auth/auth.service';
 import { AlertMessages } from '../app.constant';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-stepper',
@@ -83,29 +82,33 @@ export class StepperComponent implements OnInit {
   }
 
   selected(i:any){
+    console.log("index", i);
     this.index = i;
     this.isShowSubmitBtn = true;
 
-    if(this.index == 0) {
+    if(this.index == 1) {
       this.selectedOption = "Retail Net Banking Login";
     }
-    if(this.index == 1) {
+    if(this.index == 2) {
       this.selectedOption = "Debit Card Login";
     }
-    if(this.index == 2) {
+    if(this.index == 3) {
       this.selectedOption = "OTP Login";
+    }
+    if(this.index == 4) {
+      this.selectedOption = "Credit Card Login";
     }
     
   }
 
   submit() {
-    if(this.index == 0) {
+    if(this.index == 1) {
       this.router.navigate(['rnbLogin']);
     }
-    if(this.index == 1) {
+    if(this.index == 2) {
       this.router.navigate(['dcLogin']);
     }
-    if(this.index == 2) {
+    if(this.index == 3) {
       this.generateOtp();
     }
   }
