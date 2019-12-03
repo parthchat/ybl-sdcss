@@ -3,29 +3,45 @@
         <div *ngIf="arrLoginType" class="heading"><h3>Please select option for login</h3></div>
         <div class="flex">
             <div class="row col-12 container">
-                <div class="col-sm-4 colscard" *ngFor="let type of arrLoginType; let i = index" (click)="selected(i)">
+                <div class="col-sm-4 colscard" *ngFor="let type of arrLoginType;" (click)="selected(type.id)">
                 <div class="" *ngIf="type.id==1">
-                    <mat-card class="cards" [class.cards-bg]="index == 0">
+                    <mat-card class="cards" [class.cards-bg]="index == 1">
                         <mat-icon class="example-tab-icon">computer</mat-icon>
                         <h6 class="text-center">Retail Net Banking</h6>
                     </mat-card>
                 </div>
                 <div class="" *ngIf="type.id==2">
-                    <mat-card class="cards" [class.cards-bg]="index == 1">
+                    <mat-card class="cards" [class.cards-bg]="index == 2">
                         <mat-icon class="example-tab-icon">credit_card</mat-icon>
                         <h6 class="text-center">Debit Card</h6>
                     </mat-card>
                 </div>
                 <div class="" *ngIf="type.id==3">
-                    <mat-card class="cards" [class.cards-bg]="index == 2">
+                    <mat-card class="cards" [class.cards-bg]="index == 3">
                         <mat-icon class="example-tab-icon">textsms</mat-icon>
                         <h6 class="text-center">OTP</h6>
                     </mat-card>
                 </div>
+                <!-- instable -->
+                <!-- <div class="" *ngIf="type.id==4">
+                    <mat-card class="cards" [class.cards-bg]="index == 4">
+                        <mat-icon class="example-tab-icon">credit_card</mat-icon>
+                        <h6 class="text-center">Credit Card</h6>
+                    </mat-card>
+                </div> -->
+
+                <!-- Aadhar -->
+                <!-- <div class="">
+                    <mat-card class="cards" [class.cards-bg]="index == 4">
+                        <mat-icon class="example-tab-icon">perm_identity</mat-icon>
+                        <h6 class="text-center">Aadhar Card</h6>
+                    </mat-card>
+                </div> -->
+                <!--  -->
             </div>
         </div>
         <div *ngIf="isShowSubmitBtn" class="alert-msg">
-            <h5>You are selected login option is {{ selectedOption }}.</h5>
+            <h5 class="select-txt">Proceed with <b class="bolds">{{ selectedOption }}</b> Authorization </h5>
             <!-- <h6 class="hint-msg">Please do not go back, refresh or reload page.</h6> -->
         </div>
         <div *ngIf="isShowSubmitBtn" class="submit-btn">

@@ -85,21 +85,21 @@ export class RetailNetBankingComponent implements OnInit {
                 this.rnbLoginForm.controls.custId.disable();
               }
             } else {
-              //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+              this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
               this.commonFunctions.showErrorPage();
             }
           } else {
-            //this.authService.alertToUser(response['payload']['processResponse']['ErrorMessage']);
+            this.authService.alertToUser(response['payload']['processResponse']['ErrorMessage']);
             this.commonFunctions.showErrorPage();
           }
         } else {
-          //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+          this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
           this.commonFunctions.showErrorPage()
         }
       },
       error => {
         this.loading = false;
-        //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+        this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
         this.commonFunctions.showErrorPage();
         return;
       })
@@ -159,25 +159,25 @@ export class RetailNetBankingComponent implements OnInit {
                 this.tokenStorage.setSrId(response['payload']['processResponse']['ProcessVariables']['srId']);
                 this.router.navigate(['customer']);
               } else {
-                //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+                this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
                 this.commonFunctions.showErrorPage();
               }
             } else {
-              //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+              this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
               this.commonFunctions.showErrorPage();
             }
           } else {
-            //this.authService.alertToUser(response['payload']['processResponse']['ErrorMessage']);
+            this.authService.alertToUser(response['payload']['processResponse']['ErrorMessage']);
             this.commonFunctions.showErrorPage();
           }
         } else {
-          //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+          this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
           this.commonFunctions.showErrorPage();
         }
       },
       error => {
         this.loading = false;
-        //this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+        this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
         this.commonFunctions.showErrorPage();
         return;
       })

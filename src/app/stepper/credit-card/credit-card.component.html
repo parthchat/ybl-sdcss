@@ -1,0 +1,46 @@
+<div class="form-section">
+    <div class="login-page-inner">
+        <div class="row justify-content-md-center">
+            <mat-card class="col-12 form-card">
+                <mat-card-content>
+                    <form [formGroup]="ccLoginForm">
+                        <div class="form-container">
+                            <mat-form-field>
+                                <mat-icon matPrefix>credit_card</mat-icon>
+                                <input matInput placeholder="Enter Credit Card No." maxlength="16"
+                                    minlength="16" formControlName="creditCard_no">
+                                <!-- <mat-error class="left-space">{{getDCLoginErrorMessage()}}</mat-error> -->
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input formControlName="dob" matInput [matDatepicker]="picker"
+                                    placeholder="Date Of Birth" formControlName="dob" [min]="minDate" [max]="maxDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                            <!--  -->
+                            <table class="example-full-width" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Month" maxlength="2" formControlName="expiry_month">
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Year" maxlength="4" formControlName="expiry_year">
+                                        </mat-form-field>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="button-row text-right form-btn">
+                                <button mat-raised-button color="warn" class="auth"
+                                    (click)="auth()" [disabled]="!ccLoginForm.valid">Authenticate</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

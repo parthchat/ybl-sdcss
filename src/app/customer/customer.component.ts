@@ -64,6 +64,10 @@ export class CustomerComponent implements OnInit {
   showStatus = true;
   imgError = 'File upload failed! Retry after sometime'
   apiUniqueKey = '';
+  tiffPdf_back: boolean = false;
+  tiffPdf_front: boolean = false;
+  tiffPdf_dob_BackImg: boolean = false;
+  tiffPdf = false;
   constructor(private baseAPIService: BaseAPIService, private tokenStorage: TokenStorage, private customerService: CustomerService, private sanitizer: DomSanitizer, private router: Router, private service: DataService, private _snackBar: MatSnackBar) { }
 
   ngOnInit() { 
@@ -300,7 +304,14 @@ export class CustomerComponent implements OnInit {
     if (this.sr_type == 1008 && this.dob_pg_count == 2) {
       var img = files[0];
       const fileType = img['type'];
-      const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+      const validImageTypes = ['image/gif', 'image/jpeg', 'image/png','application/pdf','image/tiff'];
+      const tiff_PDF = ['application/pdf','image/tiff'];
+      if(tiff_PDF.includes(fileType)){
+        this.tiffPdf_dob_BackImg = true;
+      }
+      else{
+        this.tiffPdf_dob_BackImg = false;
+      }
       if (!validImageTypes.includes(fileType)) {
         this._snackBar.open('Invalid Image', 'Upload Error', {
           duration: 4000,
@@ -321,7 +332,14 @@ export class CustomerComponent implements OnInit {
   frontImage(files: any) {
     var img = files[0];
     const fileType = img['type'];
-    const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+    const validImageTypes = ['image/gif', 'image/jpeg', 'image/png','application/pdf','image/tiff'];
+    const tiff_PDF = ['application/pdf','image/tiff'];
+    if(tiff_PDF.includes(fileType)){
+      this.tiffPdf_front = true;
+    }
+    else{
+      this.tiffPdf_front = false;
+    }
     if (!validImageTypes.includes(fileType)) {
       this._snackBar.open('Invalid Image', 'Upload Error', {
         duration: 4000,
@@ -341,7 +359,14 @@ export class CustomerComponent implements OnInit {
   backImage(files: any) {
     var img = files[0];
     const fileType = img['type'];
-    const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+    const validImageTypes = ['image/gif', 'image/jpeg', 'image/png','application/pdf','image/tiff'];
+    const tiff_PDF = ['application/pdf','image/tiff'];
+    if(tiff_PDF.includes(fileType)){
+      this.tiffPdf_back = true;
+    }
+    else{
+      this.tiffPdf_back = false;
+    }
     if (!validImageTypes.includes(fileType)) {
       this._snackBar.open('Invalid Image', 'Upload Error', {
         duration: 4000,
@@ -363,7 +388,14 @@ export class CustomerComponent implements OnInit {
       return;
     this.img1 = files[0];
     const fileType = this.img1['type'];
-    const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+    const validImageTypes = ['image/gif', 'image/jpeg', 'image/png','application/pdf','image/tiff'];
+    const tiff_PDF = ['application/pdf','image/tiff'];
+    if(tiff_PDF.includes(fileType)){
+      this.tiffPdf = true;
+    }
+    else{
+      this.tiffPdf = false;
+    }
     if (!validImageTypes.includes(fileType)) {
       this._snackBar.open('Invalid Image', 'Upload Error', {
         duration: 4000,
