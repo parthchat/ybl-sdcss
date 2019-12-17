@@ -1,0 +1,76 @@
+/* .mat-dialog-content {
+  margin: none;
+  padding: none;
+  margin-top: -10px;
+  margin-bottom: 20px;
+} */
+
+.delete-dialog-content {
+    text-align: center;
+    margin-bottom: 21px;
+  }
+  
+  :host /deep/ .mat-dialog-title {
+    color: #d71920;
+    text-transform: uppercase;
+    font-size: 22px;
+    margin-bottom: 10px;
+    font-weight: 400;
+  }
+  
+  .delete-icon {
+    position: relative;
+    top: 5px;
+    color: red;
+  }
+  
+  .question-icon{
+    position: relative;
+    top: 7px;
+  }
+  
+  .delete-btns {
+    background: #0062a8;
+    color: #fff;
+    font-size: 14px;
+    width: 100px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 4px;
+    margin: 0 15px;
+  }
+  
+  .btn-section {
+    margin-bottom: 0px;
+  }
+  .confirm-popup {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 18px;
+    margin-bottom: 18px;
+  }
+  /* .popup-btn-container{
+    margin: 0 -24px;
+  } */
+  .popup-btn-container{
+    /* text-align: right; */
+    margin: 0 -24px;
+    bottom: -24px;
+    text-align: center;
+    /* margin-top: 15px; */
+  }
+  .right-icon {
+    background: url(/../assets/images/right.png) 0 0 no-repeat;
+    /* width: 18px; */
+    height: 18px;
+    display: inline-block;
+    /* margin-right: 7px; */
+  }
+  @media(max-width:767px) and (orientation:portrait){
+    .popup-btn-container.btn-container {
+        margin: 0 10px !important;
+    }
+    ::ng-deep .delete-dialog-box .popup-btn-container.btn-container {
+        margin: 0 -24px !important;
+    }
+  }

@@ -26,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxLoadingModule } from 'ngx-loading';
 import { CreditCardComponent } from './stepper/credit-card/credit-card.component';
 import { AadharCardComponent } from './stepper/aadhar-card/aadhar-card.component';
+import { DialogBoxComponent } from './core/components/dialog-box/dialog-box.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { AadharCardComponent } from './stepper/aadhar-card/aadhar-card.component
     DebitCardComponent,
     OtpLoginComponent,
     CreditCardComponent,
-    AadharCardComponent
+    AadharCardComponent,
+    DialogBoxComponent
   ],
   imports: [
     BrowserModule,
@@ -56,6 +58,7 @@ import { AadharCardComponent } from './stepper/aadhar-card/aadhar-card.component
     ReactiveFormsModule,
     NgxLoadingModule.forRoot({}),
   ],
+  entryComponents: [DialogBoxComponent],
   providers: [
     AuthService,
     {

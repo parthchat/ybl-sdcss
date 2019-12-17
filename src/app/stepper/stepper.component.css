@@ -5,11 +5,12 @@
         background: linear-gradient(to top, #0d5a96, #4e7fae, #80a5c7, #b3ccdf, #eaf3f9);
         color: white; 
         position: relative;  
+        overflow: auto;
     /* } */
 }
 
 .copyright-text {
-    position: absolute;
+    position: static;
     bottom: 0px;
     width: 100%;
     left: 0;

@@ -21,12 +21,18 @@ export class StepperComponent implements OnInit {
   arrLoginType: any;
   index: any;
   isShowSubmitBtn: boolean = false;
+  isCommingSoonMsg: boolean = false;
   selectedOption: string;
   customLoadingTemplate: any;
+  copyrightYear:string = "";
+  
   constructor(private router: Router, private authService: AuthService, private commonFunctions: CommonFunctions, private stepperService: StepperService, private tokenStorage: TokenStorage, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.loading = true;
+    let year = new Date();
+    this.copyrightYear = year.getFullYear()+"-"+(year.getFullYear()+1);
+    console.log("this.copyrightYear", this.copyrightYear);
     this.getSessiondetails();
   }
 
@@ -85,7 +91,7 @@ export class StepperComponent implements OnInit {
     console.log("index", i);
     this.index = i;
     this.isShowSubmitBtn = true;
-
+    this.isCommingSoonMsg = false;
     if(this.index == 1) {
       this.selectedOption = "Retail Net Banking Login";
     }
@@ -96,6 +102,8 @@ export class StepperComponent implements OnInit {
       this.selectedOption = "OTP Login";
     }
     if(this.index == 4) {
+      this.isShowSubmitBtn = false;
+      this.isCommingSoonMsg = true;
       this.selectedOption = "Credit Card Login";
     }
     

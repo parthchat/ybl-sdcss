@@ -81,4 +81,5 @@ export class AlertMessages {
     public static SESSION_EXPIRED = 'Current session expired due to either logged in on different session or session timeout.';
     public static SESSION_LOGOUT = 'Logout Successfully';
     public static MANDATORY_FIELDS_ALERT = 'Please fill all the mandatory fields.';
+    public static NA_BANK_MSG = 'Not available in the Bank records';
 }
