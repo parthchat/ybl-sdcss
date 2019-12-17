@@ -9,6 +9,7 @@ import { TokenStorage } from '../core/services/auth/token-storage.service';
 
 export class DataService {
   accptRejct: any;
+  srId: any;
   constructor(private tokenStorage: TokenStorage, private baseAPIService: BaseAPIService) { }
 
   getAcceptRejectValue(val: any) {

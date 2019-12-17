@@ -6,6 +6,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomerService } from './customer.service';
 import { TokenStorage } from '../core/services/auth/token-storage.service';
 import { BaseAPIService } from '../core/services/base-api-service.service';
+import { AlertMessages } from '../app.constant';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { DialogBoxComponent } from '../core/components/dialog-box/dialog-box.component';
 
 @Component({
   selector: 'app-customer',
@@ -39,7 +42,7 @@ export class CustomerComponent implements OnInit {
   approved: boolean = true;
   reasonId: number;
   Rejectedoptions: any = [];
-  loading = true;
+  loading = false;
   show_DoB_Img = false;
   img1: any;
   img2: any;
@@ -62,19 +65,33 @@ export class CustomerComponent implements OnInit {
   new_mobile_number: any;
   errorTxtmsg ='Invalid link. Either the link has already been used or session expired';
   showStatus = true;
-  imgError = 'File upload failed! Retry after sometime'
+  imgError = 'File upload failed! Retry after sometime';
   apiUniqueKey = '';
   tiffPdf_back: boolean = false;
   tiffPdf_front: boolean = false;
   tiffPdf_dob_BackImg: boolean = false;
   tiffPdf = false;
-  constructor(private baseAPIService: BaseAPIService, private tokenStorage: TokenStorage, private customerService: CustomerService, private sanitizer: DomSanitizer, private router: Router, private service: DataService, private _snackBar: MatSnackBar) { }
+  isDuplicate: boolean = false;
+  duplicateErrMsg: string = "";
+  validUploadMethods: any;
+  mobile: boolean;
+  panMatchPercentage: any;
+  matchLevel: string;
+  constructor(public dialog: MatDialog, private baseAPIService: BaseAPIService, private tokenStorage: TokenStorage, private customerService: CustomerService, private sanitizer: DomSanitizer, private router: Router, private service: DataService, private _snackBar: MatSnackBar) { }
 
   ngOnInit() { 
+    if (window.screen.width <= 768) { // 768px portrait
+      this.mobile = true;
+    } else {
+      this.mobile = false;
+    }
+
+    console.log("mobile", this.mobile);
     if (this.tokenStorage.getAccessToken()) {
       this.apiUniqueKey = new Date().getTime().toString();
-      this.customerService.cust(this.apiUniqueKey).subscribe(
-        res => {
+      this.loading = true;
+      this.customerService.cust(this.apiUniqueKey).subscribe(res => {
+          this.loading = false;
           this.res_ = res;
           if (res['login_required'] == true) {
             this.errorPage();
@@ -92,21 +109,36 @@ export class CustomerComponent implements OnInit {
             this.errorPage();
             return;
           }
+          this.service.srId = res['ProcessVariables']['srId'];
           this.rejectReasonTxt = res['ProcessVariables']['srDetails']['rejectReason'];
           if (this.sr_type == 1008) {
-            this.old_Dob = this.res_['ProcessVariables']['dobUpdate']['oldDob'];
-            this.new_dob = this.res_['ProcessVariables']['dobUpdate']['newDob']
+            console.log("in DOB Sr");
+            this.old_Dob = this.res_['ProcessVariables']['dobUpdate']['oldDob'] ? this.res_['ProcessVariables']['dobUpdate']['oldDob'] : AlertMessages.NA_BANK_MSG;
+            this.new_dob = this.res_['ProcessVariables']['dobUpdate']['newDob'] ? this.res_['ProcessVariables']['dobUpdate']['newDob'] : AlertMessages.NA_BANK_MSG;
           }
           if (this.sr_type == 1006) {
-            this.old_email = this.res_['ProcessVariables']['emailUpdate']['oldEmail'];
-            this.new_email = this.res_['ProcessVariables']['emailUpdate']['newEmail']
+            console.log("in email Sr");
+            this.old_email = this.res_['ProcessVariables']['emailUpdate']['maskedOldEmail'] ? this.res_['ProcessVariables']['emailUpdate']['maskedOldEmail'] : AlertMessages.NA_BANK_MSG;
+            this.new_email = this.res_['ProcessVariables']['emailUpdate']['newEmail'] ? this.res_['ProcessVariables']['emailUpdate']['newEmail'] : AlertMessages.NA_BANK_MSG;
+            if(this.res_['ProcessVariables']['emailUpdate']['oldEmail'] && this.res_['ProcessVariables']['emailUpdate']['newEmail']){
+              console.log("in email");
+              if(this.res_['ProcessVariables']['emailUpdate']['oldEmail'].toLowerCase() == this.res_['ProcessVariables']['emailUpdate']['newEmail'].toLowerCase()) {
+                console.log("in email err true");
+                this.isDuplicate = true;
+                this.duplicateErrMsg = "New Email ID entered is same as Existing Email ID, Kindly enter different Email ID to proceed.";
+              } else {
+                console.log("in email err false");
+                this.isDuplicate = false;
+                this.duplicateErrMsg = "";
+              }
+            }
           }
           if (this.sr_type == 1007) {
-            this.old_mobile_number = this.res_['ProcessVariables']['custDetails']['mobileNumber'];
-            this.new_mobile_number = this.res_['ProcessVariables']['mobileUpdate']['newMobile'];
+            console.log("in Mobile Sr");
+            this.old_mobile_number = this.res_['ProcessVariables']['custDetails']['mobileNumber'] ? this.res_['ProcessVariables']['custDetails']['mobileNumber'] : AlertMessages.NA_BANK_MSG;
+            this.new_mobile_number = this.res_['ProcessVariables']['mobileUpdate']['newMobile'] ? this.res_['ProcessVariables']['mobileUpdate']['newMobile'] : AlertMessages.NA_BANK_MSG;
           }
           this.getDropDownOptions(this.sr_type);
-          this.loading = false;
         },
         error => {
           this._snackBar.open('Server Error', 'Error', {
@@ -134,9 +166,12 @@ export class CustomerComponent implements OnInit {
   }
 
   getDropDownOptions(srtype: any) {
+    this.loading = true;
     this.customerService.getOptions(srtype).subscribe(
       res => {
-        this.newarayy = res['ProcessVariables']['validDocList']
+        this.loading = false;
+        this.newarayy = res['ProcessVariables']['validDocList'];
+        this.validUploadMethods = res['ProcessVariables']['validUploadMethods'];
         for (var i = 0; i < this.newarayy.length; i++) {
           if (!this.newarayy[i].isPrimary) {
             this.docType.push(this.newarayy[i]);
@@ -171,6 +206,7 @@ export class CustomerComponent implements OnInit {
   Onselect(type: any) {
     this.imgURL2 = this.imgURL3 = '';
     this.showImg = true;
+    this.frontImg = this.backImg = '';
     this.otherDocType = type.docType;
     this.pageCount = type.pageCount;
     this.validationOnAccpt();
@@ -185,11 +221,12 @@ export class CustomerComponent implements OnInit {
       this.uploadImg1();
       return;
     }
+    this.loading = true;
     this.customerService.uploadImg(this.img4, this.dob_backimg_Name).subscribe(
       res => {
+        this.loading = false;
         if (res['login_required'] == true) {
           this.errorPage();
-          this.loading = false;
           return;
         }
         this.img_id4 = res['info']['id'];
@@ -211,12 +248,12 @@ export class CustomerComponent implements OnInit {
       this.uploadImg2();
       return;
     }
-
+    this.loading = true;
     this.customerService.uploadImg(this.img1, this.panImgName).subscribe(
       res => {
+        this.loading = false;
         if (res['login_required'] == true) {
           this.errorPage();
-          this.loading = false;
           return;
         }
         this.img_upload_status = res['ok'];
@@ -244,12 +281,12 @@ export class CustomerComponent implements OnInit {
       }
       return;
     }
-
+    this.loading = true;
     this.customerService.uploadImg(this.img2, this.frontImg).subscribe(
       res => {
+        this.loading = false;
         if (res['login_required'] == true) {
           this.errorPage();
-          this.loading = false;
           return;
         }
         this.img_upload_status2 = res['ok'];
@@ -273,11 +310,12 @@ export class CustomerComponent implements OnInit {
       this.fileCount++;
       return;
     }
+    this.loading = true;
     this.customerService.uploadImg(this.img3, this.backImg).subscribe(
       res => {
+        this.loading = false;
         if (res['login_required'] == true) {
           this.errorPage();
-          this.loading = false;
           return;
         }
         this.backImg_status = res['ok'];
@@ -404,6 +442,7 @@ export class CustomerComponent implements OnInit {
     }
     this.panImgName = this.img1['name'];
     var reader = new FileReader();
+    console.log("this.panImgName", this.panImgName);
     reader.readAsDataURL(files[0]);
     reader.onload = (_event) => {
       this.imgURL = reader.result;
@@ -486,8 +525,7 @@ export class CustomerComponent implements OnInit {
       if (doc[i].isPrimary && doc[i].isFront == false && this.sr_type == 1008) {
         this.getDob_primary_BackImg(doc[i]);
         this.enableBtn = true;
-      }
-      else {
+      } else {
         this.otherDocType = doc[i].docType;
         this.showImg = true;
         if (doc[i].isFront && doc[i].isPrimary == false) {
@@ -515,9 +553,50 @@ export class CustomerComponent implements OnInit {
     let cust_details = this.res_['ProcessVariables']['custDetails'];
     let cust_id = cust_details['maskedCustId'];
     let srType = this.res_['ProcessVariables']['srDetails']['srName'];
-    let old_pan_number = this.res_['ProcessVariables']['panUpdate']['oldPan'];
-    let new_pan_number = this.res_['ProcessVariables']['panUpdate']['newPan'];
+    let old_pan_number = this.res_['ProcessVariables']['panUpdate']['oldPan'] ? this.res_['ProcessVariables']['panUpdate']['oldPan'] : AlertMessages.NA_BANK_MSG;
+    let new_pan_number =  this.res_['ProcessVariables']['panUpdate']['newPan'] ? this.res_['ProcessVariables']['panUpdate']['newPan'] : AlertMessages.NA_BANK_MSG;
+    this.panMatchPercentage = parseFloat(this.res_['ProcessVariables']['panUpdate']['matchPer']).toString() ? parseFloat(this.res_['ProcessVariables']['panUpdate']['matchPer']).toString() : parseFloat('0.0');
+    this.matchLevel = this.res_['ProcessVariables']['panUpdate']['matchLevel'];
+
+    this.checkSamePAN();
+    
+    console.log("old pan", this.res_['ProcessVariables']['panUpdate']['oldPan'], "level", this.matchLevel);
     this.responses.push({ 'cust_id': cust_id, 'srType': srType, 'old_pan_number': old_pan_number, 'new_pan_number': new_pan_number });
+  }
+
+  //check name match on pan is same or different in NSDL
+  checkPanMatchLevel() {
+    if(this.matchLevel) {
+      if(this.matchLevel.toLowerCase() == 'low') {
+        console.log("Level is Low");
+        this.callDalog("Dear Customer, name fetched from NSDL is different from what is maintained in the Bank records. Kindly visit the nearest branch with valid identity documents.");
+      } else if(this.matchLevel.toLowerCase() == 'medium'){
+        console.log("Level is medium");
+        this.isDuplicate = false;
+        this.duplicateErrMsg = "";
+      } else if(this.matchLevel.toLowerCase() == 'high') {
+        console.log("Level is High");
+        this.enableBtn = true;
+        this.isDuplicate = true;
+        this.duplicateErrMsg = "";
+      }
+    }
+  }
+
+  // check old PAN & new PAN is same or not
+  checkSamePAN(){
+    if(this.res_['ProcessVariables']['panUpdate']['oldPan'] && this.res_['ProcessVariables']['panUpdate']['newPan']){
+      console.log("in Pan");
+      if(this.res_['ProcessVariables']['panUpdate']['oldPan'].toLowerCase() == this.res_['ProcessVariables']['panUpdate']['newPan'].toLowerCase()) {
+        console.log("in pan err true");
+        this.isDuplicate = true;
+        this.duplicateErrMsg = "New PAN entered is same as Existing PAN, Kindly enter different PAN to proceed.";
+        this.enableBtn = false;
+      } else {
+        console.log("in pan err false");
+        this.checkPanMatchLevel();
+      }
+    }
   }
 
   accept() {
@@ -542,12 +621,13 @@ export class CustomerComponent implements OnInit {
       'sr_type': this.sr_type,
       'apiUniqueKey': this.apiUniqueKey
     }
+    this.loading = true;
     this.customerService.acceptApi(acceptData)
       .subscribe(
         res => {
+          this.loading = false;
           if (res['login_required'] == true) {
             this.errorPage();
-            this.loading = false;
             return;
           }
           if (res['ProcessVariables']['apiUniqueReqId'] != this.apiUniqueKey) {
@@ -556,7 +636,6 @@ export class CustomerComponent implements OnInit {
             });
             return;
           }
-          this.loading = false;
           let Error = res['Error'];
           if (Error == 1) {
             this.errorPage();
@@ -587,7 +666,9 @@ export class CustomerComponent implements OnInit {
   }
 
   reasonOptions() {
+    this.loading = true;
     this.customerService.rejectOptions().subscribe(res => {
+      this.loading = false;
       let Error = res['Error'];
       if (Error == 1) {
         this._snackBar.open('Error in Server', 'Error', {
@@ -615,9 +696,9 @@ export class CustomerComponent implements OnInit {
     this.loading = true;
     this.apiUniqueKey = new Date().getTime().toString();
     this.customerService.reject(this.approved, this.reasonId, this.apiUniqueKey).subscribe(res => {
+      this.loading = false;
       if (res['login_required'] == true) {
         this.errorPage();
-        this.loading = false;
         return;
       }
       this.service.accptRejct = this.approved;
@@ -704,6 +785,25 @@ export class CustomerComponent implements OnInit {
         this.enableBtn = true;
       }
     }
+  }
+
+  callDalog(popupMsg){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.minWidth = '350px';
+    dialogConfig.panelClass = 'delete-dialog';
+    dialogConfig.data = {
+      title: 'Alert',
+      message: popupMsg
+    };
+
+    const dialogRef = this.dialog.open(DialogBoxComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.router.navigate(['/']);
+      }
+    });
   }
 
 }
