@@ -619,8 +619,10 @@ export class CustomerComponent implements OnInit {
       'dob_doc_type': this.dob_doc_type, 
       'dob_backimg_Name': this.dob_backimg_Name, 
       'sr_type': this.sr_type,
-      'apiUniqueKey': this.apiUniqueKey
+      // 'apiUniqueKey': this.apiUniqueKey
     }
+    this.service.getDoc_srtype_details(acceptData);
+    this.router.navigate(['confirm-request']);
     this.loading = true;
     this.customerService.acceptApi(acceptData)
       .subscribe(

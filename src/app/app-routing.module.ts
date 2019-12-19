@@ -11,6 +11,7 @@ import { StepperComponent } from './stepper/stepper.component';
 import { RetailNetBankingComponent } from './stepper/retail-net-banking/retail-net-banking.component';
 import { DebitCardComponent } from './stepper/debit-card/debit-card.component';
 import { OtpLoginComponent } from './stepper/otp-login/otp-login.component';
+import { AuthorizationComponent } from './authorization/authorization.component';
 
 
 const routes: Routes = [
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'emailverify', component: EmailverifyComponent },
   { path: 'error', component: ErrorpageComponent },
   { path: 'mobileverify', component: MobileVerifyComponent },
+  { path: 'confirm-request', component: AuthorizationComponent },
   { path: '**', redirectTo: '404' },
 
   

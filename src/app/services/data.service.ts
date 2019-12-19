@@ -10,10 +10,14 @@ import { TokenStorage } from '../core/services/auth/token-storage.service';
 export class DataService {
   accptRejct: any;
   srId: any;
+  objc_details:any;
   constructor(private tokenStorage: TokenStorage, private baseAPIService: BaseAPIService) { }
 
   getAcceptRejectValue(val: any) {
     this.accptRejct = val;
+  }
+  getDoc_srtype_details(val){
+    this.objc_details = val;
   }
 
   completeSR(apiUniqueReqId: any) {
