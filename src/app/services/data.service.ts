@@ -19,7 +19,7 @@ export class DataService {
   getDoc_srtype_details(val){
     this.objc_details = val;
   }
-
+//  complete Service request
   completeSR(apiUniqueReqId: any) {
     let processVariables = {
       "processId": APIConstants.CompleteSR.PROCESS_ID,
@@ -33,4 +33,20 @@ export class DataService {
     return this.baseAPIService.post(APIConstants.CompleteSR.WORKFLOW_ID, processVariables);
   }
 
+  // Get list of Authorization Options
+  getAuth(apiUniqueReqId: any) {
+    let body = {
+      "processId": APIConstants.Auth_init_otp.PROCESS_ID,
+      "workflowId": APIConstants.Auth_init_otp.WORKFLOW_ID,
+      "projectId": Constants.PROJECT_ID,
+      "ProcessVariables": {
+        "sessionId": this.tokenStorage.getAccessToken(),
+        "apiUniqueReqId": apiUniqueReqId,
+        "authType": "Authorization",
+         "channel": "GN",
+          "srType": 1006,
+      }
+    };
+    return this.baseAPIService.getAuthTokenPost(body);
+  }
 }

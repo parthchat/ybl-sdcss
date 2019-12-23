@@ -2,9 +2,9 @@
     <br>
     <div class="container">
     <mat-toolbar class="text-center tool-auth">Authorization</mat-toolbar><br>
-    <div class="row">
+    <div class="row" *ngIf="active_option==0">
         <div class="col-sm-4 colscard">
-            <mat-card class="cards">
+            <mat-card class="cards" (click)="authorization(1)">
                 <mat-icon class="example-tab-icon">credit_card</mat-icon>
                 <h6 class="text-center">Credit Card</h6>
             </mat-card>
@@ -30,5 +30,8 @@
 
         </div>
     </div>
+    <!--  -->
+    
 </div>
+<app-credit-card *ngIf="active_option==1" class="child"></app-credit-card>
 </div>

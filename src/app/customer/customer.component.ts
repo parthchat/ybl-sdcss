@@ -623,6 +623,7 @@ export class CustomerComponent implements OnInit {
     }
     this.service.getDoc_srtype_details(acceptData);
     this.router.navigate(['confirm-request']);
+    return;
     this.loading = true;
     this.customerService.acceptApi(acceptData)
       .subscribe(

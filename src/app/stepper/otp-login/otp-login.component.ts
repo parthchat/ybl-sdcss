@@ -68,6 +68,7 @@ export class OtpLoginComponent implements OnInit {
               if(response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
                 if(response['payload']['processResponse']['authentication-token']) { // set auth token
                   this.tokenStorage.setAccessToken(response['payload']['processResponse']['authentication-token']);
+                  console.log(response['payload']['processResponse']['authentication-token'],'token')
                   this.tokenStorage.setSrId(response['payload']['processResponse']['ProcessVariables']['srId']);
                   this.router.navigate(['customer']);
                 } else {
