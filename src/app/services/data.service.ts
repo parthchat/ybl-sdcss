@@ -40,13 +40,12 @@ export class DataService {
       "workflowId": APIConstants.Auth_init_otp.WORKFLOW_ID,
       "projectId": Constants.PROJECT_ID,
       "ProcessVariables": {
-        "sessionId": this.tokenStorage.getAccessToken(),
-        "apiUniqueReqId": apiUniqueReqId,
+        "srId": this.tokenStorage.getSrId(),
+        // "apiUniqueReqId": apiUniqueReqId,
         "authType": "Authorization",
-         "channel": "GN",
-          "srType": 1006,
+         "channel": "GN"
       }
     };
-    return this.baseAPIService.getAuthTokenPost(body);
+    return this.baseAPIService.post(APIConstants.Auth_init_otp.WORKFLOW_ID,body);
   }
 }

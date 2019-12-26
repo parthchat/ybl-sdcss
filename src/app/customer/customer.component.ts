@@ -622,6 +622,7 @@ export class CustomerComponent implements OnInit {
       // 'apiUniqueKey': this.apiUniqueKey
     }
     this.service.getDoc_srtype_details(acceptData);
+    this.loading = true;
     this.router.navigate(['confirm-request']);
     return;
     this.loading = true;

@@ -49,7 +49,8 @@ td {
     text-align: center;
     color: #9b9b9b;
     padding: 3em;
-    background-color: cornflowerblue;
+    height: calc(100vh - 64px);
+    background: linear-gradient(to top, #0d5a96, #4e7fae, #80a5c7, #b3ccdf, #eaf3f9);
 }
 
 .password-icon,
