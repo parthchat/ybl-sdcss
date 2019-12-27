@@ -54,9 +54,9 @@ export class RetailNetBankingComponent implements OnInit {
   getCustIdErrorMessage() {
     const formCntrl = this.rnbLoginForm.controls;
     return formCntrl.custId.hasError('required') ? 'This field is required.' :
-        formCntrl.custId.hasError('minlength') ? 'Minimum limit 7 characters.' :
-          formCntrl.custId.hasError('maxlength') ? 'Maximum limit 20 characters.' :
-            '';
+      formCntrl.custId.hasError('minlength') ? 'Minimum limit 7 characters.' :
+        formCntrl.custId.hasError('maxlength') ? 'Maximum limit 20 characters.' :
+          '';
   }
 
   getPasswordErrorMessage() {
@@ -70,65 +70,103 @@ export class RetailNetBankingComponent implements OnInit {
 
   showPassField() {
     this.loading = true;
-    this.apiUniqueKey = new Date().getTime().toString();
-    this.stepperService.auth_reinit(this.apiUniqueKey, 1, this.rnbLoginForm.controls.custId.value).subscribe(
-      response => {
-        this.loading = false;
-        if (response['status']) {
-          if (response['payload']['processResponse']['Error'] == '0' && response['payload']['processResponse']['ErrorCode'] == '200') {
-            if (response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
-              if (response['payload']['processResponse']['ProcessVariables']['iSalt']) {
-                this.salt = response['payload']['processResponse']['ProcessVariables']['iSalt'];
-                this.isShowPasswordField = true;
-                this.isNextButton = false;
-                this.isLoginButton = true;
-                this.rnbLoginForm.controls.custId.disable();
+    if (this.stepperService.detect_auth == 1) {
+      alert('ALered')
+      this.authorization_RNB();
+    } else {
+      this.apiUniqueKey = new Date().getTime().toString();
+      this.stepperService.auth_reinit(this.apiUniqueKey, 1, this.rnbLoginForm.controls.custId.value).subscribe(
+        response => {
+          this.loading = false;
+          if (response['status']) {
+            if (response['payload']['processResponse']['Error'] == '0' && response['payload']['processResponse']['ErrorCode'] == '200') {
+              if (response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
+                if (response['payload']['processResponse']['ProcessVariables']['iSalt']) {
+                  this.salt = response['payload']['processResponse']['ProcessVariables']['iSalt'];
+                  this.isShowPasswordField = true;
+                  this.isNextButton = false;
+                  this.isLoginButton = true;
+                  this.rnbLoginForm.controls.custId.disable();
+                }
+              } else {
+                this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+                this.commonFunctions.showErrorPage();
               }
             } else {
-              this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+              this.authService.alertToUser(response['payload']['processResponse']['ErrorMessage']);
               this.commonFunctions.showErrorPage();
             }
           } else {
-            this.authService.alertToUser(response['payload']['processResponse']['ErrorMessage']);
-            this.commonFunctions.showErrorPage();
+            this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+            this.commonFunctions.showErrorPage()
           }
-        } else {
+
+        },
+        error => {
+          this.loading = false;
           this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
-          this.commonFunctions.showErrorPage()
-        }
-      },
-      error => {
-        this.loading = false;
-        this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
-        this.commonFunctions.showErrorPage();
-        return;
-      })
+          this.commonFunctions.showErrorPage();
+          return;
+        })
+    }
   }
 
-  addPrefix(val){
-   console.log("len",val.length)
-   if(val.length == 1){
-     this.rnbLoginForm.controls.custId.setValue('000000'+val);
-   }
-   if(val.length==2){
-    this.rnbLoginForm.controls.custId.setValue('00000'+val);
-   }
-   if(val.length==3){
-    this.rnbLoginForm.controls.custId.setValue('0000'+val);
-   }
-   if(val.length==4){
-    this.rnbLoginForm.controls.custId.setValue('000'+val);
-   } 
-   if(val.length==5){
-    this.rnbLoginForm.controls.custId.setValue('00'+val);
-   }
-   if(val.length==6){
-    this.rnbLoginForm.controls.custId.setValue('0'+val);
-   }
-   if(val.length > 6){
-    this.rnbLoginForm.controls.custId.setValue(val);
-   }
+  authorization_RNB() {
+    let apiUniqueKey = new Date().getTime().toString();
+    if (this.stepperService.otpAuthRefId) {
+      this.stepperService.auth_reinit2(this.apiUniqueKey, 1, this.rnbLoginForm.controls.custId.value).subscribe(
+        response => {
+          this.loading = false;
+          if (response['status']) {
+            if (response['Error'] == '0' && response['ErrorCode'] == '200') {
+              if (response['ProcessVariables']['apiUniqueReqId'] == apiUniqueKey) {
+                this.router.navigate(['result']);
+              } else {
+                this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+                this.commonFunctions.showErrorPage();
+              }
+            } else {
+              this.authService.alertToUser(response['ErrorMessage']);
+              this.commonFunctions.showErrorPage();
+            }
+          } else {
+            this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+            this.commonFunctions.showErrorPage();
+          }
+        },
+        error => {
+          this.loading = false;
+          this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+          this.commonFunctions.showErrorPage();
+          return;
+        })
+    }
   }
+
+    addPrefix(val){
+      console.log("len", val.length)
+      if (val.length == 1) {
+        this.rnbLoginForm.controls.custId.setValue('000000' + val);
+      }
+      if (val.length == 2) {
+        this.rnbLoginForm.controls.custId.setValue('00000' + val);
+      }
+      if (val.length == 3) {
+        this.rnbLoginForm.controls.custId.setValue('0000' + val);
+      }
+      if (val.length == 4) {
+        this.rnbLoginForm.controls.custId.setValue('000' + val);
+      }
+      if (val.length == 5) {
+        this.rnbLoginForm.controls.custId.setValue('00' + val);
+      }
+      if (val.length == 6) {
+        this.rnbLoginForm.controls.custId.setValue('0' + val);
+      }
+      if (val.length > 6) {
+        this.rnbLoginForm.controls.custId.setValue(val);
+      }
+    }
 
   public inputValidator(event: any) {
     const pattern = /^[0-9]*$/;
@@ -137,7 +175,7 @@ export class RetailNetBankingComponent implements OnInit {
       // invalid character, prevent input
     } else {
       let val = event.target.value.replace(/^0+/, '');
-     // console.log("val", val, event.target.value);
+      // console.log("val", val, event.target.value);
       this.addPrefix(val);
     }
   }

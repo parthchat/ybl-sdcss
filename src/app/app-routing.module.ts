@@ -27,7 +27,7 @@ const routes: Routes = [
   { path: 'credit_card', component: CreditCardComponent,canActivate: [AuthGuard]},
   { path: 'customer', component: CustomerComponent,canActivate: [AuthGuard] },
   { path: '404', component: NotFoundComponent },
-  { path: 'result', component: AcceptRejectComponent,canActivate: [AuthGuard] },
+  { path: 'result', component: AcceptRejectComponent },
   { path: 'emailverify', component: EmailverifyComponent },
   { path: 'error', component: ErrorpageComponent },
   { path: 'mobileverify', component: MobileVerifyComponent,canActivate: [AuthGuard] },

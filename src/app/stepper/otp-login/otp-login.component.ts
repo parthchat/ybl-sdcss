@@ -58,6 +58,12 @@ export class OtpLoginComponent implements OnInit {
 
   otpLogin() {
     this.loading = true;
+    // If user in Authorization Page  i.e when user uploads pic and submits
+    if(this.stepperService.detect_auth==1){
+      this.otpLogin_for_authorization()
+    }
+    // If user in Authentication Page i.e when user in links on link
+    else{
     this.apiUniqueKey = new Date().getTime().toString();
     if(this.stepperService.otpAuthRefId){
       this.stepperService.verifyDetails(3, '', '', '', '', this.stepperService.otpAuthRefId, this.otpLoginForm.controls.mobileOTP.value, this.apiUniqueKey).subscribe(
@@ -99,4 +105,37 @@ export class OtpLoginComponent implements OnInit {
       this.commonFunctions.showErrorPage();
     }
   }
+}
+
+// For Authorization OTP Options  
+otpLogin_for_authorization(){
+    let apiUniqueKey = new Date().getTime().toString();
+    if(this.stepperService.otpAuthRefId){
+      this.stepperService.OtpAuthorization(3, '', '', '', '', this.stepperService.otpAuthRefId, this.otpLoginForm.controls.mobileOTP.value,apiUniqueKey).subscribe(
+        response => {
+          this.loading = false;
+            if(response['Error'] == '0' && response['ErrorCode'] == '200'){
+              if(response['ProcessVariables']['apiUniqueReqId'] == apiUniqueKey) {
+                this.router.navigate(['result']);
+              } else {
+                this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+                this.commonFunctions.showErrorPage();
+              }
+            } else {
+              this.authService.alertToUser(response['ErrorMessage']);
+              this.commonFunctions.showErrorPage();
+            }  
+      }, 
+      error => {
+        this.loading = false;
+        this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+        this.commonFunctions.showErrorPage();
+        return;
+      })
+    } else {
+      this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+      this.commonFunctions.showErrorPage();
+    }
+  
+}
 }
