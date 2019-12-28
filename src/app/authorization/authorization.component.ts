@@ -97,7 +97,7 @@ export class AuthorizationComponent implements OnInit {
               this.commonFunctions.showErrorPage();
             }
           } else {
-            this.authService.alertToUser(response['payload']['processResponse']['ErrorMessage']);
+            this.authService.alertToUser(response['ErrorMessage']);
             this.commonFunctions.showErrorPage();
           }
         

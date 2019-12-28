@@ -76,7 +76,7 @@ export class StepperService {
     return this.baseAPIService.validateAuthPost(body);
   }
 
-  // OTP Authorization
+  // OTP Authorization & also for RnB
   OtpAuthorization(loginType, iUserId, iPass, debitCardNo, debitPIN, refid: any, otp: any, apiUniqueReqId: any) {
     let body = {
       "projectId": Constants.PROJECT_ID,
