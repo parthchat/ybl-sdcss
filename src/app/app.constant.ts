@@ -48,6 +48,15 @@ export module APIConstants {
         WORKFLOW_ID = '9736f64a90ca11e9bc050221a44a8414',
         PROCESS_ID = 'ae78876a90ca11e9bc050221a44a8414',
     }
+    export enum validate_logins {
+        PROCESS_ID = 'aa58b77089d811e9b12c2eca4ea5bb5f',
+        WORKFLOW_ID = '90dc3ec288f511e9b12c2eca4ea5bb5f'
+    }
+    // taken from ccsp
+    export enum re_init {
+        PROCESS_ID = 'e2fc2278ad3311e9b432da7aa4ddfb2b',
+        WORKFLOW_ID = '90dc3ec288f511e9b12c2eca4ea5bb5f'
+    }
 
     export enum Auth_init_email {
         PROCESS_ID = '0e8b77d8999b11e9abea8e9e63ab42a5',

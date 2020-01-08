@@ -51,6 +51,7 @@ export class DataService {
 
     // Capture Customer Approval API
     acceptApi(data: any) {
+      let apiUniqueKey = new Date().getTime().toString();
       let processVariables = {
         "projectId": Constants.PROJECT_ID,
         "workflowId": APIConstants.Accept.WORKFLOW_ID,
@@ -59,7 +60,7 @@ export class DataService {
           "srId": this.tokenStorage.getSrId(),
           "isApproved": data.approved,
           "documents": [],
-          "apiUniqueReqId": data.apiUniqueKey
+          "apiUniqueReqId": apiUniqueKey
         }
       }
       // DOB primary backImg

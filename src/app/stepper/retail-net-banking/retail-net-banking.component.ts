@@ -265,7 +265,7 @@ export class RetailNetBankingComponent implements OnInit {
       .subscribe(
         res => {
           this.loading = false;
-          if (res['ProcessVariables']['response'][0]['statusCode'] == 200) {
+          if (res['ErrorCode'] == 200) {
             this.tokenStorage.clear();
             this.router.navigate(['result']);
             return;
