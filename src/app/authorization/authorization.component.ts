@@ -16,6 +16,7 @@ export class AuthorizationComponent implements OnInit {
   authroization_options = [];
   loading: boolean;
   index: any;
+  customLoadingTemplate: any;
   selected_authorization_name: any;
   constructor(private stepperService: StepperService,private authService: AuthService, private router: Router, private service: DataService, private commonFunctions: CommonFunctions) { }
 
