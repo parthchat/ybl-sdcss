@@ -132,13 +132,13 @@
         <!-- front Image -->
         <div *ngIf="!mobile">
           <label for="upload-1" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Browse and Upload Front Side </label>
-          <input type="file" name="pic" id="upload-1" accept="image/x-png,image/jpeg,application/pdf,image/tiff" (change)="frontImage($event.target.files)">
+          <input type="file" name="pic" id="upload-1" accept=".pdf, .png, .jpeg, .jpg, .jpe, .jfif, .gif, .bmp" (change)="frontImage($event.target.files)">
         </div>
 
         <div class="row" *ngIf="mobile">
           <div class="col-sm-5">
             <label for="upload-2" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Browse and Upload Front Side </label>
-            <input type="file" name="pic" id="upload-2" accept="image/x-png,image/jpeg,application/pdf,image/tiff" (change)="frontImage($event.target.files)">
+            <input type="file" name="pic" id="upload-2" accept=".pdf, .png, .jpeg, .jpg, .jpe, .jfif, .gif, .bmp" (change)="frontImage($event.target.files)">
           </div>
           <div class="col-sm-2">
             <h6 class="font-size"> OR </h6> 
@@ -149,15 +149,30 @@
           </div>
         </div>
         <!-- Show thumbnail img -- FRONT -->
-        <img class="images" [src]="imgURL2" height="400" width="400" *ngIf="imgURL2 && !tiffPdf_front">
-        <h5 class="pdfTiff" *ngIf="frontImg || tiffPdf_front">{{frontImg}}</h5>
+        <!-- <img class="images" [src]="imgURL2" height="400" width="400" *ngIf="imgURL2 && !tiffPdf_front"> -->
+        <img class="images" [src]="imgURL2" (load)="onImageLoaded($event, 1)" height="400" width="400" (error)="onError($event, 1)" *ngIf="imgURL2 && !pdf1">
+        <div *ngIf="pdf1 && frontImg" class="thumbnail" (click)="openPdf(pdfUrl_Front)">
+        <pdf-viewer
+          [src]="pdfUrl_Front"
+          [page]="page"
+          [original-size]="false"
+          style="display: block;"
+          (error)="onError($event, 1)"
+          ></pdf-viewer>
+      </div>
+      <h5 class="pdfTiff" *ngIf="frontImg || tiffPdf_front">{{frontImg}}</h5>
+        <div class="div-progress" *ngIf="frontImg_ProgressBar">
+          <div class="container progress">
+            <div class="progress-bar progress-bar-striped" [ngStyle]="{'width':progressPer+'%'}">{{progressPer}}%</div>
+          </div>
+        </div>
         <!-- front Image -->
 
         <!-- Back Image -->
         <div class="" *ngIf="pageCount==2">
           <div *ngIf="!mobile">
             <label for="upload-4" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Browse and Upload Back Side </label>
-            <input type="file" name="pic" id="upload-4" accept="image/x-png,image/jpeg,application/pdf,image/tiff" (change)="backImage($event.target.files)">
+            <input type="file" name="pic" id="upload-4" accept=".pdf, .png, .jpeg, .jpg, .jpe, .jfif, .gif, .bmp" (change)="backImage($event.target.files)">
           </div>
 
           <div class="row" *ngIf="mobile">
@@ -174,8 +189,23 @@
             </div>
           </div>
           <!-- Show thumbnail img -- BACK -->
-          <img class="images" [src]="imgURL3" height="400" width="400" *ngIf="imgURL3 && !tiffPdf_back">
+          <!-- <img class="images" [src]="imgURL3" height="400" width="400" *ngIf="imgURL3 && !tiffPdf_back"> -->
+          <img class="images" [src]="imgURL3" height="400" width="400" (load)="onImageLoaded($event, 2)" (error)="onError($event, 2)" *ngIf="imgURL3 && !pdf2">
+          <div *ngIf="pdf2 && backImg" class="thumbnail" (click)="openPdf(pdfUrl_Back)">
+            <pdf-viewer
+              [src]="pdfUrl_Back"
+              [page]="page"
+              [original-size]="false"
+              style="display: block;"
+              (error)="onError($event, 2)"
+              ></pdf-viewer>
+              </div>
           <h5 class="pdfTiff" *ngIf="backImg || tiffPdf_back">{{backImg}}</h5>
+          <div class="div-progress" *ngIf="backImg_progressBar">
+            <div class="container progress">
+              <div class="progress-bar progress-bar-striped" [ngStyle]="{'width':progressPer+'%'}">{{progressPer}}%</div>
+            </div>
+          </div>
         </div>
         <!-- Back Image -->
       </div>

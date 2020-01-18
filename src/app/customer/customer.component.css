@@ -20,6 +20,21 @@
     margin-right: 5px;
     margin-left: 5px;    
 }
+.progress-bar{
+    margin: 0px 50px;
+}
+.div-progress {
+    padding: 5% 15%;
+}
+
+.thumbnail {
+    width: 100px;
+    height: 150px;
+    margin: auto;
+    border: 1px solid grey;
+    cursor: pointer;
+    overflow: auto;
+}
 
 .height{
     height: calc(100vh - 200px);

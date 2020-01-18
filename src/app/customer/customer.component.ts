@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer,SafeResourceUrl } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomerService } from './customer.service';
 import { TokenStorage } from '../core/services/auth/token-storage.service';
@@ -9,6 +9,8 @@ import { BaseAPIService } from '../core/services/base-api-service.service';
 import { AlertMessages } from '../app.constant';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { DialogBoxComponent } from '../core/components/dialog-box/dialog-box.component';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-customer',
@@ -80,6 +82,19 @@ export class CustomerComponent implements OnInit {
   Optional_is_optional = true;
   authorization: any;
   needDocs: any;
+  progressPer: number;
+  img1_progressBar: boolean = false;
+  frontImg_ProgressBar: boolean = false;
+  backImg_progressBar: boolean = false;
+  page:number = 1;
+
+  pdfUrlDefault: SafeResourceUrl;
+  pdfUrl_Front: SafeResourceUrl;
+  pdfUrl_Back: SafeResourceUrl;
+  mySubscription: Subscription;
+  pdf1: boolean = false;
+  pdf2: any = false ;
+  front_file: any;
   constructor(public dialog: MatDialog, private baseAPIService: BaseAPIService, private tokenStorage: TokenStorage, private customerService: CustomerService, private sanitizer: DomSanitizer, private router: Router, private service: DataService, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
@@ -114,7 +129,7 @@ export class CustomerComponent implements OnInit {
         }
         this.authorization = res['ProcessVariables']['isAuthorizationRequired'];
         this.needDocs = res['ProcessVariables']['needDocs'];
-        console.log(this.authorization,this.needDocs,'additional options')
+        console.log(this.authorization, this.needDocs, 'additional options')
         this.service.srId = res['ProcessVariables']['srId'];
         this.rejectReasonTxt = res['ProcessVariables']['srDetails']['rejectReason'];
         if (this.sr_type == 1008) {
@@ -169,6 +184,57 @@ export class CustomerComponent implements OnInit {
   errorPage() {
     this.router.navigate(['error']);
     this.tokenStorage.clear();
+  }
+
+  onError(e, type){
+    
+      if(type==1){
+        this.frontImg = '';
+        this.imgURL2 = ''
+      }
+      else if(type==2){
+        this.backImg = '';
+        this.imgURL3 = ''
+      }
+      if(e) {
+        alert('got')
+        console.log("Error",e);
+        this._snackBar.open('Invalid File.', 'Upload Error', {
+          duration: 4000,
+        });
+      }
+      this.validationOnAccpt()
+  }
+
+  createThumbnail(docID, type) {
+    if(docID != "null"){
+      this.loading = true
+      this.mySubscription = this.baseAPIService.getImage(docID).subscribe(res => {
+        this.loading = false
+        let unsafeImageUrl = URL.createObjectURL(res);
+        let currentImgUrl: any = this.sanitizer.bypassSecurityTrustUrl(
+          unsafeImageUrl
+        );
+        if(type == 1) {
+          this.pdfUrl_Front = currentImgUrl['changingThisBreaksApplicationSecurity'];
+         // console.log("currentImgUrlShow", this.pdfUrl_Front);
+        }
+        if(type == 2) {
+          this.pdfUrl_Back = currentImgUrl['changingThisBreaksApplicationSecurity'];
+          //console.log("currentImgUrlShow", this.pdfUrl_Back);
+        }
+        // if(type == 3) {
+        //   this.pdfUrl_Back = currentImgUrl['changingThisBreaksApplicationSecurity'];
+        //  // console.log("currentImgUrlShow", this.pdfUrl_Back);
+        // }
+        
+      });
+    } else {
+      this._snackBar.open('Faild to file upload.', 'Upload Error', {
+        duration: 4000,
+      });
+      //this.isDisableBtn = true;
+    }
   }
 
   getDropDownOptions(srtype: any) {
@@ -227,6 +293,8 @@ export class CustomerComponent implements OnInit {
     alert("Umm... this is not supposed to happen!");
   }
 
+ 
+
   dob_Primary_backImg() {
     if (!this.dob_backimg_Name || !this.img4 || this.dob_pg_count !== 2) {
       this.uploadImg1();
@@ -260,24 +328,64 @@ export class CustomerComponent implements OnInit {
       return;
     }
     this.loading = true;
+    console.log('Caught')
     this.customerService.uploadImg(this.img1, this.panImgName).subscribe(
-      res => {
-        this.loading = false;
-        if (res['login_required'] == true) {
-          this.errorPage();
-          return;
+      (event: HttpEvent<any>) => { 
+        console.log('My progress2')                 // new code check response progresss to show progress bar
+        this.img1_progressBar = true;
+        console.log("uploadToServer_Back", event);
+        switch (event.type) {
+          case HttpEventType.Sent:
+            console.log('Request has been made!');
+            break;
+          case HttpEventType.ResponseHeader:
+            console.log('Response header has been received!');
+            break;
+          case HttpEventType.UploadProgress:
+            this.progressPer = Math.round(event.loaded / event.total * 100);
+            console.log(`Uploaded! ${this.progressPer}%`);
+            break;
+          case HttpEventType.Response:
+            let res = event.body;
+            console.log('file upload successfully !!!', event.body);
+          setTimeout(() => {
+            this.loading = false
+            this.progressPer = 0;
+            this.img1_progressBar = false;
+          }, 100);
+          // console.log("uploadToServer_Back", res);
+          // this.img_id2 = res['info']['id'];
+          // this.frontImg = res['info']['filename'];
+          //this.isDisableBtn = false;
+          if (this.pdf2) {
+            this.createThumbnail(res['info']['id'], 2);
+          }
         }
-        this.img_upload_status = res['ok'];
-        this.img_id = res['info']['id'];
-        this.panImgName = res['info']['filename'];
-        this.uploadImg2();
-      }, error => {
+      },
+      error => {
         this.loading = false;
         this._snackBar.open(this.imgError, 'Image Error', {
           duration: 4000,
         });
         return;
       }
+      // res => {
+      //   this.loading = false;
+      //   if (res['login_required'] == true) {
+      //     this.errorPage();
+      //     return;
+      //   }
+      //   this.img_upload_status = res['ok'];
+      //   this.img_id = res['info']['id'];
+      //   this.panImgName = res['info']['filename'];
+      //   this.uploadImg2();
+      // }, error => {
+      //   this.loading = false;
+      //   this._snackBar.open(this.imgError, 'Image Error', {
+      //     duration: 4000,
+      //   });
+      //   return;
+      // }
     );
   }
 
@@ -294,23 +402,71 @@ export class CustomerComponent implements OnInit {
     }
     this.loading = true;
     this.customerService.uploadImg(this.img2, this.frontImg).subscribe(
-      res => {
-        this.loading = false;
-        if (res['login_required'] == true) {
-          this.errorPage();
-          return;
+      (event: HttpEvent<any>) => {   
+        console.log('My progress1')               // new code check response progresss to show progress bar
+        this.frontImg_ProgressBar = true;
+        console.log("uploadToServer_Back", event);
+        switch (event.type) {
+          case HttpEventType.Sent:
+            console.log('Request has been made!');
+            break;
+          case HttpEventType.ResponseHeader:
+            console.log('Response header has been received!');
+            break;
+          case HttpEventType.UploadProgress:
+            this.progressPer = Math.round(event.loaded / event.total * 100);
+            console.log(`Uploaded! ${this.progressPer}%`);
+            break;
+          case HttpEventType.Response:
+            let res = event.body;
+            console.log('file upload successfully !!!', event.body);
+            setTimeout(() => {
+              this.loading = false;
+              this.progressPer = 0;
+              this.frontImg_ProgressBar = false;
+            }, 100);
+            if (res['login_required'] == true) {
+              this.errorPage();
+              return;
+            }
+            this.img_upload_status2 = res['ok'];
+            this.img_id2 = res['info']['id'];
+            this.frontImg = res['info']['filename'];
+            this.uploadImg3()
+          // 
+          // console.log("uploadToServer_Back", res);
+          // this.id_identify_back_img = res['info']['id'];
+          // this.identify_backImage = res['info']['filename'];
+          // this.isDisableBtn = false;
+          // if (this.isPdf_2) {
+          //   this.createThumbnail(res['info']['id'], 3);
+          // }
         }
-        this.img_upload_status2 = res['ok'];
-        this.img_id2 = res['info']['id'];
-        this.frontImg = res['info']['filename'];
-        this.uploadImg3()
-      }, error => {
+      },
+      error => {
         this.loading = false;
         this._snackBar.open(this.imgError, 'Image Error', {
           duration: 4000,
         });
         return;
       }
+      // res => {
+      //   this.loading = false;
+      //   if (res['login_required'] == true) {
+      //     this.errorPage();
+      //     return;
+      //   }
+      //   this.img_upload_status2 = res['ok'];
+      //   this.img_id2 = res['info']['id'];
+      //   this.frontImg = res['info']['filename'];
+      //   this.uploadImg3()
+      // }, error => {
+      //   this.loading = false;
+      //   this._snackBar.open(this.imgError, 'Image Error', {
+      //     duration: 4000,
+      //   });
+      //   return;
+      // }
     )
   }
 
@@ -323,24 +479,262 @@ export class CustomerComponent implements OnInit {
     }
     this.loading = true;
     this.customerService.uploadImg(this.img3, this.backImg).subscribe(
-      res => {
-        this.loading = false;
-        if (res['login_required'] == true) {
-          this.errorPage();
-          return;
+      (event: HttpEvent<any>) => {   
+        console.log('My progress')               // new code check response progresss to show progress bar
+        this.backImg_progressBar = true;
+        console.log("uploadToServer_Back", event);
+        switch (event.type) {
+          case HttpEventType.Sent:
+            console.log('Request has been made!');
+            break;
+          case HttpEventType.ResponseHeader:
+            console.log('Response header has been received!');
+            break;
+          case HttpEventType.UploadProgress:
+            this.progressPer = Math.round(event.loaded / event.total * 100);
+            console.log(`Uploaded! ${this.progressPer}%`);
+            break;
+          case HttpEventType.Response:
+            let res = event.body;
+            console.log('file upload successfully !!!', event.body);
+            setTimeout(() => {
+              this.loading = false
+              this.progressPer = 0;
+              this.backImg_progressBar = false;
+            }, 100);
+            this.loading = false;
+            if (res['login_required'] == true) {
+              this.errorPage();
+              return;
+            }
+            this.backImg_status = res['ok'];
+            this.img_id3 = res['info']['id'];
+            this.backImg = res['info']['filename'];
+            this.accept();
+          // 
+          // console.log("uploadToServer_Back", res);
+          // this.id_identify_back_img = res['info']['id'];
+          // this.identify_backImage = res['info']['filename'];
+          // this.isDisableBtn = false;
+          // if (this.isPdf_2) {
+          //   this.createThumbnail(res['info']['id'], 3);
+          // }
         }
-        this.backImg_status = res['ok'];
-        this.img_id3 = res['info']['id'];
-        this.backImg = res['info']['filename'];
-        this.accept();
-      }, error => {
+      },
+      error => {
         this.loading = false;
         this._snackBar.open(this.imgError, 'Image Error', {
           duration: 4000,
         });
         return;
       }
+      // res => {
+      //   this.loading = false;
+      //   if (res['login_required'] == true) {
+      //     this.errorPage();
+      //     return;
+      //   }
+      //   this.backImg_status = res['ok'];
+      //   this.img_id3 = res['info']['id'];
+      //   this.backImg = res['info']['filename'];
+      //   this.accept();
+      // }, error => {
+      //   this.loading = false;
+      //   this._snackBar.open(this.imgError, 'Image Error', {
+      //     duration: 4000,
+      //   });
+      //   return;
+      // }
     )
+  }
+
+  // check invalid img format and throw error msg
+  inValidImg(files){
+   // console.log(files)
+    let temp = files.name.toString().split(".");
+    var extension = temp[temp.length - 1].toLowerCase();
+    console.log(extension);
+    if (extension != "pdf" && extension != "jpg" && extension != "jpeg" && extension != "gif" && extension != "png" && extension != "jpe" && extension != "bmp" && extension != "jfif") {
+      this._snackBar.open('Upload only .png, .jpeg, .jpg, .jpe, .jfif, .gif, .bmp or .pdf', 'Upload Error', {
+        duration: 4000,
+      });
+      return;
+  }
+}
+
+openPdf(url) {
+  console.log("Opening", url);
+  window.open(url);
+}
+
+onImageLoaded(e, type) {
+  console.log("on load", e);
+  if(e['type'] == 'load') {
+    if(type == 1) {
+      this.uploadToServer_Default();
+    }
+    if(type == 2) {
+      this.uploadToServer_back();
+    }
+    if(type == 3) {
+      //this.uploadToServer_Back();
+    }
+  }
+}
+
+
+// for Front Image 
+uploadToServer_Default() {
+  console.log(this.front_file,'uploadserver');
+  this.loading = false
+  this.mySubscription = this.customerService.uploadImg(this.front_file[0], this.front_file[0].name).subscribe(
+    (event: HttpEvent<any>) => {                  // new code check response progresss to show progress bar
+     // this.isDefault = true;
+      console.log("uploadToServer", event);
+      switch (event.type) {
+        case HttpEventType.Sent:
+          console.log('Request has been made!');
+          break;
+        case HttpEventType.ResponseHeader:
+          console.log('Response header has been received!');
+          break;
+        case HttpEventType.UploadProgress:
+          this.progressPer = Math.round(event.loaded / event.total * 100);
+          console.log(`Uploaded! ${this.progressPer}%`);
+          break;
+        case HttpEventType.Response:
+          let res = event.body;
+          console.log('file upload successfully !!!', event.body);
+          setTimeout(() => {
+            this.loading = false
+            this.progressPer = 0;
+            //this.isDefault = false;
+          }, 100);
+          console.log("uploadToServer", res);
+          this.img_id2 = res['info']['id'];
+          this.frontImg = res['info']['filename'];
+          if(this.pdf1){
+            console.log(res['info']['id'], 1,'docID')
+            this.createThumbnail(res['info']['id'], 1);
+            
+          }
+         //this.isDisableBtn = false;
+      }
+    },
+    error => {
+        this.loading = false
+        console.log('error', error);
+        this.progressPer = 0;
+       // this.isDefault = false;
+       this.img_id2 = '';
+       this.frontImg = '';
+        this.pdf1 = false;
+        this._snackBar.open(AlertMessages.SOMETHING_WRONG, 'Error', {
+          duration: 4000,
+        });
+        return;
+      }
+    );
+  
+
+    // Old Code 
+  
+    //   res => {
+  //     this.spinner.hide();
+  //     console.log("uploadToServer_Default", res);
+  //     this.id_primary_front_img = res['info']['id'];
+  //     this.front_primary_name = res['info']['filename'];
+  //     if(this.isPdf){
+  //       this.createThumbnail(res['info']['id'], 1);
+  //     }
+  //     this.isDisableBtn = false;
+  //   }, error => {
+  //     this.spinner.hide();
+  //     this.img_name = '';
+  //     this.firstImage = '';
+  //     this.isPdf = false;
+  //     this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+  //     return;
+  //   }
+  // )
+}
+
+uploadToServer_back() {
+  console.log(this.back_file,'uploadserver');
+  this.loading = false
+  this.mySubscription = this.customerService.uploadImg(this.back_file[0], this.back_file[0].name).subscribe(
+    (event: HttpEvent<any>) => {                  // new code check response progresss to show progress bar
+     // this.isDefault = true;
+      console.log("uploadToServer", event);
+      switch (event.type) {
+        case HttpEventType.Sent:
+          console.log('Request has been made!');
+          break;
+        case HttpEventType.ResponseHeader:
+          console.log('Response header has been received!');
+          break;
+        case HttpEventType.UploadProgress:
+          this.progressPer = Math.round(event.loaded / event.total * 100);
+          console.log(`Uploaded! ${this.progressPer}%`);
+          break;
+        case HttpEventType.Response:
+          let res = event.body;
+          console.log('file upload successfully !!!', event.body);
+          setTimeout(() => {
+            this.loading = false
+            this.progressPer = 0;
+            //this.isDefault = false;
+          }, 100);
+          console.log("uploadToServer", res);
+          this.img_id3 = res['info']['id'];
+          this.backImg = res['info']['filename'];
+          if(this.pdf1){
+            console.log(res['info']['id'], 1,'docID')
+            this.createThumbnail(res['info']['id'], 2);
+            
+          }
+         //this.isDisableBtn = false;
+      }
+    },
+    error => {
+        this.loading = false
+        console.log('error', error);
+        this.progressPer = 0;
+       // this.isDefault = false;
+       this.img_id3 = '';
+       this.backImg = '';
+        this.pdf2 = false;
+        this._snackBar.open(AlertMessages.SOMETHING_WRONG, 'Error', {
+          duration: 4000,
+        });
+        return;
+      }
+    );
+  
+
+    // Old Code 
+  
+    //   res => {
+  //     this.spinner.hide();
+  //     console.log("uploadToServer_Default", res);
+  //     this.id_primary_front_img = res['info']['id'];
+  //     this.front_primary_name = res['info']['filename'];
+  //     if(this.isPdf){
+  //       this.createThumbnail(res['info']['id'], 1);
+  //     }
+  //     this.isDisableBtn = false;
+  //   }, error => {
+  //     this.spinner.hide();
+  //     this.img_name = '';
+  //     this.firstImage = '';
+  //     this.isPdf = false;
+  //     this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+  //     return;
+  //   }
+  // )
+}
+  back_file(back_file: any, arg1: string) {
+    throw new Error("Method not implemented.");
   }
 
   defaultImgCall() {
@@ -361,12 +755,13 @@ export class CustomerComponent implements OnInit {
       else {
         this.tiffPdf_dob_BackImg = false;
       }
-      if (!validImageTypes.includes(fileType)) {
-        this._snackBar.open('Invalid Image', 'Upload Error', {
-          duration: 4000,
-        });
-        return;
-      }
+      this.inValidImg(img);
+      // if (!validImageTypes.includes(fileType)) {
+      //   this._snackBar.open('Invalid Image', 'Upload Error', {
+      //     duration: 4000,
+      //   });
+      //   return;
+      // }
       this.img4 = img;
       this.dob_backimg_Name = img['name']
       var reader = new FileReader();
@@ -379,22 +774,56 @@ export class CustomerComponent implements OnInit {
   }
 
   frontImage(files: any) {
+   this.front_file = files
+    this.loading = true;
     var img = files[0];
-    const fileType = img['type'];
-    const validImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'application/pdf', 'image/tiff'];
-    const tiff_PDF = ['application/pdf', 'image/tiff'];
-    if (tiff_PDF.includes(fileType)) {
-      this.tiffPdf_front = true;
-    }
-    else {
-      this.tiffPdf_front = false;
-    }
-    if (!validImageTypes.includes(fileType)) {
-      this._snackBar.open('Invalid Image', 'Upload Error', {
+    if (Math.floor(img.size / 1024 / 1024) >= 5) {
+      this._snackBar.open('File size exceeds 5 MB.', 'Upload Error', {
         duration: 4000,
       });
-      return;
+      img = '';
+      this.frontImg = ''
+      this.loading = false
+      return
     }
+    let temp = files[0].name.toString().split(".");
+      var extension = temp[temp.length - 1].toLowerCase();
+      console.log(extension);
+      if (extension != "pdf" && extension != "jpg" && extension != "jpeg" && extension != "gif" && extension != "png" && extension != "jpe" && extension != "bmp" && extension != "jfif") {
+        this._snackBar.open('Upload only .png, .jpeg, .jpg, .jpe, .jfif, .gif, .bmp or .pdf', 'Upload Error', {
+          duration: 4000,
+        });
+        this.loading = false
+        return;
+      }else{
+        if(extension == 'pdf'){
+          this.pdf1 = true;
+        } else {
+          this.pdf1 = false;
+        }
+
+        if(this.pdf1) {
+          this.uploadToServer_Default();
+        }
+        this.loading = false
+      }
+     
+    // const fileType = img['type'];
+    // const validImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'application/pdf', 'image/tiff'];
+    // const tiff_PDF = ['application/pdf', 'image/tiff'];
+    // if (tiff_PDF.includes(fileType)) {
+    //   this.tiffPdf_front = true;
+    // }
+    // else {
+    //   this.tiffPdf_front = false;
+    // }
+    this.inValidImg(img);
+    // if (!validImageTypes.includes(fileType)) {
+    //   this._snackBar.open('Invalid Image', 'Upload Error', {
+    //     duration: 4000,
+    //   });
+    //   return;
+    // }
     this.img2 = img;
     this.frontImg = img['name']
     var reader = new FileReader();
@@ -404,24 +833,46 @@ export class CustomerComponent implements OnInit {
     }
     this.validationOnAccpt()
   }
+  
 
   backImage(files: any) {
+    this.back_file = files
     var img = files[0];
-    const fileType = img['type'];
-    const validImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'application/pdf', 'image/tiff'];
-    const tiff_PDF = ['application/pdf', 'image/tiff'];
-    if (tiff_PDF.includes(fileType)) {
-      this.tiffPdf_back = true;
-    }
-    else {
-      this.tiffPdf_back = false;
-    }
-    if (!validImageTypes.includes(fileType)) {
-      this._snackBar.open('Invalid Image', 'Upload Error', {
+    if (Math.floor(files[0].size / 1024 / 1024) >= 5) {
+      this._snackBar.open('File size exceeds 5 MB.', 'Upload Error', {
         duration: 4000,
       });
+      this.backImg = '';
       return;
     }
+    let temp = files[0].name.toString().split(".");
+    var extension = temp[temp.length - 1].toLowerCase();
+    console.log(extension);
+    if (extension != "pdf" && extension != "jpg" && extension != "jpeg" && extension != "gif" && extension != "png" && extension != "jpe" && extension != "bmp" && extension != "jfif") {
+      this._snackBar.open('Upload only .png, .jpeg, .jpg, .jpe, .jfif, .gif, .bmp or .pdf', 'Upload Error', {
+        duration: 4000,
+      });
+      this.loading = false
+      return;
+    }else{
+      if(extension == 'pdf'){
+        this.pdf2 = true;
+      } else {
+        this.pdf2 = false;
+      }
+
+      if(this.pdf2) {
+        this.uploadToServer_back();
+      }
+      this.loading = false
+    }
+    this.inValidImg(img);
+    // if (!validImageTypes.includes(fileType)) {
+    //   this._snackBar.open('Invalid Image', 'Upload Error', {
+    //     duration: 4000,
+    //   });
+    //   return;
+    // }
     this.img3 = img;
     this.backImg = img['name'];
     var reader = new FileReader();
@@ -445,12 +896,13 @@ export class CustomerComponent implements OnInit {
     else {
       this.tiffPdf = false;
     }
-    if (!validImageTypes.includes(fileType)) {
-      this._snackBar.open('Invalid Image', 'Upload Error', {
-        duration: 4000,
-      });
-      return;
-    }
+    this.inValidImg(this.img1);
+    // if (!validImageTypes.includes(fileType)) {
+    //   this._snackBar.open('Invalid Image', 'Upload Error', {
+    //     duration: 4000,
+    //   });
+    //   return;
+    // }
     this.panImgName = this.img1['name'];
     var reader = new FileReader();
     console.log("this.panImgName", this.panImgName);
@@ -616,9 +1068,11 @@ export class CustomerComponent implements OnInit {
   }
 
   accept() {
+    this.loading = true
     if (this.fileCount > 1) {
       this.alertFoundNoFiles();
     }
+    
     this.service.accptRejct = this.approved;
     this.apiUniqueKey = new Date().getTime().toString();
     let acceptData = {
@@ -637,8 +1091,9 @@ export class CustomerComponent implements OnInit {
       'sr_type': this.sr_type,
       'apiUniqueKey': this.apiUniqueKey
     }
+    console.log(acceptData,'accpted data')
     this.service.getDoc_srtype_details(acceptData);
-    
+
     // If authorixation is True then it will show authorization options
     if (this.authorization) {
       // this.loading = true;
