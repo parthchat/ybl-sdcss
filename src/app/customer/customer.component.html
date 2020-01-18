@@ -115,9 +115,9 @@
     <!-- Upload DOB Proof Docs -->
 
     <!-- Common Docs Upload -->
-    <div class="upload text-center">
+    <div class="upload text-center" *ngIf="sr_type!=1006">
       <h6 class="other-doc">Upload Identity Documents</h6>
-      <mat-form-field class="mat-options">
+      <mat-form-field class="mat-options" >
         <mat-label>Select Document Type</mat-label>
         <mat-select [(ngModel)]="otherDocType">
           <mat-option *ngFor="let type of docType" (ngModelChange)="Onselect(type)" (click)="Onselect(type)"
