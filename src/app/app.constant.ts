@@ -91,4 +91,6 @@ export class AlertMessages {
     public static SESSION_LOGOUT = 'Logout Successfully';
     public static MANDATORY_FIELDS_ALERT = 'Please fill all the mandatory fields.';
     public static NA_BANK_MSG = 'Not available in the Bank records';
+    public static invalid_Credentials = 'Invalid Credentials';
+    public static resend_OTP_success = 'OTP has been sent';
 }
