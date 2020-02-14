@@ -1,0 +1,23 @@
+.input_aadhar{
+    width: 450px !important;
+}
+@media only screen and (max-width: 768px) {
+    .input_aadhar {
+     width: 100% !important;
+    }
+  }
+
+  .form-section {
+    position: relative;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    overflow: auto;
+    text-align: center;
+    color: #9b9b9b;
+    padding: 3em;
+    /* background-color: cornflowerblue; */
+    /* height: calc(100vh - 250px); */
+}

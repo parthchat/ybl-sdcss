@@ -28,111 +28,192 @@
       <!-- Dob data -->
       <div class="col-sm-3 cols" *ngIf="sr_type == 1008">
         <mat-form-field>
-          <input matInput placeholder="New DOB" [(ngModel)]="new_dob" disabled>
+          <input matInput placeholder="Old DOB" [(ngModel)]="old_Dob" disabled>
         </mat-form-field>
       </div>
       <div class="col-sm-3 cols" *ngIf="sr_type == 1008">
         <mat-form-field>
-          <input matInput placeholder="Old DOB" [(ngModel)]="old_Dob" disabled>
+          <input matInput placeholder="New DOB" [(ngModel)]="new_dob" disabled>
         </mat-form-field>
       </div>
       <!-- Email data -->
-      
-      <div class="col-sm-3 cols" *ngIf="sr_type == 1006">
-        <mat-form-field>
-          <input matInput placeholder="New Email" [(ngModel)]="new_email" disabled>
-        </mat-form-field>
-      </div>
       <div class="col-sm-3 cols" *ngIf="sr_type == 1006">
         <mat-form-field>
           <input matInput placeholder="Old Email" [(ngModel)]="old_email" disabled>
         </mat-form-field>
       </div>
-      <!--Mobile Update  -->
-      <div class="col-sm-3 cols" *ngIf="sr_type == 1007">
+      <div class="col-sm-3 cols" *ngIf="sr_type == 1006">
         <mat-form-field>
-          <input matInput placeholder="New Mobile Number" [(ngModel)]="new_mobile_number" disabled>
+          <input matInput placeholder="New Email" [(ngModel)]="new_email" disabled>
         </mat-form-field>
       </div>
+      <!--Mobile Update  -->
       <div class="col-sm-3 cols" *ngIf="sr_type == 1007">
         <mat-form-field>
           <input matInput placeholder="Old Mobile Number" [(ngModel)]="old_mobile_number" disabled>
         </mat-form-field>
       </div>
-    </div>
-  </div>
-
-
-  <div class="upload text-center" *ngIf="sr_type == 1005">
-    <h6 class="text-left pls">Please upload a picture of New PAN</h6>
-    <label for="file-upload" class="custom-file-upload">
-      <img src="assets/images/imgs.png" class="imgs"> Upload Image
-    </label>
-    <input #file type="file" accept="image/x-png,image/jpeg" id="file-upload" (change)="deafaultImage(file.files)" />
-    <img class="images" [src]="imgURL" height="400" width="400" *ngIf="imgURL">
-    <!-- <div class="bg-img2"  [ngStyle]="{'background-image':  'url(' + imgURL + ')'}" *ngIf="imgURL"></div> -->
-    <!-- <p class="" style="color: gray;">{{panImgName}}</p> -->
-  </div>
-  <!--  -->
-
-  <div class="upload" *ngIf="sr_type == 1008">
-    <h6 class="other-doc">Upload DOB Proofs</h6>
-    <mat-form-field class="mat-options">
-      <mat-select [(ngModel)]="dob_doc_type">
-        <mat-option *ngFor="let type of dob_Primary_Doc" (ngModelChange)="Onselect_Dob_ImgPrimary(type)"
-          (click)="Onselect_Dob_ImgPrimary(type)" [value]="type.docType" [disabled]="!type.isPrimary">
-          {{type.docName}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <!-- images -->
-    <div class="imgdiv text-center" *ngIf="show_DoB_Img">
-      <!-- front Image -->
-      <label for="upload-5" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Front
-        Image</label>
-      <input #file type="file" accept="image/x-png,image/jpeg" id="upload-5" (change)="deafaultImage(file.files)" />
-      <img class="images" [src]="imgURL" height="400" width="400" *ngIf="imgURL">
-
-
-      <!-- Back Image -->
-      <div class="" *ngIf="dob_pg_count==2">
-        <label for="upload-4" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Back
-          Image</label>
-        <input type="file" name="pic" id="upload-4" accept="image/x-png,image/jpeg" (change)="backImage_Dob($event.target.files)">
-        <img class="images" [src]="imgURL4" height="400" width="400" *ngIf="imgURL4">
+      <div class="col-sm-3 cols" *ngIf="sr_type == 1007">
+        <mat-form-field>
+          <input matInput placeholder="New Mobile Number" [(ngModel)]="new_mobile_number" disabled>
+        </mat-form-field>
       </div>
     </div>
   </div>
 
-  <div class="upload text-center">
-    <h6 class="other-doc">Upload Identity Documents</h6>
-    <mat-form-field class="mat-options">
-      <mat-select [(ngModel)]="otherDocType">
-        <mat-option *ngFor="let type of docType" (ngModelChange)="Onselect(type)" (click)="Onselect(type)"
-          [value]="type.docType" [disabled]="type.isPrimary">
-          {{type.docName}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <!-- images -->
-    <div class="imgdiv" *ngIf="showImg">
-      <!-- front Image -->
-      <label for="upload-1" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Front
-        Image</label>
-      <input type="file" name="pic" id="upload-1" accept="image/x-png,image/jpeg" (change)="frontImage($event.target.files)">
-      <img class="images" [src]="imgURL2" height="400" width="400" *ngIf="imgURL2">
-
-
-      <!-- Back Image -->
-      <div class="" *ngIf="pageCount==2">
-        <label for="upload-2" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Back
-          Image</label>
-        <input type="file" name="pic" id="upload-2" accept="image/x-png,image/jpeg" (change)="backImage($event.target.files)">
-        <img class="images" [src]="imgURL3" height="400" width="400" *ngIf="imgURL3">
-      </div>
-    </div>
+  <div class="err-msg" *ngIf="isDuplicate">
+    <h6>{{ duplicateErrMsg }}</h6>
   </div>
+
+  <div *ngIf="!isDuplicate">
+    <!-- upload image for PAN -->
+    <!-- <div class="upload text-center" *ngIf="sr_type == 1005">
+      <h6 class="text-left pls">Please upload a picture of New PAN</h6>
+      <label for="file-upload" class="custom-file-upload">
+        <img src="assets/images/imgs.png" class="imgs"> Upload Image
+      </label>
+      <input #file type="file" accept="image/x-png,image/jpeg,application/pdf,image/tiff" id="file-upload" (change)="deafaultImage(file.files)" />
+      <img class="images" [src]="imgURL" height="400" width="400" *ngIf="imgURL && !tiffPdf">
+      <h5 class="pdfTiff" *ngIf="panImgName || tiffPdf">{{panImgName}}</h5>
+    </div> -->
+    <!-- upload image for PAN -->
+
+    <!-- Upload DOB Proof Docs -->
+    <div class="upload" *ngIf="sr_type == 1008">
+      <h6 class="other-doc">Upload DOB Proofs</h6>
+      <mat-form-field class="mat-options">
+        <mat-select [(ngModel)]="dob_doc_type">
+          <mat-option *ngFor="let type of dob_Primary_Doc" (ngModelChange)="Onselect_Dob_ImgPrimary(type)"
+            (click)="Onselect_Dob_ImgPrimary(type)" [value]="type.docType" [disabled]="!type.isPrimary">
+            {{type.docName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Doc Upload -->
+      <div class="imgdiv text-center" *ngIf="show_DoB_Img">
+        <!-- front Image -->
+        <label for="upload-5" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Front
+          Image</label>
+        <input #file type="file" accept="image/x-png,image/jpeg,application/pdf,image/tiff" id="upload-5" (change)="deafaultImage(file.files)" />
+        <img class="images" [src]="imgURL" height="400" width="400" *ngIf="imgURL && !tiffPdf">
+        <h5 class="pdfTiff" *ngIf="panImgName && tiffPdf">{{panImgName}}</h5>
+        <!-- front Image -->
+
+        <!-- Back Image -->
+        <div class="" *ngIf="dob_pg_count==2">
+          <label for="upload-4" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Back
+            Image</label>
+          <input type="file" name="pic" id="upload-4" accept="image/x-png,image/jpeg,application/pdf,image/tiff" (change)="backImage_Dob($event.target.files)">
+          <img class="images" [src]="imgURL4" height="400" width="400" *ngIf="imgURL4 && !tiffPdf_dob_BackImg">
+          <h5 class="pdfTiff" *ngIf="dob_backimg_Name && tiffPdf_dob_BackImg">{{dob_backimg_Name}}</h5>
+        </div>
+        <!-- Back Image -->
+      </div>
+      <!-- Doc Upload -->
+    </div>
+    <!-- Upload DOB Proof Docs -->
+
+    <!-- Common Docs Upload -->
+    <div class="upload text-center" *ngIf="sr_type!=1006">
+      <h6 class="other-doc">Upload Identity Documents</h6>
+      <mat-form-field class="mat-options" >
+        <mat-label>Select Document Type</mat-label>
+        <mat-select [(ngModel)]="otherDocType">
+          <mat-option *ngFor="let type of docType" (ngModelChange)="Onselect(type)" (click)="Onselect(type)"
+            [value]="type.docType" [disabled]="type.isPrimary">
+            {{type.docName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Doc Upload -->
+      <div class="imgdiv" *ngIf="showImg">
+        <!-- front Image -->
+        <div *ngIf="!mobile">
+          <label for="upload-1" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Browse and Upload Front Side </label>
+          <input type="file" name="pic" id="upload-1" accept=".pdf, .png, .jpeg, .jpg, .jpe, .jfif, .gif, .bmp" (change)="frontImage($event.target.files)">
+        </div>
+
+        <div class="row" *ngIf="mobile">
+          <div class="col-sm-5">
+            <label for="upload-2" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Browse and Upload Front Side </label>
+            <input type="file" name="pic" id="upload-2" accept=".pdf, .png, .jpeg, .jpg, .jpe, .jfif, .gif, .bmp" (change)="frontImage($event.target.files)">
+          </div>
+          <div class="col-sm-2">
+            <h6 class="font-size"> OR </h6> 
+          </div>
+          <div class="col-sm-5">
+            <label for="upload-3" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Capture and Attach Front Side </label>
+            <input type="file" name="pic" id="upload-3" accept="image/*" (change)="frontImage($event.target.files)" capture="camera">
+          </div>
+        </div>
+        <!-- Show thumbnail img -- FRONT -->
+        <!-- <img class="images" [src]="imgURL2" height="400" width="400" *ngIf="imgURL2 && !tiffPdf_front"> -->
+        <img class="images" [src]="imgURL2" (load)="onImageLoaded($event, 1)" height="400" width="400" (error)="onError($event, 1)" *ngIf="imgURL2 && !pdf1">
+        <div *ngIf="pdf1 && frontImg" class="thumbnail" (click)="openPdf(pdfUrl_Front)">
+        <pdf-viewer
+          [src]="pdfUrl_Front"
+          [page]="page"
+          [original-size]="false"
+          style="display: block;"
+          (error)="onError($event, 1)"
+          ></pdf-viewer>
+      </div>
+      <h5 class="pdfTiff" *ngIf="frontImg || tiffPdf_front">{{frontImg}}</h5>
+        <div class="div-progress" *ngIf="frontImg_ProgressBar">
+          <div class="container progress">
+            <div class="progress-bar progress-bar-striped" [ngStyle]="{'width':progressPer+'%'}">{{progressPer}}%</div>
+          </div>
+        </div>
+        <!-- front Image -->
+
+        <!-- Back Image -->
+        <div class="" *ngIf="pageCount==2">
+          <div *ngIf="!mobile">
+            <label for="upload-4" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Browse and Upload Back Side </label>
+            <input type="file" name="pic" id="upload-4" accept=".pdf, .png, .jpeg, .jpg, .jpe, .jfif, .gif, .bmp" (change)="backImage($event.target.files)">
+          </div>
+
+          <div class="row" *ngIf="mobile">
+            <div class="col-sm-5">
+              <label for="upload-5" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Browse and Upload Back Side </label>
+              <input type="file" name="pic" id="upload-5" accept="image/x-png,image/jpeg,application/pdf,image/tiff" (change)="backImage($event.target.files)">
+            </div>
+            <div class="col-sm-2">
+              <h6 class="font-size"> OR </h6> 
+            </div>
+            <div class="col-sm-5">
+              <label for="upload-6" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Capture and Attach Back Side </label>
+              <input type="file" name="pic" id="upload-6" accept="image/*" (change)="backImage($event.target.files)" capture="camera">
+            </div>
+          </div>
+          <!-- Show thumbnail img -- BACK -->
+          <!-- <img class="images" [src]="imgURL3" height="400" width="400" *ngIf="imgURL3 && !tiffPdf_back"> -->
+          <img class="images" [src]="imgURL3" height="400" width="400" (load)="onImageLoaded($event, 2)" (error)="onError($event, 2)" *ngIf="imgURL3 && !pdf2">
+          <div *ngIf="pdf2 && backImg" class="thumbnail" (click)="openPdf(pdfUrl_Back)">
+            <pdf-viewer
+              [src]="pdfUrl_Back"
+              [page]="page"
+              [original-size]="false"
+              style="display: block;"
+              (error)="onError($event, 2)"
+              ></pdf-viewer>
+              </div>
+          <h5 class="pdfTiff" *ngIf="backImg || tiffPdf_back">{{backImg}}</h5>
+          <div class="div-progress" *ngIf="backImg_progressBar">
+            <div class="container progress">
+              <div class="progress-bar progress-bar-striped" [ngStyle]="{'width':progressPer+'%'}">{{progressPer}}%</div>
+            </div>
+          </div>
+        </div>
+        <!-- Back Image -->
+      </div>
+      <!-- Doc Upload -->
+    </div>
+    <!-- Common Docs Upload -->
+  </div>
+
   <!-- reason reject dropdown -->
   <div class="drpreason text-center">
     <mat-form-field *ngIf="approved===false" class="reass">
@@ -144,21 +225,33 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <!-- Btn submit cancel -->
+  <!-- reason reject dropdown -->
+
+  <!-- submit reason reject or cancel reason reject -->
   <div class="text-center" *ngIf="approved===false">
     <button mat-raised-button color="primary" class="cancelSubmit" (click)="submit()"
       [disabled]="!reasonId">Submit</button>
     <button mat-raised-button color="primary" class="cancelSubmit" (click)="cancel()">Cancel</button>
   </div>
-  <h5 class="rejectedreason" *ngIf="rejectReasonTxt"><span class="rejectTXt" style="font-weight: bolder">Reject
-      reason</span>: {{rejectReasonTxt}}</h5>
+  <!-- submit reason reject or cancel reason reject -->
+
+  <!-- Show Rejected Reason -->
+  <h5 class="rejectedreason" *ngIf="rejectReasonTxt"><span class="rejectTXt" style="font-weight: bolder">Reject reason</span>: {{rejectReasonTxt}}</h5>
+  <!-- Show Rejected Reason -->
+  
+  <!-- Accept/ Reject Button -->
   <div class="grp-btn col text-center" *ngIf="approved==true">
     <button mat-raised-button color="primary" class="btns accept" (click)="defaultImgCall()"
       [disabled]="enableBtn==false">Accept</button>
     <button mat-raised-button color="warn" class="btns" (click)="reject()">Reject</button>
   </div>
+  <!-- Accept/ Reject Button -->
+
+  <!-- Loader -->
   <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
   </ngx-loading>
+  <!-- Loader -->
+
 </mat-card>
 
 <!-- Error Message -->

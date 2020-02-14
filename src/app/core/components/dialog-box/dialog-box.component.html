@@ -1,0 +1,9 @@
+<h1 mat-dialog-title class="text-center popup-title confirm-popup">{{modalTitle}}</h1>
+<mat-dialog-content class="delete-dialog-content">
+    <i class="material-icons delete-icon" color="red">notification_important</i>
+    {{message}}
+</mat-dialog-content>
+
+<div class="btn-container popup-btn-container">
+    <button mat-raised-button class="action-btn" [mat-dialog-close]="true"><i class="right-icon"></i>OK</button>
+</div>

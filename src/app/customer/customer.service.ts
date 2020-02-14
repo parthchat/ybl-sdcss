@@ -35,6 +35,8 @@ export class CustomerService {
     }
     return this.baseAPIService.post(APIConstants.SrType.WORKFLOW_ID, processVariables);
   }
+  
+  // Capture Customer Approval API
   acceptApi(data: any) {
     let processVariables = {
       "projectId": Constants.PROJECT_ID,

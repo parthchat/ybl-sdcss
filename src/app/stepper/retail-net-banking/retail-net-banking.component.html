@@ -10,22 +10,27 @@
                                 <!-- <span matPrefix>{{preFixval}}</span> -->
                                 <!-- <input matInput maxlength="20" minlength="7" placeholder="Enter Customer ID" formControlName="custId" type="text" required> -->
 
-                                <input matInput (input)="inputValidator($event)" placeholder="Enter Customer ID"
-                                    pattern="\d*" maxlength="20" minlength="7" formControlName="custId" type="text" required>
+                                <input matInput (input)="inputValidator($event)" placeholder="Enter Login ID"
+                                    pattern="\d*" maxlength="20" minlength="7" formControlName="custId" type="text"
+                                    required>
                                 <mat-error class="left-space">{{ getCustIdErrorMessage() }}</mat-error>
                             </mat-form-field>
 
                             <mat-form-field *ngIf="isShowPasswordField">
                                 <mat-icon matPrefix class="password-icon"></mat-icon>
-                                <input matInput maxlength="14" minlength="10" class="password" placeholder="Password" formControlName="password" [type]="hide ? 'password' : 'text'" required>
-                                <mat-icon style="cursor: pointer;" matSuffix class="password--show-icon" (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                <input matInput maxlength="14" minlength="10" class="password" placeholder="Password"
+                                    formControlName="password" [type]="hide ? 'password' : 'text'" required>
+                                <mat-icon style="cursor: pointer;" matSuffix class="password--show-icon"
+                                    (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 <mat-error class="left-space">{{ getPasswordErrorMessage() }}</mat-error>
                             </mat-form-field>
                             <div class="button-row text-right form-btn" *ngIf="isLoginButton">
-                                <button mat-raised-button color="warn" [disabled]="!rnbLoginForm.valid" class="text-uppercase">Login</button>
+                                <button mat-raised-button color="warn" [disabled]="!rnbLoginForm.valid"
+                                    class="text-uppercase">Login</button>
                             </div>
                             <div class="button-row text-right form-btn" *ngIf="isNextButton">
-                                <button mat-raised-button color="warn" (click)="showPassField()" [disabled]="rnbLoginForm.get('custId').invalid" class="text-uppercase">Next</button>
+                                <button mat-raised-button color="warn" (click)="showPassField()"
+                                    [disabled]="rnbLoginForm.get('custId').invalid" class="text-uppercase">Next</button>
                             </div>
                         </div>
 
