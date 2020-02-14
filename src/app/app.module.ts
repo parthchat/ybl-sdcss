@@ -24,9 +24,12 @@ import { MatSidenavModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxLoadingModule } from 'ngx-loading';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { CreditCardComponent } from './stepper/credit-card/credit-card.component';
 import { AadharCardComponent } from './stepper/aadhar-card/aadhar-card.component';
 import { DialogBoxComponent } from './core/components/dialog-box/dialog-box.component';
+import { AuthorizationComponent } from './authorization/authorization.component';
+import { UnderConstructionComponent } from './under-construction/under-construction.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,9 @@ import { DialogBoxComponent } from './core/components/dialog-box/dialog-box.comp
     OtpLoginComponent,
     CreditCardComponent,
     AadharCardComponent,
-    DialogBoxComponent
+    DialogBoxComponent,
+    AuthorizationComponent,
+    UnderConstructionComponent
   ],
   imports: [
     BrowserModule,
@@ -56,6 +61,7 @@ import { DialogBoxComponent } from './core/components/dialog-box/dialog-box.comp
     MatSidenavModule,
     FormsModule,
     ReactiveFormsModule,
+    PdfViewerModule,
     NgxLoadingModule.forRoot({}),
   ],
   entryComponents: [DialogBoxComponent],

@@ -58,11 +58,12 @@ export class StepperComponent implements OnInit {
           if(response['payload']['processResponse']['Error'] == '0' && response['payload']['processResponse']['ErrorCode'] == '200'){
             if(response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
               if(response['payload']['processResponse']['ProcessVariables']['validMols']) {
-                if(((response['payload']['processResponse']['ProcessVariables']['validMols']).length) == 1){
-                  this.generateOtp();
-                } else {
-                  this.arrLoginType = response['payload']['processResponse']['ProcessVariables']['validMols'];
-                }
+                this.arrLoginType = response['payload']['processResponse']['ProcessVariables']['validMols'];
+                // if(((response['payload']['processResponse']['ProcessVariables']['validMols']).length) == 1){
+                //   this.generateOtp();
+                // } else {
+                //   this.arrLoginType = response['payload']['processResponse']['ProcessVariables']['validMols'];
+                // }
               } else {
                 this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
                 this.commonFunctions.showErrorPage();
@@ -105,6 +106,16 @@ export class StepperComponent implements OnInit {
       this.isShowSubmitBtn = false;
       this.isCommingSoonMsg = true;
       this.selectedOption = "Credit Card Login";
+    }
+    if(this.index == 5) {
+      this.isShowSubmitBtn = false;
+      this.isCommingSoonMsg = true;
+      this.selectedOption = "Aadhar Card Login";
+    }
+    if(this.index == 6) {
+      this.isShowSubmitBtn = false;
+      this.isCommingSoonMsg = true;
+      this.selectedOption = "Email OTP Login";
     }
     
   }
