@@ -15,6 +15,7 @@ import { AuthorizationComponent } from './authorization/authorization.component'
 import { CreditCardComponent } from './stepper/credit-card/credit-card.component';
 import { UnderConstructionComponent } from './under-construction/under-construction.component';
 import { AuthGuard } from './auth-guard/auth.guard';
+import { ProfileUpdateComponent } from './profile-update/profile-update.component';
 
 
 const routes: Routes = [
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'dcLogin', component: DebitCardComponent,canActivate: [AuthGuard]},
   { path: 'otpLogin', component: OtpLoginComponent},
   { path: 'credit_card', component: CreditCardComponent,canActivate: [AuthGuard]},
+  { path: 'profile_update', component: ProfileUpdateComponent},
   { path: 'customer', component: CustomerComponent,canActivate: [AuthGuard] },
   { path: '404', component: NotFoundComponent },
   { path: 'result', component: AcceptRejectComponent },
