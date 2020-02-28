@@ -31,6 +31,7 @@ import { DialogBoxComponent } from './core/components/dialog-box/dialog-box.comp
 import { AuthorizationComponent } from './authorization/authorization.component';
 import { UnderConstructionComponent } from './under-construction/under-construction.component';
 import { ProfileUpdateComponent } from './profile-update/profile-update.component';
+import { RecurringDepositComponent } from './recurring-deposit/recurring-deposit.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { ProfileUpdateComponent } from './profile-update/profile-update.componen
     DialogBoxComponent,
     AuthorizationComponent,
     UnderConstructionComponent,
-    ProfileUpdateComponent
+    ProfileUpdateComponent,
+    RecurringDepositComponent
   ],
   imports: [
     BrowserModule,
