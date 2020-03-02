@@ -30,6 +30,8 @@ import { AadharCardComponent } from './stepper/aadhar-card/aadhar-card.component
 import { DialogBoxComponent } from './core/components/dialog-box/dialog-box.component';
 import { AuthorizationComponent } from './authorization/authorization.component';
 import { UnderConstructionComponent } from './under-construction/under-construction.component';
+import { ProfileUpdateComponent } from './profile-update/profile-update.component';
+import { RecurringDepositComponent } from './recurring-deposit/recurring-deposit.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { UnderConstructionComponent } from './under-construction/under-construct
     AadharCardComponent,
     DialogBoxComponent,
     AuthorizationComponent,
-    UnderConstructionComponent
+    UnderConstructionComponent,
+    ProfileUpdateComponent,
+    RecurringDepositComponent
   ],
   imports: [
     BrowserModule,

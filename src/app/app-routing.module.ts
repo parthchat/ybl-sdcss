@@ -15,6 +15,8 @@ import { AuthorizationComponent } from './authorization/authorization.component'
 import { CreditCardComponent } from './stepper/credit-card/credit-card.component';
 import { UnderConstructionComponent } from './under-construction/under-construction.component';
 import { AuthGuard } from './auth-guard/auth.guard';
+import { ProfileUpdateComponent } from './profile-update/profile-update.component';
+import { RecurringDepositComponent } from './recurring-deposit/recurring-deposit.component';
 
 
 const routes: Routes = [
@@ -25,10 +27,12 @@ const routes: Routes = [
   { path: 'dcLogin', component: DebitCardComponent,canActivate: [AuthGuard]},
   { path: 'otpLogin', component: OtpLoginComponent},
   { path: 'credit_card', component: CreditCardComponent,canActivate: [AuthGuard]},
+  { path: 'profile_update', component: ProfileUpdateComponent,canActivate: [AuthGuard]},
   { path: 'customer', component: CustomerComponent,canActivate: [AuthGuard] },
   { path: '404', component: NotFoundComponent },
   { path: 'result', component: AcceptRejectComponent },
   { path: 'emailverify', component: EmailverifyComponent },
+  { path: 'rd', component: RecurringDepositComponent },
   { path: 'error', component: ErrorpageComponent },
   { path: 'mobileverify', component: MobileVerifyComponent,canActivate: [AuthGuard] },
   { path: 'confirm-request', component: AuthorizationComponent,canActivate: [AuthGuard] },
