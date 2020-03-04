@@ -132,11 +132,23 @@ export class CustomerComponent implements OnInit {
         console.log(this.authorization, this.needDocs, 'additional options')
         this.service.srId = res['ProcessVariables']['srId'];
         this.rejectReasonTxt = res['ProcessVariables']['srDetails']['rejectReason'];
+
+        // Recurring Deposit Service
+        if(this.sr_type == 1012){
+          this.router.navigate(['recurring-deposit']);
+        }
+        
+        // Profile Update Service
+        if(this.sr_type == 1004){
+          this.router.navigate(['profile_update']);
+        }
+        // For DOB Service
         if (this.sr_type == 1008) {
           console.log("in DOB Sr");
           this.old_Dob = this.res_['ProcessVariables']['dobUpdate']['oldDob'] ? this.res_['ProcessVariables']['dobUpdate']['oldDob'] : AlertMessages.NA_BANK_MSG;
           this.new_dob = this.res_['ProcessVariables']['dobUpdate']['newDob'] ? this.res_['ProcessVariables']['dobUpdate']['newDob'] : AlertMessages.NA_BANK_MSG;
         }
+        // Email Update Service
         if (this.sr_type == 1006) {
           console.log("in email Sr");
           this.old_email = this.res_['ProcessVariables']['emailUpdate']['maskedOldEmail'] ? this.res_['ProcessVariables']['emailUpdate']['maskedOldEmail'] : AlertMessages.NA_BANK_MSG;
@@ -154,6 +166,7 @@ export class CustomerComponent implements OnInit {
             }
           }
         }
+        // Mobile Update Service
         if (this.sr_type == 1007) {
           console.log("in Mobile Sr");
           this.old_mobile_number = this.res_['ProcessVariables']['custDetails']['mobileNumber'] ? this.res_['ProcessVariables']['custDetails']['mobileNumber'] : AlertMessages.NA_BANK_MSG;
@@ -245,9 +258,12 @@ export class CustomerComponent implements OnInit {
         this.newarayy = res['ProcessVariables']['validDocList'];
         this.validUploadMethods = res['ProcessVariables']['validUploadMethods'];
         for (var i = 0; i < this.newarayy.length; i++) {
-          if (!this.newarayy[i].isPrimary) {
+           if (this.newarayy[i].isPrimary) {
             this.docType.push(this.newarayy[i]);
           }
+          // if (!this.newarayy[i].isPrimary) {
+          //   this.docType.push(this.newarayy[i]);
+          // }
         }
         // to Check if Docs are Optional or Not , If any doc type is Primary==false than it is optional
         for (var i = 0; i < this.newarayy.length; i++) {

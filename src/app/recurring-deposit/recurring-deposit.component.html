@@ -1,0 +1,577 @@
+<mat-card>
+    <h3 class="rd header-title">Recurring Deposit Details</h3>
+
+    <div *ngIf="!confirmation_screen">
+        <mat-form-field class="example-container scheme account-select">
+            <mat-label>Select Any One Account</mat-label>
+            <mat-select [(value)]="selectedAccountNumber" (selectionChange)="onSelectionChange($event)">
+                <mat-option *ngFor="let account of arrAccountDetails;index as i" [value]="account.accountNumber">
+                    {{account.accountNumber}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div class="row">
+            <!--Current Balance  -->
+            <div class="col-sm-4 view-row">
+                <div class="">
+                    <div class="inner-div">
+                        <label class="detail-label">Account Balance</label>
+                        <p class="detail-text"> {{balance | currency:"₹"}}</p>
+                        <!-- <p class="detail-text"> {{baseAPIService.acc_source | async | currency:"₹"}}</p> -->
+                    </div>
+                </div>
+            </div>
+            <!--  Branch Code-->
+            <div class="col-sm-4 view-row">
+                <div class="">
+                    <div class="inner-div">
+                        <label class="detail-label">Branch Code</label>
+                        <p class="detail-text">{{branchCode}}</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Branch Name -->
+            <div class="col-sm-4 view-row">
+                <div class="">
+                    <div class="inner-div">
+                        <label class="detail-label">Branch Name</label>
+                        <p class="detail-text">{{branchName}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="fb-main-div">
+            <form [formGroup]="rdFormGroup" class="rdFormGroup">
+                <!--  -->
+                <mat-tab-group [selectedIndex]="selectedTabIndex">
+                    <mat-tab class="mat-tabs" label="Customize">
+                        <div class="tab1-wrapper">
+    
+                            <!-- intruction rates on site -->
+                            <a class="link-rate"
+                                href="https://www.yesbank.in/personal-banking/yes-individual/deposits/fixed-deposit-residents"
+                                target="_blank">Check Interest Rates</a>
+                            <!--  -->
+                            <div class="row">
+                                <!-- product details -->
+                                <div class="col-sm-6">
+                                    <div class="select-div">
+                                        <mat-form-field class="example-container scheme">
+                                            <mat-label>Select Product</mat-label>
+                                            <mat-select formControlName="rdProduct">
+                                                <mat-option *ngFor="let product of arrProductDetails; let i = index;"
+                                                    [value]="product.code" (click)="onSelectProduct(product.code, product.label, product.type)">
+                                                    {{product.label}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="select-div">
+                                                <p class="tenure-txt">Select Tenure</p>
+                                                <mat-form-field class="example-full-width">
+                                                    <mat-label>Years</mat-label>
+                                                    <mat-select formControlName="rdYear">
+                                                        <mat-option *ngFor="let year of years" [value]="year"
+                                                            (click)="selectMonth(year)">
+                                                            {{year}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                                <div class="select-div">
+                                                    <p class="tenure-txt">Select Tenure</p>
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Months</mat-label>
+                                                        <mat-select formControlName="rdMonth">
+                                                            <mat-option *ngFor="let month of months" [value]="month"
+                                                                (click)="selectMonth(month)">
+                                                                {{month}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="select-div">
+                                        <mat-form-field class="example-container flexDirectionColumn deposit-amount">
+                                            <input matInput placeholder="Enter Deposit Amount"
+                                                (input)="onAmountInput($event)"
+                                                (keypress)="onAmountInputKeyPress($event)"
+                                                formControlName="amount" maxlength="7" minlength="4">
+                                            <span matPrefix>₹&nbsp;</span>
+                                            <!-- This was done in html because by default it needs to be shown on UI -->
+                                            <mat-hint *ngIf="rdFormGroup.controls.amount.value < min_amount"
+                                                class="max-amt">Min Amount:
+                                                ₹{{min_amount}}
+                                            </mat-hint>
+                                            <mat-hint *ngIf="rdFormGroup.controls.amount.errors?.max"
+                                                class="max-amt">Max Amount:
+                                                ₹{{max_amount}}
+                                            </mat-hint>
+        
+                                            <mat-hint *ngIf="rdFormGroup.controls.amount.dirty && !!(rdFormGroup.controls.amount.errors?.shouldBeMultiplesOf100)"
+                                                class="max-amt">Amount must be in multiples of 100.
+                                            </mat-hint>
+        
+                                            <mat-hint *ngIf="rdFormGroup.controls.amount.dirty && !!(rdFormGroup.controls.amount.errors?.shouldBeLessThanEqualToNumber)"
+                                                class="max-amt">Amount must be less than balance.
+                                            </mat-hint>
+        
+                                            <mat-hint *ngIf="rdFormGroup.controls.amount.dirty && rdFormGroup.controls.panNo.invalid"
+                                                class="max-amt">PAN not registered.
+                                            </mat-hint>
+        
+                                        </mat-form-field>
+                                    </div>
+                                    <!-- <mat-error class="left-space" >error</mat-error> -->
+                                </div>
+        
+                                <!-- PAN Field -->
+                                <!-- <div class="col-sm-6" *ngIf="rdFormGroup.controls.amount.value > 50000">
+                                        <div class="select-div">
+                                    <mat-form-field class="example-container">
+                                        <input matInput placeholder="Enter Your PAN No." value="" formControlName="panNo"
+                                            minlength="10" maxlength="10" (keypress)="spcChar($event)" (input)="onPanNoInput($event)"
+                                            (paste)="onPaste($event)">
+                                    </mat-form-field>
+                                    </div>
+                                </div> -->
+                                
+                                
+                            </div>
+        
+    
+                        </div>
+                    </mat-tab>
+    
+                    <!-- Quick Book Tab -->
+                    <mat-tab class="mat-tabs" label="Quick">
+                        <div class="wrapper-div tab2-wrapper">
+                            <ng-template *ngIf="!!quickBooks" ngFor let-qb [ngForOf]="quickBooks" let-i="index">
+                                <div (click)="onQuickBookSelection(qb)" class="quick-book" [ngClass]="{'quick-book-selected': qb.index == selectedQuickBook?.index}">
+                                    <mat-list role="list">
+                                        <mat-list-item role="listitem" class="list-txt"><span class="title-qick">Deposit Amount
+                                            </span>: Rs.{{qb.amount}}</mat-list-item>
+                                        <mat-list-item role="listitem" class="list-txt" style="white-space: nowrap;"><span class="title-qick">Tenure </span>:{{qb.tenure}}</mat-list-item>
+                                        <mat-list-item *ngIf="!!qb.interestRate" role="listitem" class="list-txt"><span class="title-qick">Interest</span>:{{qb.interestRate}} %</mat-list-item>
+                                    </mat-list>
+                                </div>
+                            </ng-template>
+                            <h3 class="text-center quick-book-lbl" *ngIf="!quickBooks">Quick Books not available.</h3>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+                <br>
+                <div>
+                    <div class="row">
+                        <div class="width100Per">
+                            <div class="">
+                                <div class="">
+                                    <h3 class="header-title"><span style="color: red;">*</span>Add Nominee?</h3>
+                                </div>
+                            </div>
+                            <div class="radio-btn-wrapper">
+                                <mat-radio-group aria-label="Add Nominee?" formControlName="isNomineeShown" (change)="onNomineeYesNoChange($event)">
+                                    <mat-radio-button [value]="true">
+                                        <span class="radio-yes-no">Yes</span>
+                                    </mat-radio-button>
+                                    <mat-radio-button [value]="false">
+                                        <span class="radio-yes-no">No</span>
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+    
+    
+                        <div class="width100Per" *ngIf="rdFormGroup.controls.isNomineeShown.value">
+                            <h3 class="header-title">Existing or add new Nominee?</h3>
+    
+                            <div class="new-exist-radio-btn-wrapper">
+                                <mat-radio-group aria-label="Use Existing or add new Nominee?" [formControl]="rdFormGroup.controls.isExistingOrNewNominee" (change)="onExistingOrNewNomineeChange($event)">
+                                    <mat-radio-button [value]="1" class="radio-yes-no" [disabled]="!arrAccountDetails[pointer]?.isNomineePresent">Use Existing</mat-radio-button>
+                                    <mat-radio-button [value]="2" class="radio-yes-no" >Add New</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+    
+                        <!-- Nominee Form -->
+                        <div class="" *ngIf="rdFormGroup.controls.isNomineeShown.value">
+                            
+                            <h3 class="header-title">Nominee Form</h3>
+    
+                            <div class="row" formGroupName="rdNomineeFormGroup">
+    
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Relation To Accound Holder</mat-label>
+                                    <mat-select formControlName="relationToAccHolder">
+                                        <mat-option *ngFor="let relation of arrNomineeRelationLovs"
+                                            [value]="relation.code">
+                                            {{relation.label}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Nominee Name</mat-label>
+                                    <input matInput formControlName="nomineeName" maxlength="50">
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Address Line 1</mat-label>
+                                    <input matInput formControlName="addressLine1" maxlength="50">
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Address Line 2</mat-label>
+                                    <input matInput formControlName="addressLine2" maxlength="50">
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Address Line 3</mat-label>
+                                    <input matInput formControlName="addressLine3" maxlength="50">
+                                </mat-form-field>
+    
+                                <input type="hidden" formControlName="displayNomineeNameFlag" class="displayNun" />
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Mobile Number</mat-label>
+                                    <input matInput formControlName="mobileNumber" maxlength="10"
+                                        [OnlyNumber]='true'>
+                                </mat-form-field>
+    
+                                <input type="hidden" formControlName="nomineeRegistrationNumber"
+                                    class="displayNun" />
+    
+                                <input type="hidden" formControlName="sharePercentage" class="displayNun" />
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Date of Birth</mat-label>
+                                    <input matInput [matDatepicker]="dateOfBirthPicker"
+                                        formControlName="dateOfBirth" [min]="dateOfBirthMinDate"
+                                        [max]="dateOfBirthMaxDate" autocomplete="off"
+                                        (dateChange)="onDateOfBirthChange($event)" />
+                                    <mat-datepicker-toggle matSuffix [for]="dateOfBirthPicker">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #dateOfBirthPicker></mat-datepicker>
+                                </mat-form-field>
+    
+                                <!-- <mat-form-field class="col-md-4">
+                                    <mat-label>Email</mat-label>
+                                    <input matInput formControlName="emailId">
+                                </mat-form-field> -->
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Country</mat-label>
+                                    <mat-select formControlName="country">
+                                        <mat-option *ngFor="let country of arrCountriesLovs" [value]="country.code">
+                                            {{country.label}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>State</mat-label>
+                                    <input matInput formControlName="state">
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Town Or City</mat-label>
+                                    <input matInput formControlName="townOrCity" maxlength="50">
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Zip Code</mat-label>
+                                    <input matInput formControlName="zipCode" maxlength="6" [OnlyNumber]='true'>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        
+                        <!-- Guardian Form -->
+                        <div class="" *ngIf="rdFormGroup.controls.isNomineeShown.value && nomineeAge != null && nomineeAge < 18">
+    
+                            <h3 class="header-title">Guardian Form</h3>
+    
+                            <div class="row" formGroupName="rdGuardianFormGroup">
+    
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Relation To Nominee</mat-label>
+                                    <mat-select formControlName="relationToNominee">
+                                        <mat-option *ngFor="let relation of arrGuardianRelationLovs"
+                                            [value]="relation.code">
+                                            {{relation.label}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Guardian Name</mat-label>
+                                    <input matInput formControlName="guardianName" maxlength="50">
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Address Line 1</mat-label>
+                                    <input matInput formControlName="addressLine1" maxlength="50">
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Address Line 2</mat-label>
+                                    <input matInput formControlName="addressLine2" maxlength="50">
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Address Line 3</mat-label>
+                                    <input matInput formControlName="addressLine3" maxlength="50">
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Phone Number</mat-label>
+                                    <input matInput formControlName="phoneNumber" maxlength="10"
+                                        [OnlyNumber]='true'>
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Mobile Number</mat-label>
+                                    <input matInput formControlName="mobileNumber" maxlength="10"
+                                        [OnlyNumber]='true'>
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Email</mat-label>
+                                    <input matInput formControlName="emailId" maxlength="50">
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Country</mat-label>
+                                    <mat-select formControlName="country">
+                                        <mat-option *ngFor="let country of arrCountriesLovs" [value]="country.code">
+                                            {{country.label}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>State</mat-label>
+                                    <input matInput formControlName="state" maxlength="50">
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Town Or City</mat-label>
+                                    <input matInput formControlName="townOrCity" maxlength="50">
+                                </mat-form-field>
+    
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Zip Code</mat-label>
+                                    <input matInput formControlName="zipCode" maxlength="6" [OnlyNumber]='true'>
+                                </mat-form-field>
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center bottom-div">
+                    <button mat-raised-button color="primary" [disabled]="this.rdFormGroup.invalid"
+                        (click)="confirm()">Next</button>
+                </div>
+                <!--  -->
+            </form>
+            <br>
+        </div>
+    </div>
+    
+    <!-- CONFIRM PAGE SCREEN -->
+    <div *ngIf="confirmation_screen">
+        <mat-toolbar class="text-center tool-bar" style="margin-bottom: 15px;">
+            <mat-icon matSuffix class="back_screen" matTooltip="Go Back" (click)="back_screen()">keyboard_arrow_left
+            </mat-icon>
+            Confirmation
+        </mat-toolbar>
+        <div class="container" style="border: 1px solid #8080801c;">
+    
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <td>Product</td>
+                        <td>{{rdFormGroup.controls.rdProductLabel.value}}</td>
+                    </tr>
+                    <tr>
+                        <td>Deposit Amount</td>
+                        <td>{{rdFormGroup.controls.amount.value | currency:"₹"}}</td>
+                    </tr>
+                    <tr>
+                        <td>Deposit Start Date</td>
+                        <td>{{rdFormGroup.controls.depositDate.value}}</td>
+                    </tr>
+                    <tr>
+                        <td>Maturity Date</td>
+                        <td>{{rdFormGroup.controls.maturityDate.value}}</td>
+                    </tr>
+                    <tr>
+                        <td>Interest Rate</td>
+                        <td>{{rdFormGroup.controls.interestRate.value}} %</td>
+                    </tr>
+                    <tr>
+                        <td>Deposit Term/Tenure</td>
+                        <td>{{rdFormGroup.controls.tenure.value}}</td>
+                    </tr>
+                    <tr>
+                        <td>Maturity Amount</td>
+                        <td>{{rdFormGroup.controls.maturityAmount.value | currency:"₹"}}</td>
+                    </tr>
+                    <tr>
+                        <td>Joint Holder</td>
+                        <td>{{rdFormGroup.controls.jointHolder.value ? 'Yes': 'No'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+    
+            <!-- Nominee Data -->
+            <table class="table table-hover" *ngIf="rdFormGroup.controls.rdNomineeFormGroup">
+                <tr class="nominee-guardian-title">
+                    <td colspan="2">
+                        Nominee Details
+                    </td>
+                </tr>
+                <tr>
+                    <td>Relation To Account Holder</td>
+                    <td>{{rdFormGroup.value?.relationToAccHolderLabel}}</td>
+                </tr>
+                <tr>
+                    <td>Nominee Name</td>
+                    <td>{{rdFormGroup.controls.rdNomineeFormGroup.controls.nomineeName.value}}</td>
+                </tr>
+                <tr>
+                    <td>Address Line 1</td>
+                    <td>{{rdFormGroup.controls.rdNomineeFormGroup.controls.addressLine1.value}}</td>
+                </tr>
+                <tr>
+                    <td>Address Line 2</td>
+                    <td>{{rdFormGroup.controls.rdNomineeFormGroup.controls.addressLine2.value}}</td>
+                </tr>
+                <tr>
+                    <td>Address Line 3</td>
+                    <td>{{rdFormGroup.controls.rdNomineeFormGroup.controls.addressLine3.value}}</td>
+                </tr>
+                <tr>
+                    <td>Mobile Number</td>
+                    <td>{{rdFormGroup.controls.rdNomineeFormGroup.controls.mobileNumber.value}}</td>
+                </tr>
+                <tr>
+                    <td>Date Of Birth</td>
+                    <td>{{rdFormGroup.controls.rdNomineeFormGroup.controls.dateOfBirth.value | date: 'dd-M-yyyy'}}</td>
+                </tr>
+                <!-- <tr>
+                    <td>Email</td>
+                    <td>{{rdFormGroup.controls.rdNomineeFormGroup.controls.emailId.value}}</td>
+                </tr> -->
+                <tr>
+                    <td>Country</td>
+                    <td>{{rdFormGroup.value?.nomineeCountryLabel}}</td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td>{{rdFormGroup.controls.rdNomineeFormGroup.controls.state.value}}</td>
+                </tr>
+                <tr>
+                    <td>Town Or City</td>
+                    <td>{{rdFormGroup.controls.rdNomineeFormGroup.controls.townOrCity.value}}</td>
+                </tr>
+                <tr>
+                    <td>Zip Code</td>
+                    <td>{{rdFormGroup.controls.rdNomineeFormGroup.controls.zipCode.value}}</td>
+                </tr>
+            </table>
+    
+            <!-- Guardian Data -->
+            <table class="table table-hover" *ngIf="rdFormGroup.controls.rdGuardianFormGroup">
+                <tr class="nominee-guardian-title">
+                    <td colspan="2">
+                        Guardian Details
+                    </td>
+                </tr>
+                <tr>
+                    <td>Relation To Nominee</td>
+                    <td>{{rdFormGroup.value?.relationToNomineeLabel}}</td>
+                </tr>
+                <tr>
+                    <td>Guardian Name</td>
+                    <td>{{rdFormGroup.controls.rdGuardianFormGroup.controls.guardianName.value}}</td>
+                </tr>
+                <tr>
+                    <td>Address Line 1</td>
+                    <td>{{rdFormGroup.controls.rdGuardianFormGroup.controls.addressLine1.value}}</td>
+                </tr>
+                <tr>
+                    <td>Address Line 2</td>
+                    <td>{{rdFormGroup.controls.rdGuardianFormGroup.controls.addressLine2.value}}</td>
+                </tr>
+                <tr>
+                    <td>Address Line 3</td>
+                    <td>{{rdFormGroup.controls.rdGuardianFormGroup.controls.addressLine3.value}}</td>
+                </tr>
+                <tr>
+                    <td>Phone Number</td>
+                    <td>{{rdFormGroup.controls.rdGuardianFormGroup.controls.phoneNumber.value}}</td>
+                </tr>
+                <tr>
+                    <td>Mobile Number</td>
+                    <td>{{rdFormGroup.controls.rdGuardianFormGroup.controls.mobileNumber.value}}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{rdFormGroup.controls.rdGuardianFormGroup.controls.emailId.value}}</td>
+                </tr>
+                <tr>
+                    <td>Country</td>
+                    <td>{{rdFormGroup.value?.guardianCountryLabel}}</td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td>{{rdFormGroup.controls.rdGuardianFormGroup.controls.state.value}}</td>
+                </tr>
+                <tr>
+                    <td>Town Or City</td>
+                    <td>{{rdFormGroup.controls.rdGuardianFormGroup.controls.townOrCity.value}}</td>
+                </tr>
+                <tr>
+                    <td>Zip Code</td>
+                    <td>{{rdFormGroup.controls.rdGuardianFormGroup.controls.zipCode.value}}</td>
+                </tr>
+            </table>
+        </div><br>
+        <div class="text-center">
+            <mat-checkbox color='primary' [(ngModel)]="checked">Were you assisted by Yes Bank Staff ?</mat-checkbox>
+            <!-- Form For YES BANK STAFF INPUT -->
+            <div *ngIf="checked">
+                <form class="example-form" [formGroup]="rdStaff">
+                    <mat-form-field class="example-full-width" class="staff-field">
+                        <input matInput placeholder="Enter Staff ID" formControlName="staffId" minlength="6"
+                            maxlength="20" [OnlyNumber]="true" (paste)="onPaste($event)" required>
+                    </mat-form-field>
+                </form>
+            </div>
+            <!--  -->
+        </div>
+    
+        <!-- Submit Form Button -->
+        <div class="text-center bottom-div">
+            <button mat-raised-button color="primary" (click)="proceed()" [disabled]="proceed_enabled">Proceed</button>
+        </div>
+    </div>
+    
+    
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
+    </ngx-loading>
+</mat-card>
