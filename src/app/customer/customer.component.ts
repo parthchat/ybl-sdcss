@@ -135,7 +135,7 @@ export class CustomerComponent implements OnInit {
 
         // Recurring Deposit Service
         if(this.sr_type == 1012){
-          this.router.navigate(['rd']);
+          this.router.navigate(['recurring-deposit']);
         }
         
         // Profile Update Service
