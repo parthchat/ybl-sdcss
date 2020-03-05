@@ -135,7 +135,7 @@ export class CustomerComponent implements OnInit {
 
         // Recurring Deposit Service
         if(this.sr_type == 1012){
-          this.router.navigate(['rd']);
+          this.router.navigate(['recurring-deposit']);
         }
         
         // Profile Update Service
@@ -258,9 +258,12 @@ export class CustomerComponent implements OnInit {
         this.newarayy = res['ProcessVariables']['validDocList'];
         this.validUploadMethods = res['ProcessVariables']['validUploadMethods'];
         for (var i = 0; i < this.newarayy.length; i++) {
-          if (!this.newarayy[i].isPrimary) {
+           if (this.newarayy[i].isPrimary) {
             this.docType.push(this.newarayy[i]);
           }
+          // if (!this.newarayy[i].isPrimary) {
+          //   this.docType.push(this.newarayy[i]);
+          // }
         }
         // to Check if Docs are Optional or Not , If any doc type is Primary==false than it is optional
         for (var i = 0; i < this.newarayy.length; i++) {

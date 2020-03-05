@@ -32,7 +32,7 @@ const routes: Routes = [
   { path: '404', component: NotFoundComponent },
   { path: 'result', component: AcceptRejectComponent },
   { path: 'emailverify', component: EmailverifyComponent },
-  { path: 'rd', component: RecurringDepositComponent },
+  { path: 'recurring-deposit', component: RecurringDepositComponent },
   { path: 'error', component: ErrorpageComponent },
   { path: 'mobileverify', component: MobileVerifyComponent,canActivate: [AuthGuard] },
   { path: 'confirm-request', component: AuthorizationComponent,canActivate: [AuthGuard] },

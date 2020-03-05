@@ -13,6 +13,16 @@ export class Constants {
     public static InterceptorSkipHeader = 'X-Skip-Interceptor';
     public static VALIDATION_ALPHANUMERIC = /^[a-zA-Z0-9]+$/;    //!~{}|[]^_;:?()*,-.=@#$
     public static VALIDATION_PASSWORD = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!~^_;:,-.=*#?|])[A-Za-z\\d@$!~^_;:,-.=*#?|]{1,}$";
+    // public static VALIDATION_REGX_TEXTFIELD = /^[a-zA-Z0-9 ,'.\-''_""()\/&[\]]+$/;
+    public static VALIDATION_REGX_TEXTFIELD = /^[a-zA-Z0-9 ,.\-_#@]+$/;
+    public static VALIDATION_REGX_NUMBER = /^[0-9]+$/;
+    public static VALIDATION_REGX_STD_NUMBER = /^[1-9][0-9]*$/;
+    public static Validation_letters_only = /^[A-Za-z]+$/
+    public static Aadhar_number_validation = /^\d{12}$/;
+    public static VALIDATION_REGX_PAN_NUMBER = /[A-Za-z]{5}\d{4}[A-Za-z]{1}/;
+    //                                        1st digit 2-to-9 and after that it can be 0 to 9  
+    public static VALIDATION_REGEX_LANDLINE_NUMBER  = /^[1-9][0-9]/;
+    public static VALIDATION_REGX_EMAIL = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 }
 
 export module APIConstants {

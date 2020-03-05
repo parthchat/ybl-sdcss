@@ -32,6 +32,8 @@ import { AuthorizationComponent } from './authorization/authorization.component'
 import { UnderConstructionComponent } from './under-construction/under-construction.component';
 import { ProfileUpdateComponent } from './profile-update/profile-update.component';
 import { RecurringDepositComponent } from './recurring-deposit/recurring-deposit.component';
+import { OnlyNumberDirective } from './directives/only-numbers.directive';
+import { LessThanNumberDirective } from './directives/less-than-number.directive';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import { RecurringDepositComponent } from './recurring-deposit/recurring-deposit
     AuthorizationComponent,
     UnderConstructionComponent,
     ProfileUpdateComponent,
-    RecurringDepositComponent
+    RecurringDepositComponent,
+    OnlyNumberDirective,
+    LessThanNumberDirective
   ],
   imports: [
     BrowserModule,
