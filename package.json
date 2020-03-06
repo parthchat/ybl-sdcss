@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "node --max_old_space_size=8192 ./node_modules/.bin/ng build --prod --base-href=\"/sdcss/d/\"",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -33,7 +33,7 @@
     "hammerjs": "^2.0.8",
     "jquery": "^3.4.1",
     "ng2-img-max": "^2.1.18",
-    "ng2-pdf-viewer": "^6.1.1",
+    "ng2-pdf-viewer": "6.1.1",
     "ngx-loading": "^3.0.1",
     "popper": "^1.0.1",
     "rxjs": "~6.4.0",

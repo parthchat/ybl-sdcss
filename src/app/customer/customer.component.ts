@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { Router } from '@angular/router';
 import { DomSanitizer,SafeResourceUrl } from '@angular/platform-browser';
@@ -95,6 +95,13 @@ export class CustomerComponent implements OnInit {
   pdf1: boolean = false;
   pdf2: any = false ;
   front_file: any;
+  @ViewChild('front_desktop_id', { static: false }) imgFront_mobile: ElementRef;
+  @ViewChild('front_mobile_id', { static: false }) front_mobile_id: ElementRef;
+  @ViewChild('front_mobileCapture_id', { static: false }) front_mobileCapture_id: ElementRef;
+//  back Img
+  @ViewChild('back_desktop_id', { static: false }) back_desktop_id: ElementRef;
+  @ViewChild('back_mobile', { static: false }) back_mobile: ElementRef;
+  @ViewChild('back_mobile_id', { static: false }) back_mobile_id: ElementRef;
   constructor(public dialog: MatDialog, private baseAPIService: BaseAPIService, private tokenStorage: TokenStorage, private customerService: CustomerService, private sanitizer: DomSanitizer, private router: Router, private service: DataService, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
@@ -302,6 +309,26 @@ export class CustomerComponent implements OnInit {
     this.frontImg = this.backImg = '';
     this.otherDocType = type.docType;
     this.pageCount = type.pageCount;
+    console.log(this.imgFront_mobile,this.front_mobileCapture_id,this.front_mobile_id)
+    if(this.imgFront_mobile){
+      console.log(this.imgFront_mobile.nativeElement.value);
+      this.imgFront_mobile.nativeElement.value = null
+    }
+    if(this.front_mobileCapture_id){
+      this.front_mobileCapture_id.nativeElement.value = null
+    }
+    if(this.front_mobile_id){
+      this.front_mobile_id.nativeElement.value = null
+    }
+    if(this.back_desktop_id){
+      this.back_desktop_id.nativeElement.value = null
+    }
+    if(this.back_mobile){
+      this.back_mobile.nativeElement.value = null
+    }
+    if(this.back_mobile_id){
+      this.back_mobile_id.nativeElement.value = null
+    }
     this.validationOnAccpt();
   }
 

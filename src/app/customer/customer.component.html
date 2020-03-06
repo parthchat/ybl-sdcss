@@ -121,7 +121,7 @@
         <mat-label>Select Document Type</mat-label>
         <mat-select [(ngModel)]="otherDocType">
           <mat-option *ngFor="let type of docType" (ngModelChange)="Onselect(type)" (click)="Onselect(type)"
-            [value]="type.docType" [disabled]="type.isPrimary">
+            [value]="type.docType" [disabled]="!type.isPrimary">
             {{type.docName}}
           </mat-option>
         </mat-select>
@@ -132,20 +132,20 @@
         <!-- front Image -->
         <div *ngIf="!mobile">
           <label for="upload-1" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Browse and Upload Front Side </label>
-          <input type="file" name="pic" id="upload-1" accept=".pdf, .png, .jpeg, .jpg, .jpe, .jfif, .gif, .bmp" (change)="frontImage($event.target.files)">
+          <input type="file" #front_desktop_id name="pic" id="upload-1" accept=".pdf, .png, .jpeg, .jpg, .jpe, .jfif, .gif, .bmp" (change)="frontImage(front_desktop_id.files)">
         </div>
 
         <div class="row" *ngIf="mobile">
           <div class="col-sm-5">
             <label for="upload-2" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Browse and Upload Front Side </label>
-            <input type="file" name="pic" id="upload-2" accept=".pdf, .png, .jpeg, .jpg, .jpe, .jfif, .gif, .bmp" (change)="frontImage($event.target.files)">
+            <input type="file" #front_mobile_id name="pic" id="upload-2" accept=".pdf, .png, .jpeg, .jpg, .jpe, .jfif, .gif, .bmp" (change)="frontImage(front_mobile_id.files)">
           </div>
           <div class="col-sm-2">
             <h6 class="font-size"> OR </h6> 
           </div>
           <div class="col-sm-5">
             <label for="upload-3" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Capture and Attach Front Side </label>
-            <input type="file" name="pic" id="upload-3" accept="image/*" (change)="frontImage($event.target.files)" capture="camera">
+            <input type="file" #front_mobileCapture_id name="pic" id="upload-3" accept="image/*" (change)="frontImage(front_mobileCapture_id.files)" capture="camera">
           </div>
         </div>
         <!-- Show thumbnail img -- FRONT -->
@@ -172,20 +172,20 @@
         <div class="" *ngIf="pageCount==2">
           <div *ngIf="!mobile">
             <label for="upload-4" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Browse and Upload Back Side </label>
-            <input type="file" name="pic" id="upload-4" accept=".pdf, .png, .jpeg, .jpg, .jpe, .jfif, .gif, .bmp" (change)="backImage($event.target.files)">
+            <input type="file" #back_desktop_id name="pic" id="upload-4" accept=".pdf, .png, .jpeg, .jpg, .jpe, .jfif, .gif, .bmp" (change)="backImage(back_desktop_id.files)">
           </div>
 
           <div class="row" *ngIf="mobile">
             <div class="col-sm-5">
               <label for="upload-5" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Browse and Upload Back Side </label>
-              <input type="file" name="pic" id="upload-5" accept="image/x-png,image/jpeg,application/pdf,image/tiff" (change)="backImage($event.target.files)">
+              <input type="file" #back_mobile name="pic" id="upload-5" accept="image/x-png,image/jpeg,application/pdf,image/tiff" (change)="backImage(back_mobile.files)">
             </div>
             <div class="col-sm-2">
               <h6 class="font-size"> OR </h6> 
             </div>
             <div class="col-sm-5">
               <label for="upload-6" class="custom-file-upload"><img src="assets/images/imgs.png" class="imgs"> Capture and Attach Back Side </label>
-              <input type="file" name="pic" id="upload-6" accept="image/*" (change)="backImage($event.target.files)" capture="camera">
+              <input type="file" #back_mobile_id name="pic" id="upload-6" accept="image/*" (change)="backImage(back_mobile_id.files)" capture="camera">
             </div>
           </div>
           <!-- Show thumbnail img -- BACK -->
