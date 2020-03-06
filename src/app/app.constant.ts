@@ -92,6 +92,11 @@ export module APIConstants {
         PROCESS_ID = '4d94c438998811e9abea8e9e63ab42a5',
         WORKFLOW_ID = '41b5e566998811e9abea8e9e63ab42a5',
     }
+
+    export enum getAccountDetails {
+        PROCESS_ID = '59cf14ec09d611eabda88a71c4611c6d',
+        WORKFLOW_ID = '30a6167e09d611eabda88a71c4611c6d',
+    }
 }
 
 export class AlertMessages {
