@@ -30,493 +30,493 @@ export class RecurringDepositService {
         "srType": '(JSON.parse(this.tokenStorage.getSrId()).id).toString()'
       }
     }
-    // return this.baseAPIService.post(APIConstants.Details.WORKFLOW_ID, processVariables);
-    return of(
-      {
-        "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
-        "Error": "0",
-        "ErrorCode": "",
-        "ErrorMessage": "",
-        "ProcessId": "06d837a48b4711e9b12c2eca4ea5bb5f",
-        "ProcessInstanceId": "6ff5bf545c8911eaa2956adcd8a925ce",
-        "ProcessName": "Get Service Request Details",
-        "ProcessVariables": {
-            "accountDetails": [
-                {
-                    "accountNumber": "1234567890987654",
-                    "accountRelation": "1",
-                    "accountType": "3",
-                    "balance": null,
-                    "branchCode": "419",
-                    "branchName": "IFC"
-                },
-                {
-                    "accountNumber": "1234567899876543",
-                    "accountRelation": "10",
-                    "accountType": "2",
-                    "branchCode": "422",
-                    "branchName": "COLABA"
-                }
-            ],
-            "apiUniqueReqId": "",
-            "countryData": [
-                {
-                    "code": 1,
-                    "label": "India"
-                }
-            ],
-            "custDetails": {
-                "accountNumber": null,
-                "custId": "Ganesh332",
-                "custName": "Ganesh482",
-                "custType": "41",
-                "landline": null,
-                "maskedCustId": "Ganesh332",
-                "mdmPan": "******465G",
-                "mobileNumber": "9860413109",
-                "panExist": true,
-                "seniorCitizen": false
-            },
-            "docs": null,
-            "dvuComments": null,
-            "emailUpdate": {
-                "maskedOldEmail": null,
-                "newEmail": null,
-                "oldEmail": "kasarganesh99@gmail.com"
-            },
-            "fdDetails": null,
-            "fdrdGuardianDetails": {
-                "addressLine1": "Addressline 1",
-                "addressLine2": "Addressline 2",
-                "addressLine3": "Addressline 3",
-                "country": "1",
-                "emailId": null,
-                "guardianName": "Sample Nominee",
-                "mobileNumber": "9876543211",
-                "phoneNumber": "9876543210",
-                "relationToNominee": "2",
-                "state": "state value",
-                "townOrCity": "City Value",
-                "zipCode": "zip code"
-            },
-            "fdrdNomineeDetails": {
-                "accountNumber": null,
-                "accountType": null,
-                "addressLine1": "Addressline 1",
-                "addressLine2": "Addressline 2",
-                "addressLine3": "Addressline 3",
-                "country": "1",
-                "dateOfBirth": "2004/02/12",
-                "depositNumber": null,
-                "emailId": null,
-                "mobileNumber": null,
-                "nomineeName": "Sample Nominee",
-                "phoneNumber": "9876543210",
-                "relationToAccHolder": "2",
-                "sharePercentage": null,
-                "state": "state value",
-                "townOrCity": "City Value",
-                "zipCode": "zip code"
-            },
-            "guardianRelationData": [
-                {
-                    "code": 1,
-                    "label": "MOTHER"
-                },
-                {
-                    "code": 2,
-                    "label": "FATHER"
-                },
-                {
-                    "code": 3,
-                    "label": "SISTER"
-                },
-                {
-                    "code": 4,
-                    "label": "BROTHER"
-                },
-                {
-                    "code": 5,
-                    "label": "DAUGHTER"
-                },
-                {
-                    "code": 6,
-                    "label": "SON"
-                },
-                {
-                    "code": 7,
-                    "label": "AUNT"
-                },
-                {
-                    "code": 8,
-                    "label": "UNCLE"
-                },
-                {
-                    "code": 9,
-                    "label": "GRANDMOTHER"
-                },
-                {
-                    "code": 10,
-                    "label": "GRANDFATHER"
-                },
-                {
-                    "code": 11,
-                    "label": "MOTHER - IN - LAW"
-                },
-                {
-                    "code": 12,
-                    "label": "FATHER - IN - LAW"
-                },
-                {
-                    "code": 13,
-                    "label": "SISTER - IN- LAW"
-                },
-                {
-                    "code": 14,
-                    "label": "BROTHER - IN - LAW"
-                },
-                {
-                    "code": 15,
-                    "label": "DAUGHTER - IN - LAW"
-                },
-                {
-                    "code": 16,
-                    "label": "SON - IN - LAW"
-                },
-                {
-                    "code": 17,
-                    "label": "WIFE"
-                },
-                {
-                    "code": 18,
-                    "label": "HUSBAND"
-                },
-                {
-                    "code": 19,
-                    "label": "COUSIN"
-                },
-                {
-                    "code": 20,
-                    "label": "GUARDIAN"
-                },
-                {
-                    "code": 21,
-                    "label": "OTHER"
-                }
-            ],
-            "interestInstructions": null,
-            "isAuthorizationRequired": true,
-            "maturityInstructions": null,
-            "needDocs": true,
-            "nomineeRelationData": [
-                {
-                    "code": 1,
-                    "label": "MOTHER"
-                },
-                {
-                    "code": 2,
-                    "label": "FATHER"
-                },
-                {
-                    "code": 3,
-                    "label": "SISTER"
-                },
-                {
-                    "code": 4,
-                    "label": "BROTHER"
-                },
-                {
-                    "code": 5,
-                    "label": "DAUGHTER"
-                },
-                {
-                    "code": 6,
-                    "label": "SON"
-                },
-                {
-                    "code": 7,
-                    "label": "AUNT"
-                },
-                {
-                    "code": 8,
-                    "label": "UNCLE"
-                },
-                {
-                    "code": 9,
-                    "label": "GRANDMOTHER"
-                },
-                {
-                    "code": 10,
-                    "label": "GRANDFATHER"
-                },
-                {
-                    "code": 11,
-                    "label": "MOTHER - IN - LAW"
-                },
-                {
-                    "code": 12,
-                    "label": "FATHER - IN - LAW"
-                },
-                {
-                    "code": 13,
-                    "label": "SISTER - IN- LAW"
-                },
-                {
-                    "code": 14,
-                    "label": "BROTHER - IN - LAW"
-                },
-                {
-                    "code": 15,
-                    "label": "DAUGHTER - IN - LAW"
-                },
-                {
-                    "code": 16,
-                    "label": "SON - IN - LAW"
-                },
-                {
-                    "code": 17,
-                    "label": "WIFE"
-                },
-                {
-                    "code": 18,
-                    "label": "HUSBAND"
-                },
-                {
-                    "code": 19,
-                    "label": "COUSIN"
-                },
-                {
-                    "code": 20,
-                    "label": "GUARDIAN"
-                },
-                {
-                    "code": 21,
-                    "label": "OTHER"
-                }
-            ],
-            "panUpdate": {
-                "isSameName": false,
-                "maskedOldPan": null,
-                "matchLevel": null,
-                "matchPer": null,
-                "newPan": null,
-                "newPanName": null,
-                "oldPan": null
-            },
-            "principleInstructions": null,
-            "productDetails": [
-                {
-                    "code": "928",
-                    "label": "RD-Resident Citizens",
-                    "type": null
-                }
-            ],
-            "profileNew": null,
-            "profileOld": null,
-            "rdDetails": {
-                "accountRelation": "1",
-                "branchId": 2,
-                "custType": null,
-                "depositAmount": 10500,
-                "depositProduct": 928,
-                "jointAccount": false,
-                "pan": null,
-                "sourceAccount": "1234567890987654",
-                "staffId": null,
-                "tenureMonths": 12
-            },
-            "response": [
-                {
-                    "status": "success",
-                    "statusCode": 200
-                }
-            ],
-            "schemeDetails": null,
-            "srDetails": {
-                "branchId": "1",
-                "createdOn": "2020-02-06T13:26:53Z",
-                "currentRole": null,
-                "currentUser": null,
-                "rejectReason": null,
-                "srId": "SR20200206103924SS",
-                "srName": "Recurring Deposit Creation",
-                "srType": 1012,
-                "status": "25",
-                "updateBy": "101",
-                "updatedOn": "2020-02-06T13:26:53Z",
-                "userId": "101"
-            },
-            "srId": "SR20200206103924SS",
-            "srMetaData": {
-                "appId": "app1",
-                "channel": "channel1",
-                "refId": "1580995505"
-            },
-            "taskDetails": null
-        },
-        "Status": "Execution Completed",
-        "WorkflowId": "06b4889a8b4711e9b12c2eca4ea5bb5f"
-    }
-    );
+    return this.baseAPIService.post(APIConstants.Details.WORKFLOW_ID, processVariables);
+    // return of(
+    //   {
+    //     "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
+    //     "Error": "0",
+    //     "ErrorCode": "",
+    //     "ErrorMessage": "",
+    //     "ProcessId": "06d837a48b4711e9b12c2eca4ea5bb5f",
+    //     "ProcessInstanceId": "6ff5bf545c8911eaa2956adcd8a925ce",
+    //     "ProcessName": "Get Service Request Details",
+    //     "ProcessVariables": {
+    //         "accountDetails": [
+    //             {
+    //                 "accountNumber": "1234567890987654",
+    //                 "accountRelation": "1",
+    //                 "accountType": "3",
+    //                 "balance": null,
+    //                 "branchCode": "419",
+    //                 "branchName": "IFC"
+    //             },
+    //             {
+    //                 "accountNumber": "1234567899876543",
+    //                 "accountRelation": "10",
+    //                 "accountType": "2",
+    //                 "branchCode": "422",
+    //                 "branchName": "COLABA"
+    //             }
+    //         ],
+    //         "apiUniqueReqId": "",
+    //         "countryData": [
+    //             {
+    //                 "code": 1,
+    //                 "label": "India"
+    //             }
+    //         ],
+    //         "custDetails": {
+    //             "accountNumber": null,
+    //             "custId": "Ganesh332",
+    //             "custName": "Ganesh482",
+    //             "custType": "41",
+    //             "landline": null,
+    //             "maskedCustId": "Ganesh332",
+    //             "mdmPan": "******465G",
+    //             "mobileNumber": "9860413109",
+    //             "panExist": true,
+    //             "seniorCitizen": false
+    //         },
+    //         "docs": null,
+    //         "dvuComments": null,
+    //         "emailUpdate": {
+    //             "maskedOldEmail": null,
+    //             "newEmail": null,
+    //             "oldEmail": "kasarganesh99@gmail.com"
+    //         },
+    //         "fdDetails": null,
+    //         "fdrdGuardianDetails": {
+    //             "addressLine1": "Addressline 1",
+    //             "addressLine2": "Addressline 2",
+    //             "addressLine3": "Addressline 3",
+    //             "country": "1",
+    //             "emailId": null,
+    //             "guardianName": "Sample Nominee",
+    //             "mobileNumber": "9876543211",
+    //             "phoneNumber": "9876543210",
+    //             "relationToNominee": "2",
+    //             "state": "state value",
+    //             "townOrCity": "City Value",
+    //             "zipCode": "zip code"
+    //         },
+    //         "fdrdNomineeDetails": {
+    //             "accountNumber": null,
+    //             "accountType": null,
+    //             "addressLine1": "Addressline 1",
+    //             "addressLine2": "Addressline 2",
+    //             "addressLine3": "Addressline 3",
+    //             "country": "1",
+    //             "dateOfBirth": "2004/02/12",
+    //             "depositNumber": null,
+    //             "emailId": null,
+    //             "mobileNumber": null,
+    //             "nomineeName": "Sample Nominee",
+    //             "phoneNumber": "9876543210",
+    //             "relationToAccHolder": "2",
+    //             "sharePercentage": null,
+    //             "state": "state value",
+    //             "townOrCity": "City Value",
+    //             "zipCode": "zip code"
+    //         },
+    //         "guardianRelationData": [
+    //             {
+    //                 "code": 1,
+    //                 "label": "MOTHER"
+    //             },
+    //             {
+    //                 "code": 2,
+    //                 "label": "FATHER"
+    //             },
+    //             {
+    //                 "code": 3,
+    //                 "label": "SISTER"
+    //             },
+    //             {
+    //                 "code": 4,
+    //                 "label": "BROTHER"
+    //             },
+    //             {
+    //                 "code": 5,
+    //                 "label": "DAUGHTER"
+    //             },
+    //             {
+    //                 "code": 6,
+    //                 "label": "SON"
+    //             },
+    //             {
+    //                 "code": 7,
+    //                 "label": "AUNT"
+    //             },
+    //             {
+    //                 "code": 8,
+    //                 "label": "UNCLE"
+    //             },
+    //             {
+    //                 "code": 9,
+    //                 "label": "GRANDMOTHER"
+    //             },
+    //             {
+    //                 "code": 10,
+    //                 "label": "GRANDFATHER"
+    //             },
+    //             {
+    //                 "code": 11,
+    //                 "label": "MOTHER - IN - LAW"
+    //             },
+    //             {
+    //                 "code": 12,
+    //                 "label": "FATHER - IN - LAW"
+    //             },
+    //             {
+    //                 "code": 13,
+    //                 "label": "SISTER - IN- LAW"
+    //             },
+    //             {
+    //                 "code": 14,
+    //                 "label": "BROTHER - IN - LAW"
+    //             },
+    //             {
+    //                 "code": 15,
+    //                 "label": "DAUGHTER - IN - LAW"
+    //             },
+    //             {
+    //                 "code": 16,
+    //                 "label": "SON - IN - LAW"
+    //             },
+    //             {
+    //                 "code": 17,
+    //                 "label": "WIFE"
+    //             },
+    //             {
+    //                 "code": 18,
+    //                 "label": "HUSBAND"
+    //             },
+    //             {
+    //                 "code": 19,
+    //                 "label": "COUSIN"
+    //             },
+    //             {
+    //                 "code": 20,
+    //                 "label": "GUARDIAN"
+    //             },
+    //             {
+    //                 "code": 21,
+    //                 "label": "OTHER"
+    //             }
+    //         ],
+    //         "interestInstructions": null,
+    //         "isAuthorizationRequired": true,
+    //         "maturityInstructions": null,
+    //         "needDocs": true,
+    //         "nomineeRelationData": [
+    //             {
+    //                 "code": 1,
+    //                 "label": "MOTHER"
+    //             },
+    //             {
+    //                 "code": 2,
+    //                 "label": "FATHER"
+    //             },
+    //             {
+    //                 "code": 3,
+    //                 "label": "SISTER"
+    //             },
+    //             {
+    //                 "code": 4,
+    //                 "label": "BROTHER"
+    //             },
+    //             {
+    //                 "code": 5,
+    //                 "label": "DAUGHTER"
+    //             },
+    //             {
+    //                 "code": 6,
+    //                 "label": "SON"
+    //             },
+    //             {
+    //                 "code": 7,
+    //                 "label": "AUNT"
+    //             },
+    //             {
+    //                 "code": 8,
+    //                 "label": "UNCLE"
+    //             },
+    //             {
+    //                 "code": 9,
+    //                 "label": "GRANDMOTHER"
+    //             },
+    //             {
+    //                 "code": 10,
+    //                 "label": "GRANDFATHER"
+    //             },
+    //             {
+    //                 "code": 11,
+    //                 "label": "MOTHER - IN - LAW"
+    //             },
+    //             {
+    //                 "code": 12,
+    //                 "label": "FATHER - IN - LAW"
+    //             },
+    //             {
+    //                 "code": 13,
+    //                 "label": "SISTER - IN- LAW"
+    //             },
+    //             {
+    //                 "code": 14,
+    //                 "label": "BROTHER - IN - LAW"
+    //             },
+    //             {
+    //                 "code": 15,
+    //                 "label": "DAUGHTER - IN - LAW"
+    //             },
+    //             {
+    //                 "code": 16,
+    //                 "label": "SON - IN - LAW"
+    //             },
+    //             {
+    //                 "code": 17,
+    //                 "label": "WIFE"
+    //             },
+    //             {
+    //                 "code": 18,
+    //                 "label": "HUSBAND"
+    //             },
+    //             {
+    //                 "code": 19,
+    //                 "label": "COUSIN"
+    //             },
+    //             {
+    //                 "code": 20,
+    //                 "label": "GUARDIAN"
+    //             },
+    //             {
+    //                 "code": 21,
+    //                 "label": "OTHER"
+    //             }
+    //         ],
+    //         "panUpdate": {
+    //             "isSameName": false,
+    //             "maskedOldPan": null,
+    //             "matchLevel": null,
+    //             "matchPer": null,
+    //             "newPan": null,
+    //             "newPanName": null,
+    //             "oldPan": null
+    //         },
+    //         "principleInstructions": null,
+    //         "productDetails": [
+    //             {
+    //                 "code": "928",
+    //                 "label": "RD-Resident Citizens",
+    //                 "type": null
+    //             }
+    //         ],
+    //         "profileNew": null,
+    //         "profileOld": null,
+    //         "rdDetails": {
+    //             "accountRelation": "1",
+    //             "branchId": 2,
+    //             "custType": null,
+    //             "depositAmount": 10500,
+    //             "depositProduct": 928,
+    //             "jointAccount": false,
+    //             "pan": null,
+    //             "sourceAccount": "1234567890987654",
+    //             "staffId": null,
+    //             "tenureMonths": 12
+    //         },
+    //         "response": [
+    //             {
+    //                 "status": "success",
+    //                 "statusCode": 200
+    //             }
+    //         ],
+    //         "schemeDetails": null,
+    //         "srDetails": {
+    //             "branchId": "1",
+    //             "createdOn": "2020-02-06T13:26:53Z",
+    //             "currentRole": null,
+    //             "currentUser": null,
+    //             "rejectReason": null,
+    //             "srId": "SR20200206103924SS",
+    //             "srName": "Recurring Deposit Creation",
+    //             "srType": 1012,
+    //             "status": "25",
+    //             "updateBy": "101",
+    //             "updatedOn": "2020-02-06T13:26:53Z",
+    //             "userId": "101"
+    //         },
+    //         "srId": "SR20200206103924SS",
+    //         "srMetaData": {
+    //             "appId": "app1",
+    //             "channel": "channel1",
+    //             "refId": "1580995505"
+    //         },
+    //         "taskDetails": null
+    //     },
+    //     "Status": "Execution Completed",
+    //     "WorkflowId": "06b4889a8b4711e9b12c2eca4ea5bb5f"
+    // }
+    // );
   }
 
   // get Balanace based on select bank A/C No.
   getAccountDetails(apiUniqueKey: any, accNumber: string, accType: string) {
     let body = {
-      "processId": 'APIConstants.fd_Get_Balance.PROCESS_ID',
-      "workflowId": 'APIConstants.fd_Get_Balance.WORKFLOW_ID',
+      "processId": 'APIConstants.getAccountDetails.PROCESS_ID',
+      "workflowId": 'APIConstants.getAccountDetails.WORKFLOW_ID',
       "projectId": Constants.PROJECT_ID,
       "ProcessVariables": {
         // "sessionId": this.tokenStorage.getSessionId(),
         "srId": this.tokenStorage.getSrId(),
         "apiUniqueReqId": apiUniqueKey,
-        "acctNumber": accNumber,
+        "acctNumber": '1234567890987654',
         "acctType": accType
       }
     };
     console.log('[RecurringDepositService] Get Account Balance payload: ', body);
-    // return this.baseAPIService.auth_options(APIConstants.fd_Get_Balance.WORKFLOW_ID, body);
+    return this.baseAPIService.post(APIConstants.getAccountDetails.WORKFLOW_ID, body);
     
-    if(accNumber == '1234567890987654') {
-      return of(
-        {
-          "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
-          "Error": "0",
-          "ErrorCode": "200",
-          "ErrorMessage": "",
-          "ProcessId": "59cf14ec09d611eabda88a71c4611c6d",
-          "ProcessInstanceId": "bb5eee3e53c911eaa4fb3af528466045",
-          "ProcessName": "CSSP:: Get Account Details",
-          "ProcessVariables": {
-              "balance": "120000.00",
-              "fdrdQuickBookData": [
-                  {
-                      "amount": 10000,
-                      "isSpecial": true,
-                      "maxDays": 0,
-                      "maxMonths": 0,
-                      "maxYear": 3,
-                      "minDays": 0,
-                      "minMonths": 0,
-                      "minYear": 2,
-                      "interestRate": "5.5",
-                      "schemeName": "2 years < 3 years"
-                  },
-                  {
-                      "amount": 60000,
-                      "isSpecial": true,
-                      "maxDays": 20,
-                      "maxMonths": 12,
-                      "maxYear": 0,
-                      "minDays": 10,
-                      "minMonths": 12,
-                      "minYear": 0,
-                      "interestRate": "5.5",
-                      "schemeName": "12 Months 10 Days to 12 Months 20 Days"
-                  },
-                  {
-                      "amount": 90000,
-                      "isSpecial": true,
-                      "maxDays": 18,
-                      "maxMonths": 18,
-                      "maxYear": 0,
-                      "minDays": 8,
-                      "minMonths": 18,
-                      "minYear": 0,
-                      "interestRate": "5.5",
-                      "schemeName": "18 Months 8 Days to 18 Months 18 Days"
-                  }
-              ],
-              "guardianDetails": {
-                  "addressLine1": "PAREL",
-                  "addressLine2": "Thane",
-                  "addressLine3": "Thane",
-                  "country": "1",
-                  "emailId": "test@gmail.com",
-                  "guardianName": "Sample Name",
-                  "mobileNumber": "9876543210",
-                  "phoneNumber": "9876543210",
-                  "relationToNominee": "2",
-                  "state": "MAHARASHTRA",
-                  "townOrCity": "MUMBAI",
-                  "zipCode": "400037"
-              },
-              "nomineeDetails": {
-                  "addressLine1": "PAREL",
-                  "addressLine2": "Thane",
-                  "addressLine3": "Thane",
-                  "country": "1",
-                  "dateOfBirth": "2003-08-08",
-                  "displayNomineeNameFlag": "Y",
-                  "emailId": "test@gmail.com",
-                  "mobileNumber": "9876543210",
-                  "nomineeName": "Sample Name",
-                  "nomineeRegistrationNumber": "6535991",
-                  "relationToAccHolder": "2",
-                  "sharePercentage": "100.00",
-                  "state": "MAHARASHTRA",
-                  "townOrCity": "MUMBAI",
-                  "zipCode": "400037"
-              },
-              "quickBookData": null
-          },
-          "Status": "Execution Completed",
-          "WorkflowId": "30a6167e09d611eabda88a71c4611c6d"
-        }
-      );
-    } else {
-      return of(
-        {
-          "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
-          "Error": "0",
-          "ErrorCode": "200",
-          "ErrorMessage": "",
-          "ProcessId": "59cf14ec09d611eabda88a71c4611c6d",
-          "ProcessInstanceId": "f28a8f1853c311eabe0d3af528466045",
-          "ProcessName": "CSSP:: Get Account Details",
-          "ProcessVariables": {
-              "balance": "800.00",
-              "fdrdQuickBookData": [
-                  {
-                      "isSpecial": true,
-                      "maxDays": 0,
-                      "maxMonths": 0,
-                      "maxYear": 3,
-                      "minDays": 0,
-                      "minMonths": 0,
-                      "minYear": 2,
-                      "schemeName": "2 years < 3 years"
-                  },
-                  {
-                      "isSpecial": true,
-                      "maxDays": 20,
-                      "maxMonths": 12,
-                      "maxYear": 0,
-                      "minDays": 10,
-                      "minMonths": 12,
-                      "minYear": 0,
-                      "schemeName": "12 Months 10 Days to 12 Months 20 Days"
-                  },
-                  {
-                      "isSpecial": true,
-                      "maxDays": 18,
-                      "maxMonths": 18,
-                      "maxYear": 0,
-                      "minDays": 8,
-                      "minMonths": 18,
-                      "minYear": 0,
-                      "schemeName": "18 Months 8 Days to 18 Months 18 Days"
-                  }
-              ],
-              "guardianDetails": null,
-              "nomineeDetails": null,
-              "quickBookData": null
-          },
-          "Status": "Execution Completed",
-          "WorkflowId": "30a6167e09d611eabda88a71c4611c6d"
-        }
-      );
-    }
+    // if(accNumber == '1234567890987654') {
+    //   return of(
+    //     {
+    //       "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
+    //       "Error": "0",
+    //       "ErrorCode": "200",
+    //       "ErrorMessage": "",
+    //       "ProcessId": "59cf14ec09d611eabda88a71c4611c6d",
+    //       "ProcessInstanceId": "bb5eee3e53c911eaa4fb3af528466045",
+    //       "ProcessName": "CSSP:: Get Account Details",
+    //       "ProcessVariables": {
+    //           "balance": "120000.00",
+    //           "fdrdQuickBookData": [
+    //               {
+    //                   "amount": 10000,
+    //                   "isSpecial": true,
+    //                   "maxDays": 0,
+    //                   "maxMonths": 0,
+    //                   "maxYear": 3,
+    //                   "minDays": 0,
+    //                   "minMonths": 0,
+    //                   "minYear": 2,
+    //                   "interestRate": "5.5",
+    //                   "schemeName": "2 years < 3 years"
+    //               },
+    //               {
+    //                   "amount": 60000,
+    //                   "isSpecial": true,
+    //                   "maxDays": 20,
+    //                   "maxMonths": 12,
+    //                   "maxYear": 0,
+    //                   "minDays": 10,
+    //                   "minMonths": 12,
+    //                   "minYear": 0,
+    //                   "interestRate": "5.5",
+    //                   "schemeName": "12 Months 10 Days to 12 Months 20 Days"
+    //               },
+    //               {
+    //                   "amount": 90000,
+    //                   "isSpecial": true,
+    //                   "maxDays": 18,
+    //                   "maxMonths": 18,
+    //                   "maxYear": 0,
+    //                   "minDays": 8,
+    //                   "minMonths": 18,
+    //                   "minYear": 0,
+    //                   "interestRate": "5.5",
+    //                   "schemeName": "18 Months 8 Days to 18 Months 18 Days"
+    //               }
+    //           ],
+    //           "guardianDetails": {
+    //               "addressLine1": "PAREL",
+    //               "addressLine2": "Thane",
+    //               "addressLine3": "Thane",
+    //               "country": "1",
+    //               "emailId": "test@gmail.com",
+    //               "guardianName": "Sample Name",
+    //               "mobileNumber": "9876543210",
+    //               "phoneNumber": "9876543210",
+    //               "relationToNominee": "2",
+    //               "state": "MAHARASHTRA",
+    //               "townOrCity": "MUMBAI",
+    //               "zipCode": "400037"
+    //           },
+    //           "nomineeDetails": {
+    //               "addressLine1": "PAREL",
+    //               "addressLine2": "Thane",
+    //               "addressLine3": "Thane",
+    //               "country": "1",
+    //               "dateOfBirth": "2003-08-08",
+    //               "displayNomineeNameFlag": "Y",
+    //               "emailId": "test@gmail.com",
+    //               "mobileNumber": "9876543210",
+    //               "nomineeName": "Sample Name",
+    //               "nomineeRegistrationNumber": "6535991",
+    //               "relationToAccHolder": "2",
+    //               "sharePercentage": "100.00",
+    //               "state": "MAHARASHTRA",
+    //               "townOrCity": "MUMBAI",
+    //               "zipCode": "400037"
+    //           },
+    //           "quickBookData": null
+    //       },
+    //       "Status": "Execution Completed",
+    //       "WorkflowId": "30a6167e09d611eabda88a71c4611c6d"
+    //     }
+    //   );
+    // } else {
+    //   return of(
+    //     {
+    //       "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
+    //       "Error": "0",
+    //       "ErrorCode": "200",
+    //       "ErrorMessage": "",
+    //       "ProcessId": "59cf14ec09d611eabda88a71c4611c6d",
+    //       "ProcessInstanceId": "f28a8f1853c311eabe0d3af528466045",
+    //       "ProcessName": "CSSP:: Get Account Details",
+    //       "ProcessVariables": {
+    //           "balance": "800.00",
+    //           "fdrdQuickBookData": [
+    //               {
+    //                   "isSpecial": true,
+    //                   "maxDays": 0,
+    //                   "maxMonths": 0,
+    //                   "maxYear": 3,
+    //                   "minDays": 0,
+    //                   "minMonths": 0,
+    //                   "minYear": 2,
+    //                   "schemeName": "2 years < 3 years"
+    //               },
+    //               {
+    //                   "isSpecial": true,
+    //                   "maxDays": 20,
+    //                   "maxMonths": 12,
+    //                   "maxYear": 0,
+    //                   "minDays": 10,
+    //                   "minMonths": 12,
+    //                   "minYear": 0,
+    //                   "schemeName": "12 Months 10 Days to 12 Months 20 Days"
+    //               },
+    //               {
+    //                   "isSpecial": true,
+    //                   "maxDays": 18,
+    //                   "maxMonths": 18,
+    //                   "maxYear": 0,
+    //                   "minDays": 8,
+    //                   "minMonths": 18,
+    //                   "minYear": 0,
+    //                   "schemeName": "18 Months 8 Days to 18 Months 18 Days"
+    //               }
+    //           ],
+    //           "guardianDetails": null,
+    //           "nomineeDetails": null,
+    //           "quickBookData": null
+    //       },
+    //       "Status": "Execution Completed",
+    //       "WorkflowId": "30a6167e09d611eabda88a71c4611c6d"
+    //     }
+    //   );
+    // }
   }
 
   // get product details based on code select
@@ -572,8 +572,8 @@ export class RecurringDepositService {
   updateSR(sourceAccount: string, obj: any, nomineeDetails: any, guardianDetails: any, staffObj:any, checked: boolean) {
     console.log("[RecurringDepositService] UpdateSR sourceAccount: ", sourceAccount, "UpdateSR rdFormGroup: ", obj, nomineeDetails, guardianDetails);
     let body = {
-      "processId": 'APIConstants.getAccountDetails.PROCESS_ID',
-      "workflowId": 'APIConstants.getAccountDetails.WORKFLOW_ID',
+      "processId": 'APIConstants.updateSR.PROCESS_ID',
+      "workflowId": 'APIConstants.updateSR.WORKFLOW_ID',
       "projectId": Constants.PROJECT_ID,
       "ProcessVariables": {
         "headers": {
@@ -647,7 +647,7 @@ export class RecurringDepositService {
     }
     console.log("[RecurringDepositService] Update SR Payload: ", body);
 
-    // return this.baseAPIService.auth_options(APIConstants.getAccountDetails.WORKFLOW_ID, body);
+    // return this.baseAPIService.auth_options(APIConstants.updateSR.WORKFLOW_ID, body);
     return of(
       {
         "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",

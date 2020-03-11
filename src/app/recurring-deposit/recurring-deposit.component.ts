@@ -238,11 +238,11 @@ export class RecurringDepositComponent implements OnInit {
      * // dummy
      *  Comment this block of code on Testing/UAT/PROD
     **************************************************/ 
-    // this.tokenStorage.setAccessToken('RR2Q4guNBuaDi6xnuVzyWsjBPkeyfbyuEa2PLc09C/EfXZJCEMLuKFgxM9RtZPcl');
-    // this.tokenStorage.setSrId('SR20200305105186GN');
-    // this.subs.push(this.customerService.cust(new Date().getTime().toString()).subscribe(res => {
-    //   this.service.setSessionDetails(res);
-    // }));
+    this.tokenStorage.setAccessToken('RR2Q4guNBuaDi6xnuVzyWsjBPkeyfbyuEa2PLc09C/EfXZJCEMLuKFgxM9RtZPcl');
+    this.tokenStorage.setSrId('SR20200305105186GN');
+    this.subs.push(this.customerService.cust(new Date().getTime().toString()).subscribe(res => {
+      this.service.setSessionDetails(res);
+    }));
     /************************************************/
 
 
