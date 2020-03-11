@@ -11,6 +11,7 @@ import { MatDialogConfig, MatDialog } from '@angular/material';
 import { DialogBoxComponent } from '../core/components/dialog-box/dialog-box.component';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { RecurringDepositService } from '../recurring-deposit/recurring-deposit.service';
 
 @Component({
   selector: 'app-customer',
@@ -95,6 +96,7 @@ export class CustomerComponent implements OnInit {
   pdf1: boolean = false;
   pdf2: any = false ;
   front_file: any;
+
   @ViewChild('front_desktop_id', { static: false }) imgFront_mobile: ElementRef;
   @ViewChild('front_mobile_id', { static: false }) front_mobile_id: ElementRef;
   @ViewChild('front_mobileCapture_id', { static: false }) front_mobileCapture_id: ElementRef;
@@ -102,7 +104,7 @@ export class CustomerComponent implements OnInit {
   @ViewChild('back_desktop_id', { static: false }) back_desktop_id: ElementRef;
   @ViewChild('back_mobile', { static: false }) back_mobile: ElementRef;
   @ViewChild('back_mobile_id', { static: false }) back_mobile_id: ElementRef;
-  constructor(public dialog: MatDialog, private baseAPIService: BaseAPIService, private tokenStorage: TokenStorage, private customerService: CustomerService, private sanitizer: DomSanitizer, private router: Router, private service: DataService, private _snackBar: MatSnackBar) { }
+  constructor(public dialog: MatDialog, private baseAPIService: BaseAPIService, private tokenStorage: TokenStorage, private customerService: CustomerService, private sanitizer: DomSanitizer, private router: Router, private service: DataService, private _snackBar: MatSnackBar, private rdService: RecurringDepositService) { }
 
   ngOnInit() {
     if (window.screen.width <= 768) { // 768px portrait
@@ -142,6 +144,7 @@ export class CustomerComponent implements OnInit {
 
         // Recurring Deposit Service
         if(this.sr_type == 1012){
+          this.rdService.setSessionDetails(res);
           this.router.navigate(['recurring-deposit']);
         }
         
