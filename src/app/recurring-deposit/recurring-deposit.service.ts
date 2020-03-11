@@ -3,10 +3,19 @@ import { BaseAPIService } from 'src/app/core/services/base-api-service.service';
 import { TokenStorage } from 'src/app/core/services/auth/token-storage.service';
 import { BehaviorSubject, of, Observable } from 'rxjs';
 import { Constants, APIConstants } from 'src/app/app.constant';
+import { filter } from 'rxjs/operators';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class RecurringDepositService {
+
+  _sessionDetails: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  sessionDetails$ = this._sessionDetails.asObservable().pipe(filter(x => !!x)); // Do not emit if null
+  setSessionDetails(sessionDetails: any) {
+    this._sessionDetails.next(sessionDetails);
+  }
 
   constructor(private baseAPIService: BaseAPIService, private tokenStorage: TokenStorage) { }
 
@@ -36,7 +45,7 @@ export class RecurringDepositService {
     //             {
     //                 "accountNumber": "1234567890987654",
     //                 "accountRelation": "1",
-    //                 "accountType": "2",
+    //                 "accountType": "3",
     //                 "balance": null,
     //                 "branchCode": "419",
     //                 "branchName": "IFC"
@@ -65,7 +74,7 @@ export class RecurringDepositService {
     //             "maskedCustId": "Ganesh332",
     //             "mdmPan": "******465G",
     //             "mobileNumber": "9860413109",
-    //             "panExist": false,
+    //             "panExist": true,
     //             "seniorCitizen": false
     //         },
     //         "docs": null,
@@ -352,161 +361,162 @@ export class RecurringDepositService {
   }
 
   // get Balanace based on select bank A/C No.
-  getAccountBalance(apiUniqueKey: any, accNumber: string, accType: string) {
+  getAccountDetails(apiUniqueKey: any, accNumber: string, accType: string) {
     let body = {
-      "processId": 'APIConstants.fd_Get_Balance.PROCESS_ID',
-      "workflowId": 'APIConstants.fd_Get_Balance.WORKFLOW_ID',
+      "processId": 'APIConstants.getAccountDetails.PROCESS_ID',
+      "workflowId": 'APIConstants.getAccountDetails.WORKFLOW_ID',
       "projectId": Constants.PROJECT_ID,
       "ProcessVariables": {
-        "sessionId": this.tokenStorage.getSessionId(),
+        // "sessionId": this.tokenStorage.getSessionId(),
+        "srId": this.tokenStorage.getSrId(),
         "apiUniqueReqId": apiUniqueKey,
-        "accountNumber": accNumber,
-        "accountType": accType
+        "acctNumber": '1234567890987654',
+        "acctType": accType
       }
     };
-    console.log(body, 'payload');
-    // return this.baseAPIService.auth_options(APIConstants.fd_Get_Balance.WORKFLOW_ID, body);
+    console.log('[RecurringDepositService] Get Account Balance payload: ', body);
+    return this.baseAPIService.post(APIConstants.getAccountDetails.WORKFLOW_ID, body);
     
-    if(accNumber == '1234567890987654') {
-      return of(
-        {
-          "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
-          "Error": "0",
-          "ErrorCode": "200",
-          "ErrorMessage": "",
-          "ProcessId": "59cf14ec09d611eabda88a71c4611c6d",
-          "ProcessInstanceId": "bb5eee3e53c911eaa4fb3af528466045",
-          "ProcessName": "CSSP:: Get Account Details",
-          "ProcessVariables": {
-              "balance": "120000.00",
-              "fdrdQuickBookData": [
-                  {
-                      "amount": 10000,
-                      "isSpecial": true,
-                      "maxDays": 0,
-                      "maxMonths": 0,
-                      "maxYear": 3,
-                      "minDays": 0,
-                      "minMonths": 0,
-                      "minYear": 2,
-                      "interestRate": "5.5",
-                      "schemeName": "2 years < 3 years"
-                  },
-                  {
-                      "amount": 60000,
-                      "isSpecial": true,
-                      "maxDays": 20,
-                      "maxMonths": 12,
-                      "maxYear": 0,
-                      "minDays": 10,
-                      "minMonths": 12,
-                      "minYear": 0,
-                      "interestRate": "5.5",
-                      "schemeName": "12 Months 10 Days to 12 Months 20 Days"
-                  },
-                  {
-                      "amount": 90000,
-                      "isSpecial": true,
-                      "maxDays": 18,
-                      "maxMonths": 18,
-                      "maxYear": 0,
-                      "minDays": 8,
-                      "minMonths": 18,
-                      "minYear": 0,
-                      "interestRate": "5.5",
-                      "schemeName": "18 Months 8 Days to 18 Months 18 Days"
-                  }
-              ],
-              "guardianDetails": {
-                  "addressLine1": "PAREL",
-                  "addressLine2": "Thane",
-                  "addressLine3": "Thane",
-                  "country": "1",
-                  "emailId": "test@gmail.com",
-                  "guardianName": "Sample Name",
-                  "mobileNumber": "9876543210",
-                  "phoneNumber": "9876543210",
-                  "relationToNominee": "2",
-                  "state": "MAHARASHTRA",
-                  "townOrCity": "MUMBAI",
-                  "zipCode": "400037"
-              },
-              "nomineeDetails": {
-                  "addressLine1": "PAREL",
-                  "addressLine2": "Thane",
-                  "addressLine3": "Thane",
-                  "country": "1",
-                  "dateOfBirth": "2003-08-08",
-                  "displayNomineeNameFlag": "Y",
-                  "emailId": "test@gmail.com",
-                  "mobileNumber": "9876543210",
-                  "nomineeName": "Sample Name",
-                  "nomineeRegistrationNumber": "6535991",
-                  "relationToAccHolder": "2",
-                  "sharePercentage": "100.00",
-                  "state": "MAHARASHTRA",
-                  "townOrCity": "MUMBAI",
-                  "zipCode": "400037"
-              },
-              "quickBookData": null
-          },
-          "Status": "Execution Completed",
-          "WorkflowId": "30a6167e09d611eabda88a71c4611c6d"
-        }
-      );
-    } else {
-      return of(
-        {
-          "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
-          "Error": "0",
-          "ErrorCode": "200",
-          "ErrorMessage": "",
-          "ProcessId": "59cf14ec09d611eabda88a71c4611c6d",
-          "ProcessInstanceId": "f28a8f1853c311eabe0d3af528466045",
-          "ProcessName": "CSSP:: Get Account Details",
-          "ProcessVariables": {
-              "balance": "800.00",
-              "fdrdQuickBookData": [
-                  {
-                      "isSpecial": true,
-                      "maxDays": 0,
-                      "maxMonths": 0,
-                      "maxYear": 3,
-                      "minDays": 0,
-                      "minMonths": 0,
-                      "minYear": 2,
-                      "schemeName": "2 years < 3 years"
-                  },
-                  {
-                      "isSpecial": true,
-                      "maxDays": 20,
-                      "maxMonths": 12,
-                      "maxYear": 0,
-                      "minDays": 10,
-                      "minMonths": 12,
-                      "minYear": 0,
-                      "schemeName": "12 Months 10 Days to 12 Months 20 Days"
-                  },
-                  {
-                      "isSpecial": true,
-                      "maxDays": 18,
-                      "maxMonths": 18,
-                      "maxYear": 0,
-                      "minDays": 8,
-                      "minMonths": 18,
-                      "minYear": 0,
-                      "schemeName": "18 Months 8 Days to 18 Months 18 Days"
-                  }
-              ],
-              "guardianDetails": null,
-              "nomineeDetails": null,
-              "quickBookData": null
-          },
-          "Status": "Execution Completed",
-          "WorkflowId": "30a6167e09d611eabda88a71c4611c6d"
-        }
-      );
-    }
+    // if(accNumber == '1234567890987654') {
+    //   return of(
+    //     {
+    //       "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
+    //       "Error": "0",
+    //       "ErrorCode": "200",
+    //       "ErrorMessage": "",
+    //       "ProcessId": "59cf14ec09d611eabda88a71c4611c6d",
+    //       "ProcessInstanceId": "bb5eee3e53c911eaa4fb3af528466045",
+    //       "ProcessName": "CSSP:: Get Account Details",
+    //       "ProcessVariables": {
+    //           "balance": "120000.00",
+    //           "fdrdQuickBookData": [
+    //               {
+    //                   "amount": 10000,
+    //                   "isSpecial": true,
+    //                   "maxDays": 0,
+    //                   "maxMonths": 0,
+    //                   "maxYear": 3,
+    //                   "minDays": 0,
+    //                   "minMonths": 0,
+    //                   "minYear": 2,
+    //                   "interestRate": "5.5",
+    //                   "schemeName": "2 years < 3 years"
+    //               },
+    //               {
+    //                   "amount": 60000,
+    //                   "isSpecial": true,
+    //                   "maxDays": 20,
+    //                   "maxMonths": 12,
+    //                   "maxYear": 0,
+    //                   "minDays": 10,
+    //                   "minMonths": 12,
+    //                   "minYear": 0,
+    //                   "interestRate": "5.5",
+    //                   "schemeName": "12 Months 10 Days to 12 Months 20 Days"
+    //               },
+    //               {
+    //                   "amount": 90000,
+    //                   "isSpecial": true,
+    //                   "maxDays": 18,
+    //                   "maxMonths": 18,
+    //                   "maxYear": 0,
+    //                   "minDays": 8,
+    //                   "minMonths": 18,
+    //                   "minYear": 0,
+    //                   "interestRate": "5.5",
+    //                   "schemeName": "18 Months 8 Days to 18 Months 18 Days"
+    //               }
+    //           ],
+    //           "guardianDetails": {
+    //               "addressLine1": "PAREL",
+    //               "addressLine2": "Thane",
+    //               "addressLine3": "Thane",
+    //               "country": "1",
+    //               "emailId": "test@gmail.com",
+    //               "guardianName": "Sample Name",
+    //               "mobileNumber": "9876543210",
+    //               "phoneNumber": "9876543210",
+    //               "relationToNominee": "2",
+    //               "state": "MAHARASHTRA",
+    //               "townOrCity": "MUMBAI",
+    //               "zipCode": "400037"
+    //           },
+    //           "nomineeDetails": {
+    //               "addressLine1": "PAREL",
+    //               "addressLine2": "Thane",
+    //               "addressLine3": "Thane",
+    //               "country": "1",
+    //               "dateOfBirth": "2003-08-08",
+    //               "displayNomineeNameFlag": "Y",
+    //               "emailId": "test@gmail.com",
+    //               "mobileNumber": "9876543210",
+    //               "nomineeName": "Sample Name",
+    //               "nomineeRegistrationNumber": "6535991",
+    //               "relationToAccHolder": "2",
+    //               "sharePercentage": "100.00",
+    //               "state": "MAHARASHTRA",
+    //               "townOrCity": "MUMBAI",
+    //               "zipCode": "400037"
+    //           },
+    //           "quickBookData": null
+    //       },
+    //       "Status": "Execution Completed",
+    //       "WorkflowId": "30a6167e09d611eabda88a71c4611c6d"
+    //     }
+    //   );
+    // } else {
+    //   return of(
+    //     {
+    //       "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
+    //       "Error": "0",
+    //       "ErrorCode": "200",
+    //       "ErrorMessage": "",
+    //       "ProcessId": "59cf14ec09d611eabda88a71c4611c6d",
+    //       "ProcessInstanceId": "f28a8f1853c311eabe0d3af528466045",
+    //       "ProcessName": "CSSP:: Get Account Details",
+    //       "ProcessVariables": {
+    //           "balance": "800.00",
+    //           "fdrdQuickBookData": [
+    //               {
+    //                   "isSpecial": true,
+    //                   "maxDays": 0,
+    //                   "maxMonths": 0,
+    //                   "maxYear": 3,
+    //                   "minDays": 0,
+    //                   "minMonths": 0,
+    //                   "minYear": 2,
+    //                   "schemeName": "2 years < 3 years"
+    //               },
+    //               {
+    //                   "isSpecial": true,
+    //                   "maxDays": 20,
+    //                   "maxMonths": 12,
+    //                   "maxYear": 0,
+    //                   "minDays": 10,
+    //                   "minMonths": 12,
+    //                   "minYear": 0,
+    //                   "schemeName": "12 Months 10 Days to 12 Months 20 Days"
+    //               },
+    //               {
+    //                   "isSpecial": true,
+    //                   "maxDays": 18,
+    //                   "maxMonths": 18,
+    //                   "maxYear": 0,
+    //                   "minDays": 8,
+    //                   "minMonths": 18,
+    //                   "minYear": 0,
+    //                   "schemeName": "18 Months 8 Days to 18 Months 18 Days"
+    //               }
+    //           ],
+    //           "guardianDetails": null,
+    //           "nomineeDetails": null,
+    //           "quickBookData": null
+    //       },
+    //       "Status": "Execution Completed",
+    //       "WorkflowId": "30a6167e09d611eabda88a71c4611c6d"
+    //     }
+    //   );
+    // }
   }
 
   // get product details based on code select
@@ -519,23 +529,51 @@ export class RecurringDepositService {
         // "sessionId": this.tokenStorage.getSessionId(),
         "apiUniqueReqId": apiUniqueKey,
         "code": code,
-        "amount": amount,
+        "amount": amount+'',
         "termMonths": months,
         "srId": srId
       }
     };
 
+    console.log("[RecurringDepositSerivce] Get Product Details: ", body);
+
     // return this.baseAPIService.auth_options(APIConstants.fd_product_details.WORKFLOW_ID, body);
-    return of({});
+    return of(
+      {
+        "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
+        "Error": "0",
+        "ErrorCode": "200",
+        "ErrorMessage": "",
+        "ProcessId": "40eb48be0d0111eaa5ef8a71c4611c6d",
+        "ProcessInstanceId": "6ac87e625fa011eab75e6adcd8a925ce",
+        "ProcessName": "FDRD:: Get Product Details",
+        "ProcessVariables": {
+            "compoundingFrequency": "",
+            "compoundingFrequencyCode": "",
+            "depositDate": "2020-03-18",
+            "interestIndexCode": 100,
+            "interestRate": "7.6",
+            "jointHolder": false,
+            "maturityAmount": "",
+            "maturityDate": "2020-03-18",
+            "payOutFrequency": "",
+            "payoutFrequencyCode": "",
+            "taxCode": 999,
+            "tenure": "12 Days"
+        },
+        "Status": "Execution Completed",
+        "WorkflowId": "15b498da0d0111eaa5ef8a71c4611c6d"
+      }
+    );
   }
 
 
   // on form Submit we call SR create API
-  createSR(sourceAccount: string, obj: any, nomineeDetails: any, guardianDetails: any, staffObj:any, checked: boolean) {
-    console.log("[RecurringDepositService] CreateSR sourceAccount: ", sourceAccount, "CreateSR rdFormGroup: ", obj, nomineeDetails, guardianDetails);
+  updateSR(sourceAccount: string, obj: any, nomineeDetails: any, guardianDetails: any, staffObj:any, checked: boolean) {
+    console.log("[RecurringDepositService] UpdateSR sourceAccount: ", sourceAccount, "UpdateSR rdFormGroup: ", obj, nomineeDetails, guardianDetails);
     let body = {
-      "processId": 'APIConstants.fd_sr_create.PROCESS_ID',
-      "workflowId": 'APIConstants.fd_sr_create.WORKFLOW_ID',
+      "processId": 'APIConstants.updateSR.PROCESS_ID',
+      "workflowId": 'APIConstants.updateSR.WORKFLOW_ID',
       "projectId": Constants.PROJECT_ID,
       "ProcessVariables": {
         "headers": {
@@ -543,10 +581,11 @@ export class RecurringDepositService {
           "channel": "SS",
           "appId": "app1"
         },
-        "srDetails": {
-          "srType": 1001,
-          "branchId": obj['branchCode']
-        },
+        // "srDetails": {
+        //   "srType": 1001,
+        //   "branchId": obj['branchCode']
+        // },
+        "srId": this.tokenStorage.getSrId(),
         "rdDetails": {
           "sourceAccount": sourceAccount,
           "branchId": parseInt(obj['branchCode']),
@@ -606,21 +645,36 @@ export class RecurringDepositService {
     if(!checked){
       delete body.ProcessVariables.rdDetails.staffId;  
     }
-    console.log(body,'payload sr create')
-    // return this.baseAPIService.auth_options(APIConstants.fd_sr_create.WORKFLOW_ID, body);
-    return of({});
+    console.log("[RecurringDepositService] Update SR Payload: ", body);
+
+    // return this.baseAPIService.auth_options(APIConstants.updateSR.WORKFLOW_ID, body);
+    return of(
+      {
+        "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
+        "Error": "0",
+        "ErrorCode": "200",
+        "ErrorMessage": "SR Details has been saved successfully",
+        "ProcessId": "72ded74a5d5711eaa3dc6adcd8a925ce",
+        "ProcessInstanceId": "9ff4da605fa311ea91416adcd8a925ce",
+        "ProcessName": "FDRD:: Update SR Details",
+        "ProcessVariables": null,
+        "Status": "Execution Completed",
+        "WorkflowId": "72aede785d5711ea81a56adcd8a925ce"
+      }
+    );
   }
   sr_submit(){
     let processVariables = {
       "projectId": Constants.PROJECT_ID,
-      "workflowId": 'APIConstants.sr_submit.WORKFLOW_ID',
-      "processId": 'APIConstants.sr_submit.PROCESS_ID',
+      "workflowId": 'APIConstants.Accept.WORKFLOW_ID',
+      "processId": 'APIConstants.Accept.PROCESS_ID',
       "ProcessVariables": {
-        "srId": sessionStorage.getItem('sr_val')
+        "srId": sessionStorage.getItem('sr_val'),
+        "isApproved": true
       }
     }
-    console.log(processVariables,'payload sr_create')
-    // return this.baseAPIService.common(APIConstants.sr_submit.WORKFLOW_ID, processVariables);
+    console.log('[RecurringDepositService] In sr_submit processVariables: ', processVariables);
+    // return this.baseAPIService.common(APIConstants.Accept.WORKFLOW_ID, processVariables);
     return of({});
   }
 
@@ -829,4 +883,5 @@ export class RecurringDepositService {
   //     }
   //   );
   // }
+
 }
