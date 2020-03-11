@@ -1,0 +1,83 @@
+.form-container>* {
+    width: 100%;
+}
+
+.mat-icon.material-icons {
+    margin-right: 15px;
+}
+
+.form-card {
+    max-width: 500px;
+    padding: 21px 30px;
+    border-radius: 5px;
+}
+
+.form-btn {
+    margin: 15px 0 5px;
+}
+td {
+    padding-right: 8px;
+  }
+
+.logo-image {
+    margin: 0px 0 20px;
+}
+
+.auth{
+  border-radius: 0px;      
+}
+.form-container .mat-form-field {
+    margin: 15px 0 5px;
+}
+
+.login-page-inner {
+    width: 100%;
+}
+
+.adfs-button {
+    margin-top: 20px;
+}
+
+.form-section {
+    position: relative;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    overflow: auto;
+    text-align: center;
+    color: #9b9b9b;
+    padding: 3em;
+    height: calc(100vh - 64px);
+    background: linear-gradient(to top, #0d5a96, #4e7fae, #80a5c7, #b3ccdf, #eaf3f9);
+}
+
+.password-icon,
+.login-icon,
+.password--show-icon {
+    position: relative;
+    top: 0px;
+}
+
+// :host /deep/ .mat-form-field-appearance-legacy .mat-form-field-infix {
+//     position: relative;
+//     top: -6px;
+// }
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+@media(max-width:767px) and (orientation : landscape){
+    .form-section{
+        position: relative;
+        padding:1em;
+
+    }
+    .form-card{
+        margin:0 auto;
+    }
+}

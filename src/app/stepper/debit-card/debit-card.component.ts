@@ -6,6 +6,8 @@ import { StepperService } from '../stepper.service';
 import { CommonFunctions } from 'src/app/core/utils/common-functions';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { AlertMessages } from 'src/app/app.constant';
+import { DataService } from 'src/app/services/data.service';
+
 
 @Component({
   selector: 'app-debit-card',
@@ -20,19 +22,19 @@ export class DebitCardComponent implements OnInit {
   loading: boolean;
   apiUniqueKey: string;
   customLoadingTemplate: any;
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private commonFunctions: CommonFunctions, private stepperService: StepperService, private tokenStorage: TokenStorage, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private commonFunctions: CommonFunctions, private stepperService: StepperService, private tokenStorage: TokenStorage, private router: Router, private service: DataService) { }
 
   ngOnInit() {
     this.dcLoginForm = this.formBuilder.group({
       cardNumber: [
-        '',[
+        '', [
           Validators.required,
           Validators.maxLength(16),
           Validators.minLength(16)
         ]
       ],
       transPIN: [
-        '',[
+        '', [
           Validators.required,
           Validators.maxLength(4),
           Validators.minLength(4)
@@ -53,16 +55,16 @@ export class DebitCardComponent implements OnInit {
     const formCntrl = this.dcLoginForm.controls;
     return formCntrl.cardNumber.hasError('required') ? 'This field is required.' :
       formCntrl.cardNumber.hasError('minlength') ? 'Enter 16 digit number.' :
-      formCntrl.cardNumber.hasError('maxlength') ? 'Only 16 digit number allowed.' :
-        '';
+        formCntrl.cardNumber.hasError('maxlength') ? 'Only 16 digit number allowed.' :
+          '';
   }
 
   getDCLoginPINErrorMessage() {
     const formCntrl = this.dcLoginForm.controls;
     return formCntrl.transPIN.hasError('required') ? 'This field is required.' :
       formCntrl.transPIN.hasError('minlength') ? 'Enter 4 digit pin number.' :
-      formCntrl.transPIN.hasError('maxlength') ? 'Only 4 digit pin number allowed.' :
-        '';
+        formCntrl.transPIN.hasError('maxlength') ? 'Only 4 digit pin number allowed.' :
+          '';
   }
 
   pinEncrption(pin: any, cardno: any) {
@@ -86,44 +88,112 @@ export class DebitCardComponent implements OnInit {
   }
 
   dcLogin() {
-    this.cardNumber = this.dcLoginForm.controls.cardNumber.value;
-    this.cardPinNumber = this.dcLoginForm.controls.transPIN.value;
-    let encPass = this.pinEncrption(this.cardPinNumber, this.cardNumber);
-    encPass = '0'+encPass;
-    this.loading = true;
-    this.apiUniqueKey = new Date().getTime().toString();
-    this.stepperService.verifyDetails(2, '', '', this.cardNumber, encPass, '', '', this.apiUniqueKey).subscribe(
-      response => {
-        this.loading = false;
-        if(response['status']){
-          if(response['payload']['processResponse']['Error'] == '0' && response['payload']['processResponse']['ErrorCode'] == '200'){
-            if(response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
-              if(response['payload']['processResponse']['authentication-token']) { // set auth token
-                this.tokenStorage.setAccessToken(response['payload']['processResponse']['authentication-token']);
-                this.tokenStorage.setSrId(response['payload']['processResponse']['ProcessVariables']['srId']);
-                this.router.navigate(['customer']);
+    if (this.stepperService.detect_auth == 1) {
+      this.dcLogin_for_Authorization();
+    } else {
+      this.cardNumber = this.dcLoginForm.controls.cardNumber.value;
+      this.cardPinNumber = this.dcLoginForm.controls.transPIN.value;
+      let encPass = this.pinEncrption(this.cardPinNumber, this.cardNumber);
+      encPass = '0' + encPass;
+      this.loading = true;
+      this.apiUniqueKey = new Date().getTime().toString();
+      this.stepperService.verifyDetails(2, '', '', this.cardNumber, encPass, '', '', this.apiUniqueKey).subscribe(
+        response => {
+          this.loading = false;
+          if (response['status']) {
+            if (response['payload']['processResponse']['Error'] == '0' && response['payload']['processResponse']['ErrorCode'] == '200') {
+              if (response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
+                if (response['payload']['processResponse']['authentication-token']) { // set auth token
+                  this.tokenStorage.setAccessToken(response['payload']['processResponse']['authentication-token']);
+                  this.tokenStorage.setSrId(response['payload']['processResponse']['ProcessVariables']['srId']);
+                  this.router.navigate(['customer']);
+                } else {
+                  this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+                  this.commonFunctions.showErrorPage();
+                }
               } else {
                 this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
                 this.commonFunctions.showErrorPage();
               }
             } else {
-              this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+              this.authService.alertToUser(response['payload']['processResponse']['ErrorMessage']);
               this.commonFunctions.showErrorPage();
             }
           } else {
-            this.authService.alertToUser(response['payload']['processResponse']['ErrorMessage']);
+            this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
             this.commonFunctions.showErrorPage();
-          }  
+          }
+        },
+        error => {
+          this.loading = false;
+          this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+          this.commonFunctions.showErrorPage();
+          return;
+        })
+    }
+  }
+
+  dcLogin_for_Authorization() {
+    this.cardNumber = this.dcLoginForm.controls.cardNumber.value;
+    this.cardPinNumber = this.dcLoginForm.controls.transPIN.value;
+    let encPass = this.pinEncrption(this.cardPinNumber, this.cardNumber);
+    encPass = '0' + encPass;
+    this.loading = true;
+    this.apiUniqueKey = new Date().getTime().toString();
+    this.stepperService.OtpAuthorization(2, '', '', this.cardNumber, encPass, '', '', this.apiUniqueKey).subscribe(
+      response => {
+        this.loading = false;
+        if (response['Error'] == '0' && response['ErrorCode'] == '200') {
+          if (response['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
+            this.upload_doc_service()
+            // this.router.navigate(['result']);
+          } else {
+            this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+            this.commonFunctions.showErrorPage();
+          }
         } else {
+          this.authService.alertToUser(response['ErrorMessage']);
+          this.commonFunctions.showErrorPage();
+        }
+      },
+      error => {
+        this.loading = false;
+        this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+        this.commonFunctions.showErrorPage();
+        return;
+      })
+  }
+
+  upload_doc_service() {
+    this.loading = true;
+    this.service.acceptApi(this.service.objc_details)
+      .subscribe(
+        res => {
+          this.loading = false;
+          if (res['ErrorCode'] == 200) {
+            console.log('Got 200')
+            this.tokenStorage.clear();
+            this.router.navigate(['result']);
+            return;
+          }
+          else if (res['login_required'] == true || res['ProcessVariables']['apiUniqueReqId'] != this.apiUniqueKey || res['Error'] == 1) {
+            this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+            this.commonFunctions.showErrorPage();
+            console.log('Got 600')
+            return;
+          }
+           else {
+            console.log('Got 400')
+            this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+            this.commonFunctions.showErrorPage();
+            return;
+          }
+          
+        }, error => {
+          this.loading = false;
           this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
           this.commonFunctions.showErrorPage();
         }
-    }, 
-    error => {
-      this.loading = false;
-      this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
-      this.commonFunctions.showErrorPage();
-      return;
-    })
+      )
   }
 }

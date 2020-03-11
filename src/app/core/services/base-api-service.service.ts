@@ -32,7 +32,8 @@ export class BaseAPIService {
   postUpload(params) {
     let SERVER_URL = this.baseUrl + 'd/drive/upload';
     const headers = new HttpHeaders().set(Constants.InterceptorSkipHeader, '');
-    return this.http.post(`${SERVER_URL}`, params, { headers });
+    return this.http.post(`${SERVER_URL}`, params, { headers, reportProgress: true, observe: 'events' });
+    //  return this.http.post(`${SERVER_URL}`, params, { headers });
   }
 
   getAuthTokenPost(params) {

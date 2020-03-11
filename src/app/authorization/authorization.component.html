@@ -1,0 +1,43 @@
+<div class="main">
+    <br>
+    <div class="container">
+    <mat-toolbar class="text-center tool-auth">Authorization</mat-toolbar><br>
+    <div class="row">
+        <div class="col-sm-4 colscard" *ngFor="let options of authroization_options; let i = index">
+            <mat-card class="cards" (click)="authorization(options.id,i,options.mode)" [class.cards-bg]="i == index">
+                <mat-icon class="example-tab-icon">credit_card</mat-icon>
+                <h6 class="text-center">{{options.mode}}</h6>
+            </mat-card>
+        </div>
+        <!-- <div class="col-sm-4 colscard">
+            <mat-card class="cards">
+                <mat-icon class="example-tab-icon">credit_card</mat-icon>
+                <h6 class="text-center">Debit Card</h6>
+            </mat-card>
+
+        </div>
+        <div class="col-sm-4 colscard">
+            <mat-card class="cards">
+                <mat-icon class="example-tab-icon">computer</mat-icon>
+                <h6 class="text-center">Retail Net Banking</h6>
+            </mat-card>
+        </div>
+        <div class="col-sm-4 colscard">
+            <mat-card class="cards">
+                <mat-icon class="example-tab-icon">textsms</mat-icon>
+                <h6 class="text-center">Mobile OTP</h6>
+            </mat-card>
+
+        </div> -->
+    </div>
+    <br>
+    <div class="submit-btn">
+        <button  mat-raised-button color="warn" class="submitBtn" (click)="submit()">Proceed</button>
+    </div>
+    <h4 class="text-center">You have selected <span class="" style="color:lightgray">{{selected_authorization_name}}</span> option</h4>
+    <!--  -->
+    
+</div>
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
+</ngx-loading>

@@ -13,6 +13,16 @@ export class Constants {
     public static InterceptorSkipHeader = 'X-Skip-Interceptor';
     public static VALIDATION_ALPHANUMERIC = /^[a-zA-Z0-9]+$/;    //!~{}|[]^_;:?()*,-.=@#$
     public static VALIDATION_PASSWORD = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!~^_;:,-.=*#?|])[A-Za-z\\d@$!~^_;:,-.=*#?|]{1,}$";
+    // public static VALIDATION_REGX_TEXTFIELD = /^[a-zA-Z0-9 ,'.\-''_""()\/&[\]]+$/;
+    public static VALIDATION_REGX_TEXTFIELD = /^[a-zA-Z0-9 ,.\-_#@]+$/;
+    public static VALIDATION_REGX_NUMBER = /^[0-9]+$/;
+    public static VALIDATION_REGX_STD_NUMBER = /^[1-9][0-9]*$/;
+    public static Validation_letters_only = /^[A-Za-z]+$/
+    public static Aadhar_number_validation = /^\d{12}$/;
+    public static VALIDATION_REGX_PAN_NUMBER = /[A-Za-z]{5}\d{4}[A-Za-z]{1}/;
+    //                                        1st digit 2-to-9 and after that it can be 0 to 9  
+    public static VALIDATION_REGEX_LANDLINE_NUMBER  = /^[1-9][0-9]/;
+    public static VALIDATION_REGX_EMAIL = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 }
 
 export module APIConstants {
@@ -48,6 +58,15 @@ export module APIConstants {
         WORKFLOW_ID = '9736f64a90ca11e9bc050221a44a8414',
         PROCESS_ID = 'ae78876a90ca11e9bc050221a44a8414',
     }
+    export enum validate_logins {
+        PROCESS_ID = 'aa58b77089d811e9b12c2eca4ea5bb5f',
+        WORKFLOW_ID = '90dc3ec288f511e9b12c2eca4ea5bb5f'
+    }
+    // taken from ccsp
+    export enum re_init {
+        PROCESS_ID = 'e2fc2278ad3311e9b432da7aa4ddfb2b',
+        WORKFLOW_ID = '90dc3ec288f511e9b12c2eca4ea5bb5f'
+    }
 
     export enum Auth_init_email {
         PROCESS_ID = '0e8b77d8999b11e9abea8e9e63ab42a5',
@@ -73,6 +92,16 @@ export module APIConstants {
         PROCESS_ID = '4d94c438998811e9abea8e9e63ab42a5',
         WORKFLOW_ID = '41b5e566998811e9abea8e9e63ab42a5',
     }
+
+    export enum getAccountDetails {
+        PROCESS_ID = '59cf14ec09d611eabda88a71c4611c6d',
+        WORKFLOW_ID = '30a6167e09d611eabda88a71c4611c6d',
+    }
+
+    export enum updateSR {
+        PROCESS_ID = '1c860420884811e9b16676fb2f2488b6',
+        WORKFLOW_ID = '1c676c2c884811e9b16676fb2f2488b6'
+    }
 }
 
 export class AlertMessages {
@@ -81,4 +110,7 @@ export class AlertMessages {
     public static SESSION_EXPIRED = 'Current session expired due to either logged in on different session or session timeout.';
     public static SESSION_LOGOUT = 'Logout Successfully';
     public static MANDATORY_FIELDS_ALERT = 'Please fill all the mandatory fields.';
+    public static NA_BANK_MSG = 'Not available in the Bank records';
+    public static invalid_Credentials = 'Invalid Credentials';
+    public static resend_OTP_success = 'OTP has been sent';
 }
