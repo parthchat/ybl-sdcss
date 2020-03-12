@@ -363,15 +363,15 @@ export class RecurringDepositService {
   // get Balanace based on select bank A/C No.
   getAccountDetails(apiUniqueKey: any, accNumber: string, accType: string) {
     let body = {
-      "processId": 'APIConstants.getAccountDetails.PROCESS_ID',
-      "workflowId": 'APIConstants.getAccountDetails.WORKFLOW_ID',
+      "processId": APIConstants.getAccountDetails.PROCESS_ID,
+      "workflowId": APIConstants.getAccountDetails.WORKFLOW_ID,
       "projectId": Constants.PROJECT_ID,
       "ProcessVariables": {
         // "sessionId": this.tokenStorage.getSessionId(),
         "srId": this.tokenStorage.getSrId(),
         "apiUniqueReqId": apiUniqueKey,
-        "acctNumber": '1234567890987654',
-        "acctType": accType
+        "accountNumber": accNumber,
+        "accountType": accType
       }
     };
     console.log('[RecurringDepositService] Get Account Balance payload: ', body);
@@ -522,8 +522,8 @@ export class RecurringDepositService {
   // get product details based on code select
   getProductDetails(apiUniqueKey: any, code: string, amount: string, months: number, srId: string) {
     let body = {
-      "processId": 'APIConstants.fd_product_details.PROCESS_ID',
-      "workflowId": 'APIConstants.fd_product_details.WORKFLOW_ID',
+      "processId": APIConstants.getProductDetails.PROCESS_ID,
+      "workflowId": APIConstants.getProductDetails.WORKFLOW_ID,
       "projectId": Constants.PROJECT_ID,
       "ProcessVariables": {
         // "sessionId": this.tokenStorage.getSessionId(),
@@ -537,34 +537,34 @@ export class RecurringDepositService {
 
     console.log("[RecurringDepositSerivce] Get Product Details: ", body);
 
-    // return this.baseAPIService.auth_options(APIConstants.fd_product_details.WORKFLOW_ID, body);
-    return of(
-      {
-        "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
-        "Error": "0",
-        "ErrorCode": "200",
-        "ErrorMessage": "",
-        "ProcessId": "40eb48be0d0111eaa5ef8a71c4611c6d",
-        "ProcessInstanceId": "6ac87e625fa011eab75e6adcd8a925ce",
-        "ProcessName": "FDRD:: Get Product Details",
-        "ProcessVariables": {
-            "compoundingFrequency": "",
-            "compoundingFrequencyCode": "",
-            "depositDate": "2020-03-18",
-            "interestIndexCode": 100,
-            "interestRate": "7.6",
-            "jointHolder": false,
-            "maturityAmount": "",
-            "maturityDate": "2020-03-18",
-            "payOutFrequency": "",
-            "payoutFrequencyCode": "",
-            "taxCode": 999,
-            "tenure": "12 Days"
-        },
-        "Status": "Execution Completed",
-        "WorkflowId": "15b498da0d0111eaa5ef8a71c4611c6d"
-      }
-    );
+    return this.baseAPIService.post(APIConstants.getProductDetails.WORKFLOW_ID, body);
+    // return of(
+    //   {
+    //     "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
+    //     "Error": "0",
+    //     "ErrorCode": "200",
+    //     "ErrorMessage": "",
+    //     "ProcessId": "40eb48be0d0111eaa5ef8a71c4611c6d",
+    //     "ProcessInstanceId": "6ac87e625fa011eab75e6adcd8a925ce",
+    //     "ProcessName": "FDRD:: Get Product Details",
+    //     "ProcessVariables": {
+    //         "compoundingFrequency": "",
+    //         "compoundingFrequencyCode": "",
+    //         "depositDate": "2020-03-18",
+    //         "interestIndexCode": 100,
+    //         "interestRate": "7.6",
+    //         "jointHolder": false,
+    //         "maturityAmount": "",
+    //         "maturityDate": "2020-03-18",
+    //         "payOutFrequency": "",
+    //         "payoutFrequencyCode": "",
+    //         "taxCode": 999,
+    //         "tenure": "12 Days"
+    //     },
+    //     "Status": "Execution Completed",
+    //     "WorkflowId": "15b498da0d0111eaa5ef8a71c4611c6d"
+    //   }
+    // );
   }
 
 
@@ -572,8 +572,8 @@ export class RecurringDepositService {
   updateSR(sourceAccount: string, obj: any, nomineeDetails: any, guardianDetails: any, staffObj:any, checked: boolean) {
     console.log("[RecurringDepositService] UpdateSR sourceAccount: ", sourceAccount, "UpdateSR rdFormGroup: ", obj, nomineeDetails, guardianDetails);
     let body = {
-      "processId": 'APIConstants.updateSR.PROCESS_ID',
-      "workflowId": 'APIConstants.updateSR.WORKFLOW_ID',
+      "processId": APIConstants.updateSR.PROCESS_ID,
+      "workflowId": APIConstants.updateSR.WORKFLOW_ID,
       "projectId": Constants.PROJECT_ID,
       "ProcessVariables": {
         "headers": {
@@ -647,35 +647,35 @@ export class RecurringDepositService {
     }
     console.log("[RecurringDepositService] Update SR Payload: ", body);
 
-    // return this.baseAPIService.auth_options(APIConstants.updateSR.WORKFLOW_ID, body);
-    return of(
-      {
-        "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
-        "Error": "0",
-        "ErrorCode": "200",
-        "ErrorMessage": "SR Details has been saved successfully",
-        "ProcessId": "72ded74a5d5711eaa3dc6adcd8a925ce",
-        "ProcessInstanceId": "9ff4da605fa311ea91416adcd8a925ce",
-        "ProcessName": "FDRD:: Update SR Details",
-        "ProcessVariables": null,
-        "Status": "Execution Completed",
-        "WorkflowId": "72aede785d5711ea81a56adcd8a925ce"
-      }
-    );
+    return this.baseAPIService.post(APIConstants.updateSR.WORKFLOW_ID, body);
+    // return of(
+    //   {
+    //     "ApplicationId": "ff0ae4a6884711e9b16676fb2f2488b6",
+    //     "Error": "0",
+    //     "ErrorCode": "200",
+    //     "ErrorMessage": "SR Details has been saved successfully",
+    //     "ProcessId": "72ded74a5d5711eaa3dc6adcd8a925ce",
+    //     "ProcessInstanceId": "9ff4da605fa311ea91416adcd8a925ce",
+    //     "ProcessName": "FDRD:: Update SR Details",
+    //     "ProcessVariables": null,
+    //     "Status": "Execution Completed",
+    //     "WorkflowId": "72aede785d5711ea81a56adcd8a925ce"
+    //   }
+    // );
   }
   sr_submit(){
     let processVariables = {
       "projectId": Constants.PROJECT_ID,
-      "workflowId": 'APIConstants.Accept.WORKFLOW_ID',
-      "processId": 'APIConstants.Accept.PROCESS_ID',
+      "workflowId": APIConstants.Accept.WORKFLOW_ID,
+      "processId": APIConstants.Accept.PROCESS_ID,
       "ProcessVariables": {
-        "srId": sessionStorage.getItem('sr_val'),
+        "srId": this.tokenStorage.getSrId(),
         "isApproved": true
       }
     }
     console.log('[RecurringDepositService] In sr_submit processVariables: ', processVariables);
-    // return this.baseAPIService.common(APIConstants.Accept.WORKFLOW_ID, processVariables);
-    return of({});
+    return this.baseAPIService.post(APIConstants.Accept.WORKFLOW_ID, processVariables);
+    // return of({});
   }
 
   // dummygetAccountBalance(a, b) {

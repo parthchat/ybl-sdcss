@@ -99,9 +99,14 @@ export module APIConstants {
         WORKFLOW_ID = '30a6167e09d611eabda88a71c4611c6d',
     }
 
+    export enum getProductDetails {
+        PROCESS_ID = '40eb48be0d0111eaa5ef8a71c4611c6d',
+        WORKFLOW_ID = '15b498da0d0111eaa5ef8a71c4611c6d'
+    }
+
     export enum updateSR {
-        PROCESS_ID = '1c860420884811e9b16676fb2f2488b6',
-        WORKFLOW_ID = '1c676c2c884811e9b16676fb2f2488b6'
+        PROCESS_ID = '72ded74a5d5711eaa3dc6adcd8a925ce',
+        WORKFLOW_ID = '72aede785d5711ea81a56adcd8a925ce'
     }
 
     //Get profile LOV's
@@ -137,3 +142,5 @@ export class AlertMessages {
     public static resend_OTP_success = 'OTP has been sent';
     public static REQUIRED_FIELD_MSG = 'This field is required.';
 }
+
+export const APP_VERSION = 'v01.24.26';
