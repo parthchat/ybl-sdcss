@@ -1,1 +1,1399 @@
-<p>profile-update works!</p>
+<mat-card>
+    <!-- HEader label-->
+    <h3 class="title start-title">Customer Details</h3>
+    
+    <div class="row view-row">
+        <div class="col-lg-6 col-sm-12 col-md-6 col-xl-6 col-12 view-grid-header">
+            <div class="inner-div">
+                <label class="detail-label">Customer ID</label>
+                <p class="detail-text">Sanket149</p>
+            </div>
+        </div>
+        
+        <div class="col-lg-6 col-sm-12 col-md-6 col-xl-6 col-12 view-grid-header">
+            <div class="inner-div">
+                <label class="detail-label">Customer Name</label>
+                <p class="detail-text">Sanket Thumma</p>
+            </div>
+        </div>
+    </div>
+
+     <!-- Service header -->
+     <h3 class="title start-title">{{ serviceHeading }} <br class="desktop-show">
+        <span class="change-msg">
+            <span  *ngIf="profileUpdateForm.disabled || profileUpdateForm.valid">Do you want to edit profile details ?</span>
+            <!-- <span  *ngIf="profileUpdateForm.invalid">Do you want to edit profile details ?</span>
+            <span *ngIf="profileUpdateForm.invalid">
+                <mat-radio-group  aria-labelledby="radio-group-label" class="radio-group" (change) = "editProfileDetails($event)">
+                    <mat-radio-button checked="true" value="yes" class="radio-button" color="primary">Yes</mat-radio-button>
+                    <mat-radio-button disabled value="no" class="radio-button" color="primary">No</mat-radio-button>
+                </mat-radio-group>
+            </span> -->
+            <span *ngIf="profileUpdateForm.valid">
+                <mat-radio-group  aria-labelledby="radio-group-label" class="radio-group" (change) = "editProfileDetails($event)">
+                    <mat-radio-button checked="true" value="yes" class="radio-button" color="primary">Yes</mat-radio-button>
+                    <mat-radio-button value="no" class="radio-button" color="primary">No</mat-radio-button>
+                </mat-radio-group>
+            </span>
+            <span *ngIf="profileUpdateForm.disabled">
+                <mat-radio-group  aria-labelledby="radio-group-label" class="radio-group" (change) = "editProfileDetails($event)">
+                    <mat-radio-button value="yes" class="radio-button" color="primary">Yes</mat-radio-button>
+                    <mat-radio-button checked="true" value="no" class="radio-button" color="primary">No</mat-radio-button>
+                </mat-radio-group>
+            </span>
+        </span>
+    </h3>
+
+    <form [formGroup]="profileUpdateForm">
+
+        <mat-accordion multi="true">
+            <mat-expansion-panel [disabled]="true" [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Your previous profile details
+                    </mat-panel-title>
+                    <!-- <mat-panel-description>
+                        Type your name and age
+                    </mat-panel-description> -->
+                </mat-expansion-panel-header>
+
+                 <!-- START - Basic profile -->
+                <h3 class="exp-title start-title">Basic Profile</h3>
+                <div class="row view-row">
+                    <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                        <div class="inner-div">
+                            <label class="detail-label">Marital Status</label>
+                            <p class="detail-text"> {{ oldProfileData?.maritalStatus?.text ? oldProfileData?.maritalStatus?.text : NA_BANK_MSG }} </p>
+                        </div>
+                    </div>
+                    
+                    <div *ngIf="isMaritalStatusOther" class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                        <div class="inner-div">
+                            <label class="detail-label">Other Marital Status</label>
+                            <p class="detail-text"> {{ oldProfileData?.otherMaritalStatus?.text ? oldProfileData?.otherMaritalStatus?.text : NA_BANK_MSG }} </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                        <div class="inner-div">
+                            <label class="detail-label">Residence Type</label>
+                            <p class="detail-text"> {{ oldProfileData?.residenceType?.text ? oldProfileData?.residenceType?.text : NA_BANK_MSG }} </p>
+                        </div>
+                    </div>
+                    
+                    <div *ngIf="isResidenceTypeOther" class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                        <div class="inner-div">
+                            <label class="detail-label">Other Residence Type</label>
+                            <p class="detail-text"> {{ oldProfileData?.residenceTypeOther ? oldProfileData?.residenceTypeOther : NA_BANK_MSG }} </p>
+                        </div>
+                    </div>
+               
+                    <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                        <div class="inner-div">
+                            <label class="detail-label">Educational Qualification</label>
+                            <p class="detail-text"> {{ oldProfileData?.educationalQualification?.text ? oldProfileData?.educationalQualification?.text : NA_BANK_MSG }} </p>
+                        </div>
+                    </div>
+                    
+                    <div *ngIf="isEducationalQualificationOther" class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                        <div class="inner-div">
+                            <label class="detail-label">Other Educational Qualification</label>
+                            <p class="detail-text"> {{ oldProfileData?.educationalQualificationOther ? oldProfileData?.educationalQualificationOther : NA_BANK_MSG }} </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                        <div class="inner-div">
+                            <label class="detail-label">Occupation Type</label>
+                            <p class="detail-text"> {{ oldProfileData?.occupationType.text ? oldProfileData?.occupationType.text : NA_BANK_MSG }} </p>
+                            <!-- <p class="detail-text"><span *ngFor="let element of oldProfileData.occupationType; let isLast=last">{{element.text}}{{isLast ? '' : ', '}}</span> </p> -->
+                        </div>
+                    </div>
+                    
+                    <div *ngIf="isOccupationTypeOther" class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                        <div class="inner-div">
+                            <label class="detail-label">Other Occupation Type</label>
+                            <p class="detail-text"> {{ oldProfileData?.occupationTypeOther ? oldProfileData?.occupationTypeOther : NA_BANK_MSG }} </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                        <div class="inner-div">
+                            <label class="detail-label">Annual Income</label>
+                            <p class="detail-text"> {{ oldProfileData?.annualIncome?.text ? oldProfileData?.annualIncome?.text : NA_BANK_MSG }} </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                        <div class="inner-div">
+                            <label class="detail-label">Source of Funds-1</label>
+                            <!-- <p class="detail-text"> {{ oldProfileData?.sourceOfFund_1?.text ? oldProfileData?.sourceOfFund_1?.text : NA_BANK_MSG }} </p> -->
+                            <p *ngIf="oldProfileData.sourceOfFund_1" class="detail-text"><span *ngFor="let element of oldProfileData.sourceOfFund_1; let isLast=last">{{element}}{{isLast ? '' : ', '}}</span> </p>
+                            <p *ngIf="!oldProfileData.sourceOfFund_1" class="detail-text"><span>{{NA_BANK_MSG}}</span> </p>
+                        </div>
+                    </div>
+
+                    <!-- <div *ngIf="isSourceOfFundOther_1" class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                        <div class="inner-div">
+                            <label class="detail-label">Other Source of Funds-1</label>
+                            <p class="detail-text"> {{ oldProfileData?.sourceOfFundOther_1 ? oldProfileData?.sourceOfFundOther_1 : NA_BANK_MSG }} </p>
+                        </div>
+                    </div> -->
+                </div>
+
+                <!-- START if salaried -->
+                <div *ngIf="isSalaried">
+                    <h3 class="exp-title start-title">If Salaried</h3>
+                    <div class="row view-row">
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Employment Details</label>
+                                <p class="detail-text">{{ oldProfileData?.employmentDetails?.text ? oldProfileData?.employmentDetails?.text : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+
+                        <div *ngIf="isEmploymentDetailsOther" class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Other Employment Details</label>
+                                <p class="detail-text">{{ oldProfileData?.employmentDetailsOther ? oldProfileData?.employmentDetailsOther : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Name of the Employer</label>
+                                <p class="detail-text">{{ oldProfileData?.employerName ? oldProfileData?.employerName : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Period in current Employment (In years)</label>
+                                <p class="detail-text">{{ oldProfileData?.currentEmpPeriodYear ? oldProfileData?.currentEmpPeriodYear : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Period in current Employment (In months)</label>
+                                <p class="detail-text">{{ oldProfileData?.currentEmpPeriodMonth ? oldProfileData?.currentEmpPeriodMonth : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Employee No. / Id</label>
+                                <p class="detail-text">{{ oldProfileData?.employeeId ? oldProfileData?.employeeId : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Company code</label>
+                                <p class="detail-text">{{ oldProfileData?.companyCode ? oldProfileData?.companyCode : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END if salaried -->
+
+                <!-- Is Self employed or having a business -->
+                <div *ngIf="isSelfEmployeed || isBusiness" >
+                    <h3 *ngIf="isSelfEmployeed" class="exp-title start-title">If Self Employeed</h3>
+                    <h3 *ngIf="isBusiness" class="exp-title start-title">If Business</h3>
+                    <div class="row view-row">
+                        <!-- START - Self emp & business common fields -->
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Type of Company/Firm</label>
+                                <p class="detail-text">{{ oldProfileData?.typeOfCompany?.text ? oldProfileData?.typeOfCompany?.text : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+
+                        <div *ngIf="isTypeOfCompanyOther" class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Other Type of Company/Firm</label>
+                                <p class="detail-text">{{ oldProfileData?.typeOfCompanyOther ? oldProfileData?.typeOfCompanyOther : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Name of Company/Firm</label>
+                                <p class="detail-text">{{ oldProfileData?.nameOfCompany ? oldProfileData?.nameOfCompany : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Period in Current Business (In years)</label>
+                                <p class="detail-text">{{ oldProfileData?.currentBusinessPeriodYear ? oldProfileData?.currentBusinessPeriodYear : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Period in Current Business (In months)</label>
+                                <p class="detail-text">{{ oldProfileData?.currentBusinessPeriodMonth ? oldProfileData?.currentBusinessPeriodMonth : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+                        <!-- END - Self emp & business common fields -->
+
+                        <!-- START Self employed -->
+                        <div *ngIf="isSelfEmployeed" class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Profession</label>
+                                <p class="detail-text">{{ oldProfileData?.profession?.text ? oldProfileData?.profession?.text : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+
+                        <div *ngIf="isSelfEmployeed && isProfessionOther" class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Other Profession</label>
+                                <p class="detail-text">{{ oldProfileData?.professionOther ? oldProfileData?.professionOther : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+                        <!-- END Self employed -->
+                        
+                        <!-- START if business -->
+                        <div *ngIf="isBusiness" class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Nature of Business-1</label>
+                                <!-- <p class="detail-text">{{ oldProfileData?.natureOfBusiness_1?.text ? oldProfileData?.natureOfBusiness_1?.text : NA_BANK_MSG }}</p> -->
+                                <p *ngIf="oldProfileData.natureOfBusiness_1" class="detail-text"><span *ngFor="let element of oldProfileData.natureOfBusiness_1; let isLast=last">{{element}}{{isLast ? '' : ', '}}</span> </p>
+                                <p *ngIf="!oldProfileData.natureOfBusiness_1" class="detail-text"><span>{{NA_BANK_MSG}}</span> </p>
+                            </div>
+                        </div>
+
+                        <!-- <div *ngIf="isBusiness && isNatureOfBusinessOther_1" class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Other Nature of Business-1</label>
+                                <p class="detail-text">{{ oldProfileData?.natureOfBusinessOther_1 ? oldProfileData?.natureOfBusinessOther_1 : NA_BANK_MSG }}</p>
+                            </div>
+                        </div> -->
+
+
+                        <div *ngIf="isBusiness" class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Nature of Industry-1</label>
+                                <!-- <p class="detail-text">{{ oldProfileData?.natureOfIndustry_1?.text ? oldProfileData?.natureOfIndustry_1?.text : NA_BANK_MSG }}</p> -->
+                                <p *ngIf="oldProfileData.natureOfIndustry_1" class="detail-text"><span *ngFor="let element of oldProfileData.natureOfIndustry_1; let isLast=last">{{element}}{{isLast ? '' : ', '}}</span> </p>
+                                <p *ngIf="!oldProfileData.natureOfIndustry_1" class="detail-text"><span>{{NA_BANK_MSG}}</span> </p>
+                            </div>
+                        </div>
+
+                        <!-- END if business -->
+
+                    </div>
+                </div>
+
+                <!-- START Transaction Pattern -->
+                <div>
+                    <h3 class="exp-title start-title">Transaction Pattern</h3>
+                    <div class="row view-row">
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Cash Deposit (Monthly) (INR)</label>
+                                <p class="detail-text">{{ oldProfileData?.cashDeposit?.text ? oldProfileData?.cashDeposit?.text : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Cash Withdrawal (Monthly) (INR)</label>
+                                <p class="detail-text">{{ oldProfileData?.cashWithdrawal?.text ? oldProfileData?.cashWithdrawal?.text : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Inward Foreign Remittance (Monthly ) (USD)</label>
+                                <p class="detail-text">{{ oldProfileData?.inwardRemittance?.text ? oldProfileData?.inwardRemittance?.text : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Outward Foreign Remittance (Monthly) (USD)</label>
+                                <p class="detail-text">{{ oldProfileData?.outwardRemittance?.text ? oldProfileData?.outwardRemittance?.text : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Expected no. of transactions (Quarterly)</label>
+                                <p class="detail-text">{{ oldProfileData?.noOfTransaction?.text ? oldProfileData?.noOfTransaction?.text : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-12 col-md-3 col-xl-3 col-12 view-grid">
+                            <div class="inner-div">
+                                <label class="detail-label">Political Exposure</label>
+                                <p class="detail-text">{{ oldProfileData?.politicalExposure?.text ? oldProfileData?.politicalExposure?.text : NA_BANK_MSG }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END Transaction Pattern -->
+
+            </mat-expansion-panel>
+            
+
+            <mat-expansion-panel [disabled]="true" [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Update your profile details here
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <h3 class="exp-title start-title">Basic Profile</h3>
+
+                <div class="row row-field">
+                    <!-- Marital Status -->
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Marital Status" aria-label="Marital Status" formControlName="maritalStatus" (blur)="isValidInput(1)" [matAutocomplete]="auto_1" maxlength="120" required>
+                            <mat-autocomplete (optionSelected)="onMaritalStatusOptionSelectChanged($event)" autoActiveFirstOption #auto_1="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let element of arrMaritalStatusListFilter | async" [value]="element">
+                                {{ element.text }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('maritalStatus').invalid && profileUpdateForm.get('maritalStatus').touched">
+                                <span *ngIf="profileUpdateForm.get('maritalStatus').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('maritalStatus').errors['invalidMaritalStatus']">
+                                    Invalid marital status, Please select marital status from list.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                     <!-- Other Marital Status -->
+                     <div *ngIf="isMaritalStatusOther" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Other Marital Status" aria-label="Other Marital Status" formControlName="otherMaritalStatus" (blur)="isValidInput(2)" [matAutocomplete]="auto_2" maxlength="120" required>
+                            <mat-autocomplete autoActiveFirstOption #auto_2="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let element of arrOtherMaritalStatusListFilter | async" [value]="element">
+                                {{ element.text }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('otherMaritalStatus').invalid && profileUpdateForm.get('otherMaritalStatus').touched">
+                                <span *ngIf="profileUpdateForm.get('otherMaritalStatus').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('otherMaritalStatus').errors['invalidOtherMaritalStatus']">
+                                    Invalid other marital status, Please select other marital status from list.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+        
+                    <!-- Residence Type -->
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Residence Type" aria-label="Residence Type" formControlName="residenceType" (blur)="isValidInput(3)" [matAutocomplete]="auto_3" maxlength="120" required>
+                            <mat-autocomplete (optionSelected)="onResidentialStatusOptionSelectChanged($event)" autoActiveFirstOption #auto_3="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let element of arrResidenceTypeListFilter | async" [value]="element">
+                                {{ element.text }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('residenceType').invalid && profileUpdateForm.get('residenceType').touched">
+                                <span *ngIf="profileUpdateForm.get('residenceType').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('residenceType').errors['invalidResidenceType']">
+                                    Invalid residence type, Please select residence type from list.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+        
+                    <!-- Residence Type - Other -->
+                    <div *ngIf="isResidenceTypeOther" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Other Residence Type" formControlName="residenceTypeOther" autocomplete="off" required
+                                (blur)="removeExtraSpaces(1)" maxlength="120"/>
+                            <mat-hint *ngIf="profileUpdateForm.get('residenceTypeOther').touched">Only ,' .-''_""()&[]/ special characters allowed.</mat-hint>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('residenceTypeOther').invalid && profileUpdateForm.get('residenceTypeOther').touched">
+                                <span *ngIf="profileUpdateForm.get('residenceTypeOther').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('residenceTypeOther').errors['maxlength']">
+                                    Maximum limit 120 characters.
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('residenceTypeOther').errors['pattern']">
+                                    Only ,' .-''_""()&[]/ special characters allowed.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    
+                       <!-- Educational Qualification -->
+                       <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Educational Qualification" aria-label="Educational Qualification" formControlName="educationalQualification" (blur)="isValidInput(4)" [matAutocomplete]="auto_4" maxlength="120" required>
+                            <mat-autocomplete (optionSelected)="onEducationalStatusOptionSelectChanged($event)" autoActiveFirstOption #auto_4="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let element of arrEducationalQualificationListFilter | async" [value]="element">
+                                {{ element.text }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('educationalQualification').invalid && profileUpdateForm.get('educationalQualification').touched">
+                                <span *ngIf="profileUpdateForm.get('educationalQualification').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('educationalQualification').errors['invalidEducationalQualification']">
+                                    Invalid educational qualification, Please select educational qualification from list.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+        
+                    <!-- Educational Qualification - Other -->
+                    <div *ngIf="isEducationalQualificationOther" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Other Educational Qualification" formControlName="educationalQualificationOther" autocomplete="off" required
+                                (blur)="removeExtraSpaces(2)" maxlength="120" />
+                            <mat-hint align="start"></mat-hint>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('educationalQualificationOther').invalid && profileUpdateForm.get('educationalQualificationOther').touched">
+                                <span *ngIf="profileUpdateForm.get('educationalQualificationOther').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('educationalQualificationOther').errors['maxlength']">
+                                    Maximum limit 120 characters.
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('educationalQualificationOther').errors['pattern']">
+                                    Only ,' .-''_""()&[]/ special characters allowed.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+        
+                    <!-- Occupation type -->
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Occupation Type" aria-label="Occupation Type" formControlName="occupationType" (blur)="isValidInput(5)" [matAutocomplete]="auto_5" maxlength="120" required>
+                            <mat-autocomplete (optionSelected)="onOccupationalStatusOptionSelectChanged($event)" autoActiveFirstOption #auto_5="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let element of arrOccupationTypeListFilter | async" [value]="element">
+                                {{ element.text }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('occupationType').invalid && profileUpdateForm.get('occupationType').touched">
+                                <span *ngIf="profileUpdateForm.get('occupationType').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('occupationType').errors['invalidOccupationType']">
+                                    Invalid occupation type, Please select occupation type from list.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <!-- <mat-form-field>
+                            <mat-select [compareWith]="compareFn" formControlName="occupationTypeMulti" placeholder="Occupation Type" [multiple]="true" #multiSelect (selectionChange)="onOccupationTypeChanges()" required >
+                              <ngx-mat-select-search formControlName="occupationType" [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching data found.'"></ngx-mat-select-search>
+                              <mat-option *ngFor="let element of arrOccupationTypeListFilter | async" [value]="element" >{{ element.text }}</mat-option>
+                            </mat-select>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('occupationTypeMulti').invalid && profileUpdateForm.get('occupationTypeMulti').touched">
+                                <span *ngIf="profileUpdateForm.get('occupationTypeMulti').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('occupationTypeMulti').errors['invalidMultipleSelection']">
+                                    Maximum limit 3 options.
+                                </span>
+                            </mat-error>
+                        </mat-form-field> -->
+                    </div>
+        
+                    <!-- Occupation type - Other -->
+                    <div *ngIf="isOccupationTypeOther" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Other Occupation Type" formControlName="occupationTypeOther" autocomplete="off" required
+                                (blur)="removeExtraSpaces(3)" maxlength="120" />
+                            <mat-hint align="start"></mat-hint>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('occupationTypeOther').invalid && profileUpdateForm.get('occupationTypeOther').touched">
+                                <span *ngIf="profileUpdateForm.get('occupationTypeOther').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('occupationTypeOther').errors['maxlength']">
+                                    Maximum limit 120 characters.
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('occupationTypeOther').errors['pattern']">
+                                    Only ,' .-''_""()&[]/ special characters allowed.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+        
+                    <!-- Annual income -->
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Annual Income" aria-label="Annual Income" formControlName="annualIncome" (blur)="isValidInput(6)" [matAutocomplete]="auto_6" maxlength="120" required>
+                            <mat-autocomplete autoActiveFirstOption #auto_6="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let element of arrAnnualIncomeListFilter | async" [value]="element">
+                                {{ element.text }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('annualIncome').invalid && profileUpdateForm.get('annualIncome').touched">
+                                <span *ngIf="profileUpdateForm.get('annualIncome').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('annualIncome').errors['invalidAnnualIncome']">
+                                    Invalid annual income, Please select annual income from list.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+        
+                    <!-- Source of fund 1-->
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <!-- <mat-form-field>
+                            <input matInput placeholder="Source Of Fund 1" aria-label="Source Of Fund 1" formControlName="sourceOfFund_1" (blur)="isValidInput(7)" [matAutocomplete]="auto_7" maxlength="120" required>
+                            <mat-autocomplete (optionSelected)="onSourceOfFund(1)" autoActiveFirstOption #auto_7="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let element of arrSourceOfFundListFilter_1 | async" [value]="element">
+                                {{ element.text }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('sourceOfFund_1').invalid && profileUpdateForm.get('sourceOfFund_1').touched">
+                                <span *ngIf="profileUpdateForm.get('sourceOfFund_1').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('sourceOfFund_1').errors['invalidSourceOfFund_1']">
+                                    Invalid source of fund 1, Please select source of fund 1 from list.
+                                </span>
+                            </mat-error>
+                        </mat-form-field> -->
+
+                        <mat-form-field>
+                            <mat-select formControlName="sourceOfFund_1" (selectionChange)="onSourcesOfFundOptionSelectChanged($event)" placeholder="Source Of Funds" [multiple]="true" #multiSelect required >
+                                <ngx-mat-select-search formControlName="sourceOfFund_1Search" [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching data found.'"></ngx-mat-select-search>
+                                <mat-option *ngFor="let element of arrSourceOfFundListFilter_1 | async" [value]="element.text" >{{ element.text }}</mat-option>
+                                <!-- <mat-option *ngFor="let element of arrSourceOfFundList; let i=index" [value]="element.text" >{{ element.text }}</mat-option> -->
+                            </mat-select>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('sourceOfFund_1').invalid && profileUpdateForm.get('sourceOfFund_1').touched">
+                                <span *ngIf="profileUpdateForm.get('sourceOfFund_1').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('sourceOfFund_1').errors['invalidSourceOfFund_1']">
+                                    Maximum limit 3 options.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+        
+                    <!-- Source Of Fund 1 - Other -->
+                    <!-- <div *ngIf="isSourceOfFundOther_1" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Other Source Of Fund 1" formControlName="sourceOfFundOther_1" autocomplete="off" required
+                                (blur)="removeExtraSpaces(4)" maxlength="120" />
+                            <mat-hint align="start"></mat-hint>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('sourceOfFundOther_1').invalid && profileUpdateForm.get('sourceOfFundOther_1').touched">
+                                <span *ngIf="profileUpdateForm.get('sourceOfFundOther_1').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('sourceOfFundOther_1').errors['maxlength']">
+                                    Maximum limit 120 characters.
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('sourceOfFundOther_1').errors['pattern']">
+                                    Only ,' .-''_""()&[]/ special characters allowed.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div> -->
+
+                    <!-- Source of fund 2-->
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <!-- <mat-form-field>
+                            <input matInput placeholder="Source Of Fund 2" aria-label="Source Of Fund 2" formControlName="sourceOfFund_2" (blur)="isValidInput(8)" [matAutocomplete]="auto_8" maxlength="120" required>
+                            <mat-autocomplete (optionSelected)="onSourceOfFund(2)" autoActiveFirstOption #auto_8="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let element of arrSourceOfFundListFilter_2 | async" [value]="element">
+                                {{ element.text }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('sourceOfFund_2').invalid && profileUpdateForm.get('sourceOfFund_2').touched">
+                                <span *ngIf="profileUpdateForm.get('sourceOfFund_2').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('sourceOfFund_2').errors['invalidSourceOfFund_2']">
+                                    Invalid source of fund 2, Please select source of fund 2 from list.
+                                </span>
+                            </mat-error>
+                        </mat-form-field> -->
+
+                        <!-- <mat-form-field>
+                            <mat-select [compareWith]="compareFn" formControlName="sourceOfFund_2" placeholder="Source Of Fund 2" [multiple]="true" #multiSelect (selectionChange)="onSourceOfFund(2)" required >
+                                <ngx-mat-select-search formControlName="sourceOfFundMulti_2" [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching data found.'"></ngx-mat-select-search>
+                                <mat-option *ngFor="let element of arrSourceOfFundListFilter_2 | async" [value]="element" >{{ element.text }}</mat-option>
+                            </mat-select>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('sourceOfFund_2').invalid && profileUpdateForm.get('sourceOfFund_2').touched">
+                                <span *ngIf="profileUpdateForm.get('sourceOfFund_2').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('sourceOfFund_2').errors['invalidSourceOfFund_2']">
+                                    Maximum limit 3 options.
+                                </span>
+                            </mat-error>
+                        </mat-form-field> -->
+                    </div>
+        
+                    <!-- Source Of Fund 2 - Other -->
+                    <!-- <div *ngIf="isSourceOfFundOther_2" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Other Source Of Fund 2" formControlName="sourceOfFundOther_2" autocomplete="off" required
+                                (blur)="removeExtraSpaces(5)" maxlength="120" />
+                            <mat-hint align="start"></mat-hint>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('sourceOfFundOther_2').invalid && profileUpdateForm.get('sourceOfFundOther_2').touched">
+                                <span *ngIf="profileUpdateForm.get('sourceOfFundOther_2').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('sourceOfFundOther_2').errors['maxlength']">
+                                    Maximum limit 120 characters.
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('sourceOfFundOther_2').errors['pattern']">
+                                    Only ,' .-''_""()&[]/ special characters allowed.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div> -->
+
+                    <!-- Source of fund 3-->
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <!-- <mat-form-field>
+                            <input matInput placeholder="Source Of Fund 3" aria-label="Source Of Fund 3" formControlName="sourceOfFund_3" (blur)="isValidInput(9)" [matAutocomplete]="auto_9" maxlength="120" required>
+                            <mat-autocomplete (optionSelected)="onSourceOfFund(3)" autoActiveFirstOption #auto_9="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let element of arrSourceOfFundListFilter_3 | async" [value]="element">
+                                {{ element.text }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('sourceOfFund_3').invalid && profileUpdateForm.get('sourceOfFund_3').touched">
+                                <span *ngIf="profileUpdateForm.get('sourceOfFund_3').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('sourceOfFund_3').errors['invalidSourceOfFund_3']">
+                                    Invalid source of fund 3, Please select source of fund 3 from list.
+                                </span>
+                            </mat-error>
+                        </mat-form-field> -->
+
+                        <!-- <mat-form-field>
+                            <mat-select [compareWith]="compareFn" formControlName="sourceOfFund_3" placeholder="Source Of Fund 3" [multiple]="true" #multiSelect (selectionChange)="onSourceOfFund(3)" required >
+                                <ngx-mat-select-search formControlName="sourceOfFundMulti_3" [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching data found.'"></ngx-mat-select-search>
+                                <mat-option *ngFor="let element of arrSourceOfFundListFilter_3 | async" [value]="element" >{{ element.text }}</mat-option>
+                            </mat-select>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('sourceOfFund_3').invalid && profileUpdateForm.get('sourceOfFund_3').touched">
+                                <span *ngIf="profileUpdateForm.get('sourceOfFund_3').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('sourceOfFund_3').errors['invalidSourceOfFund_3']">
+                                    Maximum limit 3 options.
+                                </span>
+                            </mat-error>
+                        </mat-form-field> -->
+                    </div>
+                </div>
+
+                <!-- For salaried -->
+                <div *ngIf="isSalaried">
+                    <h3 class="exp-title start-title">If Salaried</h3>
+                    <div class="row row-field">
+                        <!-- Employment Details (Mandatory for Salary accounts) -->
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Employment Details" aria-label="Employment Details" formControlName="employmentDetails" (blur)="isValidInput(10)" [matAutocomplete]="auto_10" maxlength="120" required>
+                                <mat-autocomplete (optionSelected)="onEmploymentDetailsStatusChange($event)" autoActiveFirstOption #auto_10="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let element of arrEmploymentDetailsListFilter | async" [value]="element">
+                                    {{ element.text }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('employmentDetails').invalid && profileUpdateForm.get('employmentDetails').touched">
+                                    <span *ngIf="profileUpdateForm.get('employmentDetails').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('employmentDetails').errors['invalidEmploymentDetails']">
+                                        Invalid employment details, Please select employment details from list.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+        
+                        <!-- Employment Details - Other -->
+                        <div *ngIf="isEmploymentDetailsOther" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Other Employment Details" formControlName="employmentDetailsOther" autocomplete="off" required
+                                    (blur)="removeExtraSpaces(7)" maxlength="120" />
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('employmentDetailsOther').invalid && profileUpdateForm.get('employmentDetailsOther').touched">
+                                    <span *ngIf="profileUpdateForm.get('employmentDetailsOther').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('employmentDetailsOther').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('employmentDetailsOther').errors['pattern']">
+                                        Only ,' .-''_""()&[]/ special characters allowed.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+        
+                        <!-- Employer Name : START -->
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Name of Employer" formControlName="employerName" autocomplete="off" (blur)="removeExtraSpaces(8)" maxlength="120" required>
+                                <mat-hint align="start"></mat-hint>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('employerName').invalid && profileUpdateForm.get('employerName').touched">
+                                    <span *ngIf="profileUpdateForm.get('employerName').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('employerName').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('employerName').errors['pattern']">
+                                        Only ,' .-''_""()&[]/ special characters allowed.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!-- Employer Name : END -->
+            
+                        <!-- Current Emp Period Year : START -->
+                        <div class="col-lg-2 col-sm-2 col-md-2 col-xl-2 col-12">
+                            <mat-form-field>
+                                <input formControlName="currentEmpPeriodYear" matInput placeholder="Period in current Employment (in years)" maxlength="120" autocomplete="off" OnlyNumber="true" required/>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('currentEmpPeriodYear').invalid && profileUpdateForm.get('currentEmpPeriodYear').touched">
+                                    <span *ngIf="profileUpdateForm.get('currentEmpPeriodYear').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('currentEmpPeriodYear').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('currentEmpPeriodYear').errors['pattern']">
+                                        Only numbers allowed.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!-- Current Emp Period Year : END -->
+        
+                        <!-- Current Emp Period Month : START -->
+                        <div class="col-lg-2 col-sm-2 col-md-2 col-xl-2 col-12">
+                            <mat-form-field>
+                                <input formControlName="currentEmpPeriodMonth" matInput placeholder="Period in current Employment (in months)" maxlength="120" autocomplete="off" OnlyNumber="true" required/>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('currentEmpPeriodMonth').invalid && profileUpdateForm.get('currentEmpPeriodMonth').touched">
+                                    <span *ngIf="profileUpdateForm.get('currentEmpPeriodMonth').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('currentEmpPeriodMonth').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('currentEmpPeriodMonth').errors['pattern']">
+                                        Only numbers allowed.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.controls.currentEmpPeriodMonth.errors.max">
+                                        Maximum limit 11 months
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!-- Current Emp Period Month : END -->
+                
+                        <!-- Employee No. / Id : START -->
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input formControlName="employeeId" matInput placeholder="Employee No. / Id" maxlength="120" autocomplete="off"
+                                required (blur)="removeExtraSpaces(9)" />
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('employeeId').invalid && profileUpdateForm.get('employeeId').touched">
+                                    <span *ngIf="profileUpdateForm.get('employeeId').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('employeeId').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('employeeId').errors['pattern']">
+                                        Only ,' .-''_""()&[]/ special characters allowed.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!-- Employee No. / Id : END -->
+                
+                        <!-- Company code : START -->
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input formControlName="companyCode" matInput placeholder="Company code" maxlength="120" autocomplete="off" (blur)="removeExtraSpaces(10)" required/>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('companyCode').invalid && profileUpdateForm.get('companyCode').touched">
+                                    <span *ngIf="profileUpdateForm.get('companyCode').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('companyCode').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('companyCode').errors['pattern']">
+                                        Only ,' .-''_""()&[]/ special characters allowed.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!-- Company code : END -->
+                    
+                    </div>
+                </div>
+
+                <div *ngIf="isSelfEmployeed || isBusiness">
+                    <h3 *ngIf="isSelfEmployeed" class="exp-title start-title">If Self Employeed</h3>
+                    <h3 *ngIf="isBusiness" class="exp-title start-title">If Business</h3>
+        
+                    <div class="row row-field">
+        
+                        <!-- Type Of Company/Firm  -->
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Type Of Company/Firm" aria-label="Type Of Company/Firm" formControlName="typeOfCompany" (blur)="isValidInput(11)" [matAutocomplete]="auto_11" maxlength="120" required>
+                                <mat-autocomplete (optionSelected)="onTypeOfCompanyStatusChange($event)" autoActiveFirstOption #auto_11="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let element of arrTypeOfCompanyListFilter | async" [value]="element">
+                                    {{ element.text }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('typeOfCompany').invalid && profileUpdateForm.get('typeOfCompany').touched">
+                                    <span *ngIf="profileUpdateForm.get('typeOfCompany').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('typeOfCompany').errors['invalidTypeOfCompany']">
+                                        Invalid type of company/firm, Please select type of company/firm from list.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+        
+                        <!-- Type Of Company/Firm - Other -->
+                        <div *ngIf="isTypeOfCompanyOther" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Other Type Of Company/Firm" formControlName="typeOfCompanyOther" autocomplete="off" required
+                                    (blur)="removeExtraSpaces(11)" maxlength="120" />
+                                <mat-hint align="start"></mat-hint>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('typeOfCompanyOther').invalid && profileUpdateForm.get('typeOfCompanyOther').touched">
+                                    <span *ngIf="profileUpdateForm.get('typeOfCompanyOther').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('typeOfCompanyOther').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('typeOfCompanyOther').errors['pattern']">
+                                        Only ,' .-''_""()&[]/ special characters allowed.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+        
+                        <!-- Name Of Company/Firm : START -->
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input formControlName="nameOfCompany" matInput placeholder="Name Of Company/Firm" maxlength="120" autocomplete="off"
+                                required (blur)="removeExtraSpaces(12)" />
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('nameOfCompany').invalid && profileUpdateForm.get('nameOfCompany').touched">
+                                    <span *ngIf="profileUpdateForm.get('nameOfCompany').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('nameOfCompany').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('nameOfCompany').errors['pattern']">
+                                        Only ,' .-''_""()&[]/ special characters allowed.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!-- Name Of Company/Firm : END -->
+            
+                        <!-- Business Emp Period Year : START -->
+                        <div class="col-lg-2 col-sm-2 col-md-2 col-xl-2 col-12">
+                            <mat-form-field>
+                                <input formControlName="currentBusinessPeriodYear" matInput placeholder="Period in current Business (in years)" maxlength="120" autocomplete="off" OnlyNumber="true" required/>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('currentBusinessPeriodYear').invalid && profileUpdateForm.get('currentBusinessPeriodYear').touched">
+                                    <span *ngIf="profileUpdateForm.get('currentBusinessPeriodYear').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('currentBusinessPeriodYear').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('currentBusinessPeriodYear').errors['pattern']">
+                                        Only numbers allowed.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!-- Business Emp Period Year : END -->
+        
+            
+                        <!-- Business Emp Period Month : START -->
+                        <div class="col-lg-2 col-sm-2 col-md-2 col-xl-2 col-12">
+                            <mat-form-field>
+                                <input formControlName="currentBusinessPeriodMonth" matInput placeholder="Period in current Business (in months)" maxlength="120" autocomplete="off" OnlyNumber="true" required/>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('currentBusinessPeriodMonth').invalid && profileUpdateForm.get('currentBusinessPeriodMonth').touched">
+                                    <span *ngIf="profileUpdateForm.get('currentBusinessPeriodMonth').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('currentBusinessPeriodMonth').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('currentBusinessPeriodMonth').errors['pattern']">
+                                        Only numbers allowed.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.controls.currentBusinessPeriodMonth.errors.max">
+                                        Maximum limit 11 months
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!-- Business Emp Period Month : END -->
+            
+                        <!-- Profession : START -->
+                        <div *ngIf="isSelfEmployeed" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Profession" aria-label="Profession" formControlName="profession" (blur)="isValidInput(12)" [matAutocomplete]="auto_12" maxlength="120" required>
+                                <mat-autocomplete (optionSelected)="onProfessionStatusChanged($event)" autoActiveFirstOption #auto_12="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let element of arrProfessionListFilter | async" [value]="element">
+                                    {{ element.text }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('profession').invalid && profileUpdateForm.get('profession').touched">
+                                    <span *ngIf="profileUpdateForm.get('profession').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('profession').errors['invalidProfession']">
+                                        Invalid profession, Please select profession from list.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!-- Profession : END -->
+        
+                        <!-- Profession - Other -->
+                        <div *ngIf="isSelfEmployeed && isProfessionOther" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Other Profession" formControlName="professionOther" autocomplete="off" required
+                                    (blur)="removeExtraSpaces(13)" maxlength="120" />
+                                <mat-hint align="start"></mat-hint>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('professionOther').invalid && profileUpdateForm.get('professionOther').touched">
+                                    <span *ngIf="profileUpdateForm.get('professionOther').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('professionOther').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('professionOther').errors['pattern']">
+                                        Only ,' .-''_""()&[]/ special characters allowed.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+        
+                        <!-- Nature Of Business 1  -->
+                        <div *ngIf="isBusiness" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <!-- <mat-form-field>
+                                <input matInput placeholder="Nature Of Business 1" aria-label="Nature Of Business 1" formControlName="natureOfBusiness_1" (blur)="isValidInput(13)" [matAutocomplete]="auto_13" maxlength="120" required>
+                                <mat-autocomplete (optionSelected)="onNatureOfBusiness(1)" autoActiveFirstOption #auto_13="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let element of arrNatureOfBusinessListFilter_1 | async" [value]="element">
+                                    {{ element.text }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('natureOfBusiness_1').invalid && profileUpdateForm.get('natureOfBusiness_1').touched">
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusiness_1').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusiness_1').errors['invalidNatureOfBusiness_1']">
+                                        Invalid nature of business 1, Please select nature of business 1 from list.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field> -->
+
+                            <mat-form-field>
+                                <mat-select formControlName="natureOfBusiness_1" (selectionChange)="onNatureOfBusinessOptionSelectChanged($event)" placeholder="Nature Of Business" [multiple]="true" #multiSelect required >
+                                    <ngx-mat-select-search formControlName="natureOfBusiness_1Search" [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching data found.'"></ngx-mat-select-search>
+                                    <mat-option *ngFor="let element of arrNatureOfBusinessListFilter_1 | async" [value]="element.text" >{{ element.text }}</mat-option>
+                                    <!-- <mat-option *ngFor="let element of arrNatureOfBusinessList; let i=index" [value]="element.text" >{{ element.text }}</mat-option> -->
+                                </mat-select>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('natureOfBusiness_1').invalid && profileUpdateForm.get('natureOfBusiness_1').touched">
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusiness_1').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusiness_1').errors['invalidnatureOfBusiness_1']">
+                                        Maximum limit 3 options.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+        
+                        <!-- Nature Of Business - Other 1-->
+                        <!-- <div *ngIf="isBusiness && isNatureOfBusinessOther_1" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Other Nature Of Business 1" formControlName="natureOfBusinessOther_1" autocomplete="off" required
+                                    (blur)="removeExtraSpaces(14)" maxlength="120" />
+                                <mat-hint align="start"></mat-hint>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('natureOfBusinessOther_1').invalid && profileUpdateForm.get('natureOfBusinessOther_1').touched">
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusinessOther_1').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusinessOther_1').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusinessOther_1').errors['pattern']">
+                                        Only ,' .-''_""()&[]/ special characters allowed.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div> -->
+
+                        <!-- Nature Of Business 2  -->
+                        <!-- <div *ngIf="isBusiness" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Nature Of Business 2" aria-label="Nature Of Business 2" formControlName="natureOfBusiness_2" (blur)="isValidInput(14)" [matAutocomplete]="auto_14" maxlength="120" required>
+                                <mat-autocomplete (optionSelected)="onNatureOfBusiness(2)" autoActiveFirstOption #auto_14="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let element of arrNatureOfBusinessListFilter_2 | async" [value]="element">
+                                    {{ element.text }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('natureOfBusiness_2').invalid && profileUpdateForm.get('natureOfBusiness_2').touched">
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusiness_2').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusiness_2').errors['invalidNatureOfBusiness_2']">
+                                        Invalid nature of business 2, Please select nature of business 2 from list.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div> -->
+        
+                        <!-- Nature Of Business - Other 2 -->
+                        <!-- <div *ngIf="isBusiness && isNatureOfBusinessOther_2" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Other Nature Of Business 2" formControlName="natureOfBusinessOther_2" autocomplete="off" required
+                                    (blur)="removeExtraSpaces(15)" maxlength="120" />
+                                <mat-hint align="start"></mat-hint>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('natureOfBusinessOther_2').invalid && profileUpdateForm.get('natureOfBusinessOther_2').touched">
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusinessOther_2').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusinessOther_2').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusinessOther_2').errors['pattern']">
+                                        Only ,' .-''_""()&[]/ special characters allowed.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div> -->
+
+                        <!-- Nature Of Business 3 -->
+                        <!-- <div *ngIf="isBusiness" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Nature Of Business 3" aria-label="Nature Of Business 3" formControlName="natureOfBusiness_3" (blur)="isValidInput(15)" [matAutocomplete]="auto_15" maxlength="120" required>
+                                <mat-autocomplete (optionSelected)="onNatureOfBusiness(3)" autoActiveFirstOption #auto_15="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let element of arrNatureOfBusinessListFilter_3 | async" [value]="element">
+                                    {{ element.text }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('natureOfBusiness_3').invalid && profileUpdateForm.get('natureOfBusiness_3').touched">
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusiness_3').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusiness_3').errors['invalidNatureOfBusiness_3']">
+                                        Invalid nature of business 3, Please select nature of business 3 from list.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div> -->
+        
+                        <!-- Nature Of Business - Other 3 -->
+                        <!-- <div *ngIf="isBusiness && isNatureOfBusinessOther_3" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Other Nature Of Business 3" formControlName="natureOfBusinessOther_3" autocomplete="off" required
+                                    (blur)="removeExtraSpaces(16)" maxlength="120" />
+                                <mat-hint align="start"></mat-hint>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('natureOfBusinessOther_3').invalid && profileUpdateForm.get('natureOfBusinessOther_3').touched">
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusinessOther_3').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusinessOther_3').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfBusinessOther_3').errors['pattern']">
+                                        Only ,' .-''_""()&[]/ special characters allowed.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div> -->
+        
+                        <!-- Nature Of Industry 1 -->
+                        <div *ngIf="isBusiness" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <!-- <mat-form-field>
+                                <input matInput placeholder="Nature Of Industry 1" aria-label="Nature Of Industry 1" formControlName="natureOfIndustry_1" (blur)="isValidInput(16)" [matAutocomplete]="auto_16" maxlength="120" required>
+                                <mat-autocomplete (optionSelected)="onNatureOfIndustry(1)" autoActiveFirstOption #auto_16="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let element of arrNatureOfIndustryListFilter_1 | async" [value]="element">
+                                    {{ element.text }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('natureOfIndustry_1').invalid && profileUpdateForm.get('natureOfIndustry_1').touched">
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustry_1').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustry_1').errors['invalidNatureOfIndustry_1']">
+                                        Invalid nature of industry 1, Please select nature of industry 1 from list.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field> -->
+
+                            <mat-form-field>
+                                <mat-select formControlName="natureOfIndustry_1" (selectionChange)="onNatureOfIndustryOptionSelectChanged($event)" placeholder="Nature Of Industry" [multiple]="true" #multiSelect required >
+                                    <ngx-mat-select-search formControlName="natureOfIndustry_1Search" [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching data found.'"></ngx-mat-select-search>
+                                    <mat-option *ngFor="let element of arrNatureOfIndustryListFilter_1 | async" [value]="element.text" >{{ element.text }}</mat-option>
+                                    <!-- <mat-option *ngFor="let element of arrNatureOfIndustryList, let i=index" [value]="element.text" >{{ element.text }}</mat-option> -->
+                                </mat-select>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('natureOfIndustry_1').invalid && profileUpdateForm.get('natureOfIndustry_1').touched">
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustry_1').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustry_1').errors['invalidNatureOfIndustry_1']">
+                                        Maximum limit 3 options.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+        
+                        <!-- Nature Of Industry - Other 1 -->
+                        <!-- <div *ngIf="isBusiness && isNatureOfIndustryOther_1" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Other Nature Of Industry 1" formControlName="natureOfIndustryOther_1" autocomplete="off" required
+                                    (blur)="removeExtraSpaces(17)" maxlength="120" />
+                                <mat-hint align="start"></mat-hint>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('natureOfIndustryOther_1').invalid && profileUpdateForm.get('natureOfIndustryOther_1').touched">
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustryOther_1').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustryOther_1').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustryOther_1').errors['pattern']">
+                                        Only ,' .-''_""()&[]/ special characters allowed.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div> -->
+
+                        <!-- Nature Of Industry 2 -->
+                        <!-- <div *ngIf="isBusiness" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Nature Of Industry 2" aria-label="Nature Of Industry 2" formControlName="natureOfIndustry_2" (blur)="isValidInput(17)" [matAutocomplete]="auto_17" maxlength="120" required>
+                                <mat-autocomplete (optionSelected)="onNatureOfIndustry(2)" autoActiveFirstOption #auto_17="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let element of arrNatureOfIndustryListFilter_2 | async" [value]="element">
+                                    {{ element.text }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('natureOfIndustry_2').invalid && profileUpdateForm.get('natureOfIndustry_2').touched">
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustry_2').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustry_2').errors['invalidNatureOfIndustry_2']">
+                                        Invalid nature of industry 2, Please select nature of industry 2 from list.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div> -->
+        
+                        <!-- Nature Of Industry - Other 2 -->
+                        <!-- <div *ngIf="isBusiness && isNatureOfIndustryOther_2" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Other Nature Of Industry 2" formControlName="natureOfIndustryOther_2" autocomplete="off" required
+                                    (blur)="removeExtraSpaces(18)" maxlength="120" />
+                                <mat-hint align="start"></mat-hint>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('natureOfIndustryOther_2').invalid && profileUpdateForm.get('natureOfIndustryOther_2').touched">
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustryOther_2').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustryOther_2').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustryOther_2').errors['pattern']">
+                                        Only ,' .-''_""()&[]/ special characters allowed.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div> -->
+
+                        <!-- Nature Of Industry 3 -->
+                        <!-- <div *ngIf="isBusiness" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Nature Of Industry 3" aria-label="Nature Of Industry 3" formControlName="natureOfIndustry_3" (blur)="isValidInput(18)" [matAutocomplete]="auto_18" maxlength="120" required>
+                                <mat-autocomplete (optionSelected)="onNatureOfIndustry(3)" autoActiveFirstOption #auto_18="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let element of arrNatureOfIndustryListFilter_3 | async" [value]="element">
+                                    {{ element.text }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('natureOfIndustry_3').invalid && profileUpdateForm.get('natureOfIndustry_3').touched">
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustry_3').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustry_3').errors['invalidNatureOfIndustry_3']">
+                                        Invalid nature of industry 3, Please select nature of industry 3 from list.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div> -->
+        
+                        <!-- Nature Of Industry - Other 3 -->
+                        <!-- <div *ngIf="isBusiness && isNatureOfIndustryOther_3" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                            <mat-form-field>
+                                <input matInput placeholder="Other Nature Of Industry 3" formControlName="natureOfIndustryOther_3" autocomplete="off" required
+                                    (blur)="removeExtraSpaces(19)" maxlength="120" />
+                                <mat-hint align="start"></mat-hint>
+                                <mat-error class="left-space" *ngIf="profileUpdateForm.get('natureOfIndustryOther_3').invalid && profileUpdateForm.get('natureOfIndustryOther_3').touched">
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustryOther_3').errors['required']">
+                                        {{ REQUIRED_FIELD_MSG }}
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustryOther_3').errors['maxlength']">
+                                        Maximum limit 120 characters.
+                                    </span>
+                                    <span *ngIf="profileUpdateForm.get('natureOfIndustryOther_3').errors['pattern']">
+                                        Only ,' .-''_""()&[]/ special characters allowed.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div> -->
+
+                    </div>
+                </div>
+                
+                <!-- Transaction pattern -->
+                <h3 class="exp-title start-title">Transaction pattern</h3>
+
+                <div class="row row-field">
+                    <!-- Cash deposit -->
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Cash Deposit (Monthly) (INR)" aria-label="Cash Deposit (Monthly) (INR)" formControlName="cashDeposit" (blur)="isValidInput(19)" [matAutocomplete]="auto_19" maxlength="120" required>
+                            <mat-autocomplete autoActiveFirstOption #auto_19="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let element of arrCashDepositListFilter | async" [value]="element">
+                                {{ element.text }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('cashDeposit').invalid && profileUpdateForm.get('cashDeposit').touched">
+                                <span *ngIf="profileUpdateForm.get('cashDeposit').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('cashDeposit').errors['invalidCashDeposit']">
+                                    Invalid cash deposit, Please select cash deposit from list.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+        
+                    <!-- Cash Withdrawal (Monthly) (INR) -->
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Cash Withdrawal (Monthly) (INR)" aria-label="Cash Withdrawal (Monthly) (INR)" formControlName="cashWithdrawal" (blur)="isValidInput(20)" [matAutocomplete]="auto_20" maxlength="120" required>
+                            <mat-autocomplete autoActiveFirstOption #auto_20="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let element of arrCashWithdrawalListFilter | async" [value]="element">
+                                {{ element.text }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('cashWithdrawal').invalid && profileUpdateForm.get('cashWithdrawal').touched">
+                                <span *ngIf="profileUpdateForm.get('cashWithdrawal').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('cashWithdrawal').errors['invalidCashWithdrawal']">
+                                    Invalid cash withdrawal, Please select cash withdrawal from list.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+        
+                    <!-- Inward Foreign Remittance (Monthly ) (USD) -->
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Inward Foreign Remittance (Monthly) (USD)" aria-label="Inward Foreign Remittance (Monthly) (USD)" formControlName="inwardRemittance" (blur)="isValidInput(21)" [matAutocomplete]="auto_21" maxlength="120" required>
+                            <mat-autocomplete autoActiveFirstOption #auto_21="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let element of arrInwardRemittanceListFilter | async" [value]="element">
+                                {{ element.text }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('inwardRemittance').invalid && profileUpdateForm.get('inwardRemittance').touched">
+                                <span *ngIf="profileUpdateForm.get('inwardRemittance').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('inwardRemittance').errors['invalidInwardRemittance']">
+                                    Invalid input, Please select input from list.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+        
+                    <!-- Outward Foreign Remittance (Monthly) (USD) -->
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Outward Foreign Remittance (Monthly) (USD)" aria-label="Outward Foreign Remittance (Monthly) (USD)" formControlName="outwardRemittance" (blur)="isValidInput(22)" [matAutocomplete]="auto_22" maxlength="120" required>
+                            <mat-autocomplete autoActiveFirstOption #auto_22="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let element of arrOutwardRemittanceListFilter | async" [value]="element">
+                                {{ element.text }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('outwardRemittance').invalid && profileUpdateForm.get('outwardRemittance').touched">
+                                <span *ngIf="profileUpdateForm.get('outwardRemittance').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('outwardRemittance').errors['invalidOutwardRemittance']">
+                                    Invalid input, Please select input from list.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+        
+                    <!-- Expected no. of transactions (Quarterly) -->
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Expected no. of transactions (Quarterly)" aria-label="Expected no. of transactions (Quarterly)" formControlName="noOfTransaction" (blur)="isValidInput(23)" [matAutocomplete]="auto_23" maxlength="120" required>
+                            <mat-autocomplete autoActiveFirstOption #auto_23="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let element of arrNoOfTransactionListFilter | async" [value]="element">
+                                {{ element.text }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('noOfTransaction').invalid && profileUpdateForm.get('noOfTransaction').touched">
+                                <span *ngIf="profileUpdateForm.get('noOfTransaction').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('noOfTransaction').errors['invalidNoOfTransaction']">
+                                    Invalid input, Please select input from list.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Political Exposure -->
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 col-12">
+                        <mat-form-field>
+                            <input matInput placeholder="Political Exposure" aria-label="Political Exposure" formControlName="politicalExposure" (blur)="isValidInput(24)" [matAutocomplete]="auto_24" maxlength="120" required>
+                            <mat-autocomplete autoActiveFirstOption #auto_24="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let element of arrPoliticalExposureListFilter | async" [value]="element">
+                                {{ element.text }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="left-space" *ngIf="profileUpdateForm.get('politicalExposure').invalid && profileUpdateForm.get('politicalExposure').touched">
+                                <span *ngIf="profileUpdateForm.get('politicalExposure').errors['required']">
+                                    {{ REQUIRED_FIELD_MSG }}
+                                </span>
+                                <span *ngIf="profileUpdateForm.get('politicalExposure').errors['invalidPoliticalExposure']">
+                                    Invalid input, Please select input from list.
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                
+            </mat-expansion-panel>
+
+        </mat-accordion>
+    </form>
+
+     <!-- <button (click)="hey()">hey</button> -->
+     <div class="btn-container">
+        <button class="verify-btn" mat-raised-button [disabled]="profileUpdateForm.invalid" (click)="saveAndNext()">Proceed</button>
+        <!-- <button class="verify-btn" mat-raised-button (click)="saveAndNext()">Proceed</button> -->
+    </div>
+</mat-card>

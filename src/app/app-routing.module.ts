@@ -17,6 +17,7 @@ import { UnderConstructionComponent } from './under-construction/under-construct
 import { AuthGuard } from './auth-guard/auth.guard';
 import { ProfileUpdateComponent } from './profile-update/profile-update.component';
 import { RecurringDepositComponent } from './recurring-deposit/recurring-deposit.component';
+import { LandlineUpdateComponent } from './landline-update/landline-update.component';
 
 
 const routes: Routes = [
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'otpLogin', component: OtpLoginComponent},
   { path: 'credit_card', component: CreditCardComponent,canActivate: [AuthGuard]},
   { path: 'profile_update', component: ProfileUpdateComponent,canActivate: [AuthGuard]},
+  { path: 'landline_update', component: LandlineUpdateComponent},
   { path: 'customer', component: CustomerComponent,canActivate: [AuthGuard] },
   { path: '404', component: NotFoundComponent },
   { path: 'result', component: AcceptRejectComponent },

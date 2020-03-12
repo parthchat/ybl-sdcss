@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Constants, APIConstants } from '../app.constant';
 import { BaseAPIService } from '../core/services/base-api-service.service';
 import { TokenStorage } from '../core/services/auth/token-storage.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,21 @@ export class DataService {
   accptRejct: any;
   srId: any;
   objc_details:any;
+
+  isAuthorize :boolean;
+  
+  abc:any = []
+  private messageSource = new BehaviorSubject(this.abc);
+  currentMessage = this.messageSource.asObservable();
+  serviceType: any;
+
   constructor(private tokenStorage: TokenStorage, private baseAPIService: BaseAPIService) { }
 
+
+  changeMessage(message: string) {
+    this.messageSource.next(message)
+  }
+  
   getAcceptRejectValue(val: any) {
     this.accptRejct = val;
   }

@@ -89,4 +89,9 @@ export class BaseAPIService {
     }
   }
 
+  sr_update(workflowId:any,params:any){
+    let SERVER_URL = this.baseUrl + `d/workflows/${workflowId}/${environment.apiVersion}/execute`;
+    return this.http.post(`${SERVER_URL}`, JSON.stringify(params));
+  }
+
 }
