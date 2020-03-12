@@ -143,4 +143,4 @@ export class AlertMessages {
     public static REQUIRED_FIELD_MSG = 'This field is required.';
 }
 
-export const APP_VERSION = 'v01.24.25';
+export const APP_VERSION = 'v01.24.26';
