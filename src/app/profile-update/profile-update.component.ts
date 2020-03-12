@@ -7,7 +7,6 @@ import { startWith, map, tap } from 'rxjs/operators';
 import { ProfileUpdateService } from './profile-update.service';
 import { CommonService } from '../core/services/common.service';
 import { AuthService } from '../core/services/auth/auth.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { DataService } from '../services/data.service';
 import { Router } from '@angular/router';
 
@@ -184,7 +183,11 @@ export class ProfileUpdateComponent implements OnInit {
   multipleNatureofBusiness = [];
   multipleNatureOfIndustry = [];
 
-  constructor(private profileService: ProfileUpdateService, private commonService: CommonService, private authService: AuthService, public spinner: NgxSpinnerService, private dataService: DataService, private router: Router) { }
+
+  loading: boolean;
+  customLoadingTemplate: any;
+
+  constructor(private profileService: ProfileUpdateService, private commonService: CommonService, private authService: AuthService, private dataService: DataService, private router: Router) { }
 
   onMaritalStatusOptionSelectChanged(event?: MatAutocompleteSelectedEvent) {
     
@@ -533,9 +536,7 @@ export class ProfileUpdateComponent implements OnInit {
   }
 
   ngOnInit() {
-    setTimeout(() => {
-      this.spinner.show();
-    });
+    this.loading = true;
     this.serviceHeading = "Profile Update";
     this.getMasterData();
     this.profileUpdateForm.patchValue(this.oldProfileData);
@@ -673,13 +674,13 @@ export class ProfileUpdateComponent implements OnInit {
   
     }
     else{
-      this.spinner.hide();
+      this.loading = false;
       this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
       return;
     }
   },
   error => {
-    this.spinner.hide();
+    this.loading = false;
     this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
     return;
   }
@@ -1008,17 +1009,17 @@ export class ProfileUpdateComponent implements OnInit {
         this.profileUpdateForm.enable();
       }
       // this.profileUpdateForm.disable();
-      this.spinner.hide()
+      this.loading = false;
     }
-      //this.spinner.hide();
+      //this.loading = false;
     else{
-        this.spinner.hide();
+        this.loading = false;
         this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
         return;
     }  
   },
   error => {
-    this.spinner.hide();
+    this.loading = false;
     this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
     return;
   })

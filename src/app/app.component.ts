@@ -3,6 +3,7 @@ import { LocationStrategy } from '@angular/common';
 import { CommonFunctions } from './core/utils/common-functions';
 import { TokenStorage } from './core/services/auth/token-storage.service';
 import { Subject } from 'rxjs';
+import { APP_VERSION } from './app.constant';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,8 @@ import { Subject } from 'rxjs';
 })
 export class AppComponent {
   title = 'my-app';
+  readonly APP_VERSION = APP_VERSION;
+
   isLocationChanged: boolean = false;
   userInactive: Subject<any> = new Subject();
   constructor(private location: LocationStrategy, private commonFunctions: CommonFunctions) {

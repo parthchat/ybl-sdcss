@@ -11,7 +11,7 @@ export class AcceptRejectComponent implements OnInit {
 
   constructor(private router: Router, private service: DataService, private route: ActivatedRoute) { }
 
-  showval:boolean;
+  showval: boolean;
   srId = this.service.srId;
 
   ngOnInit() {

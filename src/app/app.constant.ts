@@ -142,3 +142,5 @@ export class AlertMessages {
     public static resend_OTP_success = 'OTP has been sent';
     public static REQUIRED_FIELD_MSG = 'This field is required.';
 }
+
+export const APP_VERSION = 'v01.24.25';

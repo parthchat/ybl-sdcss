@@ -1396,4 +1396,7 @@
         <button class="verify-btn" mat-raised-button [disabled]="profileUpdateForm.invalid" (click)="saveAndNext()">Proceed</button>
         <!-- <button class="verify-btn" mat-raised-button (click)="saveAndNext()">Proceed</button> -->
     </div>
+
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
+    </ngx-loading>
 </mat-card>

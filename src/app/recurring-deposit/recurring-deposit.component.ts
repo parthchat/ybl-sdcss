@@ -12,6 +12,7 @@ import { CustomValidators } from 'src/app/validators/custom-validators';
 import { Subscription, combineLatest } from 'rxjs';
 import { CustomerService } from '../customer/customer.service';
 import { TokenStorage } from '../core/services/auth/token-storage.service';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-recurring-deposit',
@@ -104,7 +105,8 @@ export class RecurringDepositComponent implements OnInit {
     private baseAPIService: BaseAPIService,
     private service: RecurringDepositService,
     private tokenStorage: TokenStorage,
-    private customerService: CustomerService) {
+    private customerService: CustomerService,
+    private dataService: DataService) {
 
       // this.allValidators = [Validators.required, Validators.max(this.max_amount), Validators.min(this.min_amount), CustomValidators.shouldBeMultiplesOf100, CustomValidators.shouldBeLessThanEqualToNumber(this.balance) ];
 
@@ -233,23 +235,24 @@ export class RecurringDepositComponent implements OnInit {
     // setTimeout(() => this.spinner.show());
     this.loading = true;
 
-    
     /**************************************************
      * // dummy
      *  Comment this block of code on Testing/UAT/PROD
     **************************************************/ 
     this.tokenStorage.setAccessToken('RR2Q4guNBuaDi6xnuVzyWsjBPkeyfbyuEa2PLc09C/EfXZJCEMLuKFgxM9RtZPcl');
-    this.tokenStorage.setSrId('SR20200305105186GN');
+    this.tokenStorage.setSrId('SR20200312105253GN');
     this.subs.push(this.customerService.cust(new Date().getTime().toString()).subscribe(res => {
+
+      console.log("[RecurringDepositComponent] GET SESSION DETAILS response: ", res);
+
       this.service.setSessionDetails(res);
     }));
     /************************************************/
 
 
     // get session details for Account balance dropdown
-    this.subs.push(this.service.getSessionDetails().subscribe(
+    this.subs.push(this.service.sessionDetails$.subscribe(
       res => {
-        console.log("[RecurringDepositComponent] Get Session Details response: ", res);
 
         this.arrProductDetails = res['ProcessVariables']['productDetails'];
 
@@ -287,7 +290,7 @@ export class RecurringDepositComponent implements OnInit {
             }
           }
 
-          this.rdFormGroup.controls.rdProduct.setValue(res['ProcessVariables']['rdDetails']['depositProduct']+'');
+          this.rdFormGroup.controls.rdProduct.setValue(res['ProcessVariables']['rdDetails']['depositProduct'] ? res['ProcessVariables']['rdDetails']['depositProduct'] : this.arrProductDetails[0]['code']);
 
           if(res['ProcessVariables']['rdDetails']['tenureMonths']) {
             let _year = parseInt(res['ProcessVariables']['rdDetails']['tenureMonths']+'') >= 12 ? parseInt((parseInt(res['ProcessVariables']['rdDetails']['tenureMonths']+'')/12).toFixed(0)) : parseInt(res['ProcessVariables']['rdDetails']['tenureMonths']+'');
@@ -321,9 +324,9 @@ export class RecurringDepositComponent implements OnInit {
         this.arrNomineeRelationLovs = res['ProcessVariables']['nomineeRelationData'].map(e => ({code: e.code+'', label: e.label}));
         this.arrGuardianRelationLovs = res['ProcessVariables']['guardianRelationData'].map(e => ({code: e.code+'', label: e.label}));
 
-        this.rdFormGroup.controls.custId.setValue(res['ProcessVariables']['custId']);
-        this.rdFormGroup.controls.custType.setValue(res['ProcessVariables']['custType']);
-        this.rdFormGroup.controls.custName.setValue(res['ProcessVariables']['custName']);  
+        this.rdFormGroup.controls.custId.setValue(res['ProcessVariables']['custDetails']['custId']);
+        this.rdFormGroup.controls.custType.setValue(res['ProcessVariables']['custDetails']['custType']);
+        this.rdFormGroup.controls.custName.setValue(res['ProcessVariables']['custDetails']['custName']);  
       }, err => {
         // this.spinner.hide();
         this.loading = false;
@@ -659,23 +662,25 @@ export class RecurringDepositComponent implements OnInit {
       this.checked
     ).subscribe(res => {
       if (res['ErrorCode'] == '200') {
-        let srId = res['ProcessVariables']['srId']
-        if (srId) {
-          sessionStorage.setItem('sr_val', srId);
+        // let srId = res['ProcessVariables']['srId']
+        // if (srId) {
+          // sessionStorage.setItem('sr_val', srId);
           // dummy
-          this.subs.push(this.service.sr_submit().subscribe(res => {
-            if (res['ErrorCode'] == '200') {
-              // this.spinner.hide()
-              // this.baseAPIService.srId = srId;
-              this.router.navigate(['serviceRequest']);
-              this.authService.alertToUser('Fixed Deposit Created');
-            }
-            else if (res['ErrorCode'] == '400') {
-              // this.spinner.hide()
-              this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
-            }
-          }))
-        }
+        this.subs.push(this.service.sr_submit().subscribe(res => {
+          if (res['ErrorCode'] == '200') {
+            // this.spinner.hide()
+            // this.baseAPIService.srId = srId;
+            this.dataService.accptRejct = true;
+            this.router.navigate(['/result']);
+            this.authService.alertToUser('Recurring Deposit Created.');
+          }
+          else if (res['ErrorCode'] == '400') {
+            // this.spinner.hide()
+            this.dataService.accptRejct = false;
+            this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
+          }
+        }));
+        // }
       } else if (res['ErrorCode'] == '400') {
         // this.spinner.hide()
         this.authService.alertToUser('execution failed, in-sufficient data/ missing mandatroy data');
