@@ -41,6 +41,7 @@ export module APIConstants {
         WORKFLOW_ID = '90dc3ec288f511e9b12c2eca4ea5bb5f',
     }
     
+    //Create SR
     export enum Details {
         WORKFLOW_ID = '06b4889a8b4711e9b12c2eca4ea5bb5f',
         PROCESS_ID = '06d837a48b4711e9b12c2eca4ea5bb5f',
@@ -102,6 +103,27 @@ export module APIConstants {
         PROCESS_ID = '1c860420884811e9b16676fb2f2488b6',
         WORKFLOW_ID = '1c676c2c884811e9b16676fb2f2488b6'
     }
+
+    //Get profile LOV's
+    export enum GetProfileLOVs {
+        PROCESS_ID = '0e140aec226011eab0227a84d450ed6d',
+        WORKFLOW_ID = 'bd905b30892011e9b12c2eca4ea5bb5f'
+    }
+
+    export enum SaveProfileData{
+        PROCESS_ID = 'f59c01c65d3411eaa9456adcd8a925ce',
+        WORKFLOW_ID = 'a89134cc56e611eaa5393af528466045'
+    }
+
+    export enum CaptureCustomerData{
+        PROCESS_ID = '1940052a8ce111e99cd6ba3d751df4e5',
+        WORKFLOW_ID = '0de4c8e68ce111e99cd6ba3d751df4e5'
+    }
+
+    export enum GetProfileData{
+        PROCESS_ID = 'ff1599825eb111ea98b76adcd8a925ce',
+        WORKFLOW_ID = 'fefa558c5eb111ea82796adcd8a925ce'
+    }
 }
 
 export class AlertMessages {
@@ -113,4 +135,5 @@ export class AlertMessages {
     public static NA_BANK_MSG = 'Not available in the Bank records';
     public static invalid_Credentials = 'Invalid Credentials';
     public static resend_OTP_success = 'OTP has been sent';
+    public static REQUIRED_FIELD_MSG = 'This field is required.';
 }

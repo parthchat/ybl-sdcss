@@ -129,6 +129,7 @@ export class CustomerComponent implements OnInit {
           return;
         }
         this.authorization = res['ProcessVariables']['isAuthorizationRequired'];
+        this.service.isAuthorize = this.authorization;
         this.needDocs = res['ProcessVariables']['needDocs'];
         console.log(this.authorization, this.needDocs, 'additional options')
         this.service.srId = res['ProcessVariables']['srId'];
@@ -144,6 +145,12 @@ export class CustomerComponent implements OnInit {
         if(this.sr_type == 1004){
           this.router.navigate(['profile_update']);
         }
+
+        // Landline Update Service
+        if(this.sr_type == 1010){
+          this.router.navigate(['landline_update']);
+        }
+
         // For DOB Service
         if (this.sr_type == 1008) {
           console.log("in DOB Sr");
@@ -258,7 +265,11 @@ export class CustomerComponent implements OnInit {
       res => {
         this.loading = false;
         this.newarayy = res['ProcessVariables']['validDocList'];
+        if(this.newarayy == null){
+          return
+        }
         this.validUploadMethods = res['ProcessVariables']['validUploadMethods'];
+        
         for (var i = 0; i < this.newarayy.length; i++) {
            if (this.newarayy[i].isPrimary) {
             this.docType.push(this.newarayy[i]);

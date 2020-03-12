@@ -34,6 +34,9 @@ import { ProfileUpdateComponent } from './profile-update/profile-update.componen
 import { RecurringDepositComponent } from './recurring-deposit/recurring-deposit.component';
 import { OnlyNumberDirective } from './directives/only-numbers.directive';
 import { LessThanNumberDirective } from './directives/less-than-number.directive';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { LandlineUpdateComponent } from './landline-update/landline-update.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +61,8 @@ import { LessThanNumberDirective } from './directives/less-than-number.directive
     ProfileUpdateComponent,
     RecurringDepositComponent,
     OnlyNumberDirective,
-    LessThanNumberDirective
+    LessThanNumberDirective,
+    LandlineUpdateComponent
   ],
   imports: [
     BrowserModule,
@@ -70,6 +74,8 @@ import { LessThanNumberDirective } from './directives/less-than-number.directive
     FormsModule,
     ReactiveFormsModule,
     PdfViewerModule,
+    NgxSpinnerModule,
+    NgxMatSelectSearchModule,
     NgxLoadingModule.forRoot({}),
   ],
   entryComponents: [DialogBoxComponent],
