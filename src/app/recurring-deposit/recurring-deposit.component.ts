@@ -9,13 +9,14 @@ import { DatePipe } from '@angular/common';
 import { RecurringDepositService } from './recurring-deposit.service';
 import { MatSelectChange, MatRadioChange, MatDatepickerInputEvent } from '@angular/material';
 import { CustomValidators } from 'src/app/validators/custom-validators';
-import { Subscription, zip, merge, forkJoin, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
+import { CustomerService } from '../customer/customer.service';
+import { TokenStorage } from '../core/services/auth/token-storage.service';
 
 @Component({
   selector: 'app-recurring-deposit',
   templateUrl: './recurring-deposit.component.html',
-  styleUrls: ['./recurring-deposit.component.css'],
-  providers: [RecurringDepositService]
+  styleUrls: ['./recurring-deposit.component.css']
 })
 export class RecurringDepositComponent implements OnInit {
 
@@ -94,13 +95,16 @@ export class RecurringDepositComponent implements OnInit {
   loading: boolean;
   customLoadingTemplate: any;
 
-  constructor(private datePipe: DatePipe,
+  constructor(
+    private datePipe: DatePipe,
     private route: Router,
     private router: Router,
     private authService: AuthService,
     // private spinner: NgxSpinnerService,
     private baseAPIService: BaseAPIService,
-    private service: RecurringDepositService) {
+    private service: RecurringDepositService,
+    private tokenStorage: TokenStorage,
+    private customerService: CustomerService) {
 
       // this.allValidators = [Validators.required, Validators.max(this.max_amount), Validators.min(this.min_amount), CustomValidators.shouldBeMultiplesOf100, CustomValidators.shouldBeLessThanEqualToNumber(this.balance) ];
 
@@ -229,10 +233,23 @@ export class RecurringDepositComponent implements OnInit {
     // setTimeout(() => this.spinner.show());
     this.loading = true;
 
+    
+    /**************************************************
+     * // dummy
+     *  Comment this block of code on Testing/UAT/PROD
+    **************************************************/ 
+    this.tokenStorage.setAccessToken('RR2Q4guNBuaDi6xnuVzyWsjBPkeyfbyuEa2PLc09C/EfXZJCEMLuKFgxM9RtZPcl');
+    this.tokenStorage.setSrId('SR20200305105186GN');
+    this.subs.push(this.customerService.cust(new Date().getTime().toString()).subscribe(res => {
+      this.service.setSessionDetails(res);
+    }));
+    /************************************************/
+
+
     // get session details for Account balance dropdown
     this.subs.push(this.service.getSessionDetails().subscribe(
       res => {
-        console.log("[RecurringDepositComponent] Get Session Details response: ", res);        
+        console.log("[RecurringDepositComponent] Get Session Details response: ", res);
 
         this.arrProductDetails = res['ProcessVariables']['productDetails'];
 
@@ -306,9 +323,7 @@ export class RecurringDepositComponent implements OnInit {
 
         this.rdFormGroup.controls.custId.setValue(res['ProcessVariables']['custId']);
         this.rdFormGroup.controls.custType.setValue(res['ProcessVariables']['custType']);
-        this.rdFormGroup.controls.custName.setValue(res['ProcessVariables']['custName']);
-
-
+        this.rdFormGroup.controls.custName.setValue(res['ProcessVariables']['custName']);  
       }, err => {
         // this.spinner.hide();
         this.loading = false;
@@ -329,8 +344,11 @@ export class RecurringDepositComponent implements OnInit {
      * Check year or month has been set for atleast 3 months
     ********************************************************/
     if(parseInt(this.rdFormGroup.controls.rdYear.value) == 0) {
-      if(parseInt(this.rdFormGroup.controls.rdMonth.value) < 3)
-      this.rdFormGroup.controls.rdYear.setErrors({'incorrect': true});
+      if(parseInt(this.rdFormGroup.controls.rdMonth.value) < 3) {
+        this.rdFormGroup.controls.rdYear.setErrors({'incorrect': true});
+      } else {
+        this.rdFormGroup.controls.rdMonth.setErrors(null);
+      }
     } else {
       this.rdFormGroup.controls.rdYear.setErrors(null);
     }
@@ -398,13 +416,11 @@ export class RecurringDepositComponent implements OnInit {
     this.rdFormGroup.controls.accountRelation.setValue(this.arrAccountDetails.find(e => e.accountNumber == accountNumberValue)['accountRelation']);
     this.rdFormGroup.controls.accountType.setValue(this.arrAccountDetails.find(e => e.accountNumber == accountNumberValue)['accountType']);
 
-
-
     let apiUniqueKey = new Date().getTime().toString();
     let _accountType: string = this.arrAccountDetails.find(e => e.accountNumber == accountNumberValue)['accountType'];
 
     // dummy
-    this.subs.push(this.service.getAccountBalance(apiUniqueKey, accountNumberValue, _accountType).subscribe(res => {
+    this.subs.push(this.service.getAccountDetails(apiUniqueKey, accountNumberValue, _accountType).subscribe(res => {
 
       if(res['ErrorCode'] == '200' || res['ErrorCode'] == '401') {
         this.arrAccountDetails = this.arrAccountDetails.map(e => {
@@ -635,7 +651,7 @@ export class RecurringDepositComponent implements OnInit {
 
     // dummy
     this.subs.push(
-      this.service.createSR(this.selectedAccountNumber+'',
+      this.service.updateSR(this.selectedAccountNumber+'',
       this.rdFormGroup.value,
       this.rdFormGroup.controls.rdNomineeFormGroup ? this.rdFormGroup.controls.rdNomineeFormGroup.value: null,
       this.rdFormGroup.controls.rdGuardianFormGroup ? this.rdFormGroup.controls.rdGuardianFormGroup.value: null,
