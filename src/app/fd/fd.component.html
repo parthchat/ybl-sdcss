@@ -1,0 +1,687 @@
+<mat-card class="container">
+<app-common-details></app-common-details>
+    <h3 class="header-title">Fixed Deposit Details</h3>
+<!--  -->
+<div class="" *ngIf="!confirmation_screen">
+    <mat-form-field class="example-container scheme">
+        <mat-label>Select Any One Account</mat-label>
+        <mat-select [(value)]="selected_acc">
+            <mat-option *ngFor="let account of getBal_arry;index as i" [value]="account.accountNumber"
+                (click)="onSelect_Account(i)">
+                {{account.accountNumber}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <div class="row">
+        <!--Current Balance  -->
+        <div class="col-sm-4 view-row">
+            <div class="">
+                <div class="inner-div">
+                    <label class="detail-label">Account Balance</label>
+                    <p class="detail-text" *ngIf="balance"> {{balance | currency:"₹"}}</p>
+                    <p class="detail-text" *ngIf="!balance"> {{NA_BANK_MSG}}</p>
+                    <!-- <p class="detail-text"> {{baseAPIService.acc_source | async | currency:"₹"}}</p> -->
+                </div>
+            </div>
+        </div>
+        <!--  Branch Code-->
+        <div class="col-sm-4 view-row">
+            <div class="">
+                <div class="inner-div">
+                    <label class="detail-label">Branch Code</label>
+                    <p class="detail-text">{{branch_code}}</p>
+                </div>
+            </div>
+        </div>
+        <!-- Branch Name -->
+        <div class="col-sm-4 view-row">
+            <div class="">
+                <div class="inner-div">
+                    <label class="detail-label">Branch Name</label>
+                    <p class="detail-text">{{branch_name}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fb-main-div">
+        <form [formGroup]="fd_form">
+            <!-- toggle -->
+            <!-- <div class="toggle-wrapper text-right">
+        Senior Citizen
+        <mat-slide-toggle class="example-margin" [color]="color" [checked]="checked" [disabled]="disabled">
+        </mat-slide-toggle>
+    </div> -->
+            <!--  -->
+            <mat-tab-group [selectedIndex]="1">
+                <mat-tab class="mat-tabs" label="Customize">
+
+                    <!-- intruction rates on site -->
+                    <a class="link-rate"
+                        href="https://www.yesbank.in/personal-banking/yes-individual/deposits/fixed-deposit-residents"
+                        target="_blank">Check Interest Rates</a>
+                    <!--  -->
+                    <!--  -->
+                    <div class="row">
+                        <!-- fixed deposit scheme -->
+                        <div class="col-sm-6">
+                            <div class="select-div">
+                                <mat-form-field class="example-container scheme">
+                                    <mat-label>Select Fixed Deposit Scheme</mat-label>
+                                    <mat-select formControlName="scheme_val">
+                                        <mat-option *ngFor="let scheme of fbSchemes; let i = index;"
+                                            [value]="scheme.code" (click)="on_Scheme_Select(scheme.code)">
+                                            {{scheme.label}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-hint align="start" *ngIf="!fd_form.controls.scheme_val.value" class="max-amt">
+                                        Please
+                                        select scheme
+                                    </mat-hint>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- product details -->
+                        <div class="col-sm-6">
+                            <div class="select-div">
+                                <mat-form-field class="example-container scheme">
+                                    <mat-label>Select Product</mat-label>
+                                    <mat-select formControlName="FD_product">
+                                        <mat-option *ngFor="let product of filter_product_details; let i = index;"
+                                            [value]="product.code"
+                                            (click)="selectProduct(product.code,product.type,product.label)">
+                                            {{product.label}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <div class="col-sm-6">
+                            <div class="select-div">
+                                <mat-form-field class="example-container scheme">
+                                    <mat-label>Select Principle Instruction</mat-label>
+                                    <mat-select formControlName="principal_Instruction">
+                                        <mat-option *ngFor="let principle of arrPrincipal_Instruction; let i = index;"
+                                            [value]="principle.code" (click)="select_principle()">
+                                            {{principle.label}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <div class="col-sm-6" *ngIf="fd_form.controls.selectAccount_principle">
+                            <div class="select-div">
+                                <mat-form-field class="example-container scheme">
+                                    <mat-label>Select Principle Account</mat-label>
+                                    <mat-select formControlName="selectAccount_principle">
+                                        <mat-option *ngFor="let account of getBal_arry;index as i"
+                                            [value]="account.accountNumber" (click)="selectAccount_principleInstr(i)">
+                                            {{account.accountNumber}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <div class="col-sm-6" *ngIf="this.fd_form.controls.interest_instruction">
+                            <div class="select-div">
+                                <mat-form-field class="example-container scheme">
+                                    <mat-label>Select Interest Instruction</mat-label>
+                                    <mat-select formControlName="interest_instruction">
+                                        <mat-option *ngFor="let interest of arrInterest_Instruction; let i = index;"
+                                            [value]="interest.code" (click)="selectInterest()">
+                                            {{interest.label}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <div class="col-sm-6" *ngIf="this.fd_form.controls.selectAccount_Interest">
+                            <div class="select-div">
+                                <mat-form-field class="example-container scheme">
+                                    <mat-label>Select Interest Account</mat-label>
+                                    <mat-select formControlName="selectAccount_Interest">
+                                        <mat-option *ngFor="let account of getBal_arry;index as i"
+                                            [value]="account.accountNumber"
+                                            (click)="selectAccount_interest_Instruction(i)">
+                                            {{account.accountNumber}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <div class="col-sm-6">
+                            <div class="select-div">
+                                <mat-form-field class="example-container scheme">
+                                    <mat-label>Select Maturity Instruction</mat-label>
+                                    <mat-select formControlName="maturity_instruction">
+                                        <mat-option *ngFor="let maturity of arrMaturity_intruction; let i = index;"
+                                            [value]="maturity.code">
+                                            {{maturity.label}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!--  -->
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <mat-form-field class="example-container">
+                                <input matInput placeholder="Enter Deposit Amount" class="" formControlName="get_amount"
+                                    maxlength="8" minlength="5" autocomplete="off" [OnlyNumber]='true'>
+                                <span matPrefix>₹&nbsp;</span>
+                                <mat-hint align="start" *ngIf="fd_form.controls.get_amount.value < 10000"
+                                    class="max-amt">Min Amount:
+                                    ₹{{min_amount}}
+                                </mat-hint>
+                                <mat-hint align="start" *ngIf="fd_form.controls.get_amount.value > 10000"
+                                    class="min-amt">Max Amount:
+                                    ₹{{max_amount}}
+                                </mat-hint>
+                                <!-- <mat-hint align="start"
+                                    *ngIf="fd_form.controls.get_amount.value > max_amount && pan_exist==true"
+                                    class="min-amt">Cannot be more than
+                                    ₹{{max_amount}}
+                                </mat-hint> -->
+                                <!-- <mat-hint align="start"
+                                    *ngIf="pan_exist==false && fd_form.controls.get_amount.value > min_amount_for__non_pan && fd_form.controls.get_amount.value > min_amount"
+                                    class="min-amt">Cannot be more than
+                                    ₹{{min_amount_for__non_pan}}
+                                </mat-hint> -->
+                            </mat-form-field>
+                            <!-- <mat-error class="left-space" >error</mat-error> -->
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="tenure-txt">Select Tenure</p>
+                            <div class="flex-display">
+                                <!-- Days -->
+                                <mat-form-field class="field-date">
+                                    <mat-label>Days</mat-label>
+                                    <mat-select formControlName="FD_days">
+                                        <mat-option *ngFor="let days of no_days" [value]="days">
+                                            {{days}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <!-- Months -->
+                                <mat-form-field class="field-date">
+                                    <mat-label>Months</mat-label>
+                                    <mat-select formControlName="FD_month">
+                                        <mat-option *ngFor="let month of no_month" [value]="month"
+                                            (click)="selectMonth(month)">
+                                            {{month}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <!-- Years -->
+                                <mat-form-field class="field-date">
+                                    <mat-label>Year</mat-label>
+                                    <mat-select formControlName="year_val">
+                                        <mat-option *ngFor="let yr of no_years" [value]="yr" (click)="selectYear(yr)">
+                                            {{yr}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- <div class="col-sm-6" *ngIf="fd_form.controls.get_amount.value > 50000">
+                            <mat-form-field class="example-container">
+                                <input matInput placeholder="Enter Your PAN No." value="" formControlName="pan_no"
+                                    minlength="10" maxlength="10" (keypress)="spcChar($event)"
+                                    (paste)="onPaste($event)">
+                            </mat-form-field>
+                        </div> -->
+
+                    </div>
+
+                    <!--  -->
+
+                </mat-tab>
+                <!-- Quick Book Tab -->
+                <mat-tab class="mat-tabs" label="Quick">
+                    <div class="wrapper-div">
+                        <ng-template *ngIf="!!quickBookRes" ngFor let-qb [ngForOf]="quickBookRes" let-i="index">
+                            <div (click)="onQuickBookSelection(qb)" class="quick-book"
+                                [ngClass]="{'quick-book-selected': qb.index == selectedQuickBook?.index}">
+                                <div class="title-quick-wrapper" *ngIf="!!qb.amount"><span class="title-quick">Deposit
+                                        Amount</span>: Rs.{{qb.amount}}</div>
+                                <div class="title-quick-wrapper" *ngIf="!!qb.tenure"><span class="title-quick">Tenure
+                                    </span>:{{qb.tenure}}</div>
+                                <div class="title-quick-wrapper" *ngIf="!!qb.interestRate"><span
+                                        class="title-quick">Interest</span>:{{qb.interestRate}} %</div>
+                                <div class="title-quick-wrapper" *ngIf="!!qb.schemeName"><span
+                                        class="title-quick">Scheme Name</span>:{{qb.schemeName}} %</div>
+                            </div>
+                        </ng-template>
+                        <h3 class="text-center quick-book-lbl" *ngIf="!quickBookRes">Quick Books not available.</h3>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+            <br>
+            <!-- Nominee and Guardian -->
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="header-title"><span class="" style="color: red;">*</span>Add Nominee?</h3>
+                            </div>
+                        </div>
+                        <div class="radio-btn-wrapper">
+                            <mat-radio-group aria-label="Add Nominee?" formControlName="isNomineeShown"
+                                (change)="onNomineeYesNoChange($event)">
+                                <mat-radio-button [value]="true">Yes</mat-radio-button>
+                                <mat-radio-button [value]="false">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12" *ngIf="fd_form.controls.isNomineeShown.value">
+                        <h3 class="header-title">Existing or add new Nominee?</h3>
+
+                        <div class="new-exist-radio-btn-wrapper">
+                            <mat-radio-group aria-label="Use Existing or add new Nominee?"
+                                [formControl]="fd_form.controls.isExistingOrNewNominee"
+                                (change)="onExistingOrNewNomineeChange($event)">
+                                <mat-radio-button [value]="1" [disabled]="!getBal_arry[pointer]?.isNomineePresent">Use
+                                    Existing
+                                </mat-radio-button>
+                                <mat-radio-button [value]="2">Add New</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+
+                    <!-- Nominee Form -->
+                    <div class="col-md-12" *ngIf="fd_form.controls.isNomineeShown.value">
+
+                        <h3 class="header-title">Nominee Form</h3>
+
+                        <div class="row" formGroupName="rdNomineeFormGroup">
+
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Relation To Accound Holder</mat-label>
+                                <mat-select formControlName="relationToAccHolder">
+                                    <mat-option *ngFor="let relation of arrNomineeRelationLovs" [value]="relation.code">
+                                        {{relation.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Nominee Name</mat-label>
+                                <input matInput formControlName="nomineeName" maxlength="50"
+                                    (keypress)="onInputKeyPress($event,true)">
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Address Line 1</mat-label>
+                                <input matInput formControlName="addressLine1" (keypress)="onInputKeyPress($event,false)"
+                                    maxlength="50">
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Address Line 2</mat-label>
+                                <input matInput formControlName="addressLine2" maxlength="50"
+                                    (keypress)="onInputKeyPress($event,false)">
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Address Line 3</mat-label>
+                                <input matInput formControlName="addressLine3" maxlength="50"
+                                    (keypress)="onInputKeyPress($event,false)">
+                            </mat-form-field>
+
+                            <input type="hidden" formControlName="displayNomineeNameFlag" class="displayNun" />
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Mobile Number</mat-label>
+                                <input matInput formControlName="mobileNumber" maxlength="10" [OnlyNumber]='true'>
+                            </mat-form-field>
+
+                            <input type="hidden" formControlName="nomineeRegistrationNumber" class="displayNun" />
+
+                            <input type="hidden" formControlName="sharePercentage" class="displayNun" />
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Date of Birth</mat-label>
+                                <input matInput [matDatepicker]="dateOfBirthPicker" formControlName="dateOfBirth"
+                                    [min]="minDate" [max]="maxsDate" autocomplete="off"
+                                    (dateChange)="onDateOfBirthChange($event)"  readonly />
+                                <mat-datepicker-toggle matSuffix [for]="dateOfBirthPicker">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #dateOfBirthPicker></mat-datepicker>
+                            </mat-form-field>
+
+                            <!-- <mat-form-field class="col-md-4">
+                                <mat-label>Email</mat-label>
+                                <input matInput formControlName="emailId">
+                            </mat-form-field> -->
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Country</mat-label>
+                                <mat-select formControlName="country">
+                                    <mat-option *ngFor="let country of arrCountriesLovs" [value]="country.code">
+                                        {{country.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>State</mat-label>
+                                <input matInput formControlName="state" (keypress)="onInputKeyPress($event,true)">
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Town Or City</mat-label>
+                                <input matInput formControlName="townOrCity" maxlength="50"
+                                    (keypress)="onInputKeyPress($event,true)">
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Zip Code</mat-label>
+                                <input matInput formControlName="zipCode" maxlength="6" [OnlyNumber]='true'>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <!-- Guardian Form -->
+                    <div class="col-md-12"
+                        *ngIf="fd_form.controls.isNomineeShown.value && nomineeAge != null && nomineeAge < 18">
+
+                        <h3 class="header-title">Guardian Form</h3>
+
+                        <div class="row" formGroupName="rdGuardianFormGroup">
+
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Relation To Nominee</mat-label>
+                                <mat-select formControlName="relationToNominee">
+                                    <mat-option *ngFor="let relation of arrGuardianRelationLovs"
+                                        [value]="relation.code">
+                                        {{relation.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Guardian Name</mat-label>
+                                <input matInput formControlName="guardianName" maxlength="50"
+                                    (keypress)="onInputKeyPress($event,true)">
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Address Line 1</mat-label>
+                                <input matInput formControlName="addressLine1" maxlength="50"
+                                    (keypress)="onInputKeyPress($event,false)">
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Address Line 2</mat-label>
+                                <input matInput formControlName="addressLine2" maxlength="50"
+                                    (keypress)="onInputKeyPress($event,false)">
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Address Line 3</mat-label>
+                                <input matInput formControlName="addressLine3" maxlength="50"
+                                    (keypress)="onInputKeyPress($event,false)">
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Phone Number</mat-label>
+                                <input matInput formControlName="phoneNumber" maxlength="10" [OnlyNumber]='true'>
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Mobile Number</mat-label>
+                                <input matInput formControlName="mobileNumber" maxlength="10" [OnlyNumber]='true'>
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Email</mat-label>
+                                <input matInput formControlName="emailId" maxlength="50">
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Country</mat-label>
+                                <mat-select formControlName="country">
+                                    <mat-option *ngFor="let country of arrCountriesLovs" [value]="country.code">
+                                        {{country.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>State</mat-label>
+                                <input matInput formControlName="state" maxlength="50"
+                                    (keypress)="onInputKeyPress($event,true)">
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Town Or City</mat-label>
+                                <input matInput formControlName="townOrCity" maxlength="50"
+                                    (keypress)="onInputKeyPress($event,true)">
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Zip Code</mat-label>
+                                <input matInput formControlName="zipCode" maxlength="6" [OnlyNumber]='true'>
+                            </mat-form-field>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="text-center">
+                <mat-slide-toggle class="text-center" [color]="color" [checked]="sweep_In">Sweep In</mat-slide-toggle>
+            </div>
+            <br>
+            <div class="text-center bottom-div">
+                <button mat-raised-button color="primary" [disabled]="!this.fd_form.valid"
+                    (click)="confirm()">Next</button>
+            </div>
+            <!--  -->
+        </form>
+        <br>
+    </div>
+</div>
+<!-- COFIRM PAGE SCREEN -->
+<div class="" *ngIf="confirmation_screen">
+    <mat-toolbar class="text-center tool-bar" style="margin-bottom: 15px;">
+        <mat-icon matSuffix class="back_screen" matTooltip="Go Back" (click)="back_screen()">keyboard_arrow_left
+        </mat-icon>
+        Confirmation
+    </mat-toolbar>
+    <div class="container" style="border: 1px solid #8080801c;">
+
+        <table class="table table-hover">
+            <tbody>
+                <tr>
+                    <td>Deposit Product</td>
+                    <td>{{product_name}} ({{this.prod_code}}) </td>
+                </tr>
+                <tr>
+                    <td>Interest Frequency</td>
+                    <td>{{confirm_details_obj[1].Frequency}}</td>
+                </tr>
+                <tr>
+                    <td>Deposit Amount</td>
+                    <td>{{confirm_details_obj[0].deposit_amount | currency:"₹"}}</td>
+                </tr>
+                <tr>
+                    <td>Deposit Start Date</td>
+                    <td>{{confirm_details_obj[0].deposit_start_date}}</td>
+                </tr>
+                <tr>
+                    <td>Maturity Date</td>
+                    <td>{{confirm_details_obj[0].maturityDate}}</td>
+                </tr>
+                <tr>
+                    <td>Interest Rate</td>
+                    <td>{{confirm_details_obj[0].interestRate}} %</td>
+                </tr>
+                <tr>
+                    <td>Deposit Term/Tenure</td>
+                    <td>{{confirm_details_obj[0].tenure}}</td>
+                    <!-- <td *ngIf="fd_form.controls.FD_month.value <= 11 && fd_form.controls.year_val.value==0">{{less_than_11_months}} Days</td>
+                    <td *ngIf="fd_form.controls.year_val.value!=0">{{confirm_details_obj[0].months}} Months , {{confirm_details_obj[0].day}} Days</td> -->
+                </tr>
+                <tr>
+                    <td>Maturity Amount</td>
+                    <td>{{confirm_details_obj[0].maturityAmount | currency:"₹"}}</td>
+                </tr>
+                <tr>
+                    <td>Joint Holder</td>
+                    <td>{{confirm_details_obj[0].jointHolder ? 'Yes': 'No'}}</td>
+                </tr>
+                <tr>
+                    <td>Account Number</td>
+                    <td>{{selected_acc}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Nominee Data -->
+        <table class="table table-hover" *ngIf="fd_form.controls.rdNomineeFormGroup">
+            <tr class="nominee-guardian-title">
+                <td colspan="2">
+                    Nominee Details
+                </td>
+            </tr>
+            <tr>
+                <td>Relation To Account Holder</td>
+                <td>{{fd_form.value?.relationToAccHolderLabel}}</td>
+            </tr>
+            <tr>
+                <td>Nominee Name</td>
+                <td>{{fd_form.controls.rdNomineeFormGroup.controls.nomineeName.value}}</td>
+            </tr>
+            <tr>
+                <td>Address Line 1</td>
+                <td>{{fd_form.controls.rdNomineeFormGroup.controls.addressLine1.value}}</td>
+            </tr>
+            <tr>
+                <td>Address Line 2</td>
+                <td>{{fd_form.controls.rdNomineeFormGroup.controls.addressLine2.value}}</td>
+            </tr>
+            <tr>
+                <td>Address Line 3</td>
+                <td>{{fd_form.controls.rdNomineeFormGroup.controls.addressLine3.value}}</td>
+            </tr>
+            <tr>
+                <td>Mobile Number</td>
+                <td>{{fd_form.controls.rdNomineeFormGroup.controls.mobileNumber.value}}</td>
+            </tr>
+            <tr>
+                <td>Date Of Birth</td>
+                <td>{{fd_form.controls.rdNomineeFormGroup.controls.dateOfBirth.value | date: 'dd-M-yyyy'}}</td>
+            </tr>
+            <!-- <tr>
+                <td>Email</td>
+                <td>{{fd_form.controls.rdNomineeFormGroup.controls.emailId.value}}</td>
+            </tr> -->
+            <tr>
+                <td>Country</td>
+                <td>{{fd_form.value?.nomineeCountryLabel}}</td>
+            </tr>
+            <tr>
+                <td>State</td>
+                <td>{{fd_form.controls.rdNomineeFormGroup.controls.state.value}}</td>
+            </tr>
+            <tr>
+                <td>Town Or City</td>
+                <td>{{fd_form.controls.rdNomineeFormGroup.controls.townOrCity.value}}</td>
+            </tr>
+            <tr>
+                <td>Zip Code</td>
+                <td>{{fd_form.controls.rdNomineeFormGroup.controls.zipCode.value}}</td>
+            </tr>
+        </table>
+
+        <!-- Guardian Data -->
+        <table class="table table-hover" *ngIf="fd_form.controls.rdGuardianFormGroup">
+            <tr class="nominee-guardian-title">
+                <td colspan="2">
+                    Guardian Details
+                </td>
+            </tr>
+            <tr>
+                <td>Relation To Nominee</td>
+                <td>{{fd_form.value?.relationToNomineeLabel}}</td>
+            </tr>
+            <tr>
+                <td>Guardian Name</td>
+                <td>{{fd_form.controls.rdGuardianFormGroup.controls.guardianName.value}}</td>
+            </tr>
+            <tr>
+                <td>Address Line 1</td>
+                <td>{{fd_form.controls.rdGuardianFormGroup.controls.addressLine1.value}}</td>
+            </tr>
+            <tr>
+                <td>Address Line 2</td>
+                <td>{{fd_form.controls.rdGuardianFormGroup.controls.addressLine2.value}}</td>
+            </tr>
+            <tr>
+                <td>Address Line 3</td>
+                <td>{{fd_form.controls.rdGuardianFormGroup.controls.addressLine3.value}}</td>
+            </tr>
+            <tr>
+                <td>Phone Number</td>
+                <td>{{fd_form.controls.rdGuardianFormGroup.controls.phoneNumber.value}}</td>
+            </tr>
+            <tr>
+                <td>Mobile Number</td>
+                <td>{{fd_form.controls.rdGuardianFormGroup.controls.mobileNumber.value}}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{fd_form.controls.rdGuardianFormGroup.controls.emailId.value}}</td>
+            </tr>
+            <tr>
+                <td>Country</td>
+                <td>{{fd_form.value?.guardianCountryLabel}}</td>
+            </tr>
+            <tr>
+                <td>State</td>
+                <td>{{fd_form.controls.rdGuardianFormGroup.controls.state.value}}</td>
+            </tr>
+            <tr>
+                <td>Town Or City</td>
+                <td>{{fd_form.controls.rdGuardianFormGroup.controls.townOrCity.value}}</td>
+            </tr>
+            <tr>
+                <td>Zip Code</td>
+                <td>{{fd_form.controls.rdGuardianFormGroup.controls.zipCode.value}}</td>
+            </tr>
+        </table>
+    </div><br>
+    <div class="text-center">
+        <mat-checkbox color='primary' [(ngModel)]="checked">Were you assisted by Yes Bank Staff ?</mat-checkbox>
+        <!-- Form For YES BANK STAFF INPUT -->
+        <div class="" *ngIf="checked">
+            <form class="example-form" [formGroup]="fd_staff">
+                <mat-form-field class="example-full-width" class="staff-field">
+                    <input matInput placeholder="Enter Empoyee Id" value="" formControlName="staf_id" minlength="6"
+                        maxlength="7" [OnlyNumber]='true' (paste)="onPaste($event)" autocomplete="off" required>
+                </mat-form-field>
+            </form>
+        </div><br>
+        <!-- <mat-slide-toggle class="text-center" [color]="color" [checked]="sweep_In">Sweep In</mat-slide-toggle> -->
+        <!--  -->
+    </div>
+    <!-- Submit Form Button -->
+    <div class="text-center bottom-div">
+        <button mat-raised-button color="primary" (click)="proceed()" [disabled]="proceed_enabled">Proceed</button>
+    </div>
+</div>
+</mat-card>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px'}" [template]="customLoadingTemplate">
+</ngx-loading>

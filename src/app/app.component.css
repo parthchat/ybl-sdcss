@@ -2,3 +2,20 @@
     display: flex;
     justify-content: center;
 }
+
+.account-title{
+    margin-bottom: 20px;
+}
+.cols{
+    display: flex;
+    flex-direction: column;
+}
+.title {
+    color: #0062a8;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    background-color: rgba(116, 211, 248, 0.26);
+    margin: 0px -17px 15px !important;
+    padding: 10px 0 10px 25px;
+  }

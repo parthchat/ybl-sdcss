@@ -1,28 +1,25 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<!-- <div class="text-center logo">
-    <img src="assets/images/logo.png">
-  </div> -->
-  <mat-toolbar class="logo">
-    <img src="assets/images/logo.png" title="01.24.25v">
-  </mat-toolbar>
-  <!-- common details of customer -->
-  <!-- <mat-card class="container">
-    <h3 class="title start-title">Customer Details</h3>
-  <div class="">
+<div class="">
     <h5 class="account-title">Service Request Details</h5>
-    <div class="row example-container" *ngFor="let data of responses">
+    <div class="row example-container" *ngFor="let data of details">
       <div class="col-sm-3 cols">
         <mat-form-field>
           <input matInput placeholder="Customer ID" [(ngModel)]="data.cust_id" disabled>
         </mat-form-field>
       </div>
-      <div class="col-sm-3 cols">
+      <!-- Customer Name -->
+      <div class="col-sm-3 cols" *ngIf="sr_type == 1004">
         <mat-form-field>
-          <input matInput placeholder="Request Type" [(ngModel)]="data.srType_name" disabled>
+          <input matInput placeholder="Customer Name" [(ngModel)]="data.custName" disabled>
         </mat-form-field>
       </div>
-      
-      <div class="col-sm-3 cols" *ngIf="sr_type == 1005 || serviceType == 1001">
+      <!--  -->
+      <div class="col-sm-3 cols">
+        <mat-form-field>
+          <input matInput placeholder="Request Type" [(ngModel)]="data.srType" disabled>
+        </mat-form-field>
+      </div>
+      <!-- Pan Data -->
+      <div class="col-sm-3 cols" *ngIf="sr_type == 1005 || 1001">
         <mat-form-field>
           <input matInput placeholder="Old PAN Number" [(ngModel)]="data.old_pan_number" disabled>
         </mat-form-field>
@@ -32,7 +29,8 @@
           <input matInput placeholder="New PAN Number" [(ngModel)]="data.new_pan_number" disabled>
         </mat-form-field>
       </div>
-      
+      <!--  -->
+      <!-- Dob data -->
       <div class="col-sm-3 cols" *ngIf="sr_type == 1008">
         <mat-form-field>
           <input matInput placeholder="Old DOB" [(ngModel)]="old_Dob" disabled>
@@ -43,7 +41,7 @@
           <input matInput placeholder="New DOB" [(ngModel)]="new_dob" disabled>
         </mat-form-field>
       </div>
-      
+      <!-- Email data -->
       <div class="col-sm-3 cols" *ngIf="sr_type == 1006">
         <mat-form-field>
           <input matInput placeholder="Old Email" [(ngModel)]="old_email" disabled>
@@ -54,7 +52,7 @@
           <input matInput placeholder="New Email" [(ngModel)]="new_email" disabled>
         </mat-form-field>
       </div>
-      
+      <!--Mobile Update  -->
       <div class="col-sm-3 cols" *ngIf="sr_type == 1007">
         <mat-form-field>
           <input matInput placeholder="Old Mobile Number" [(ngModel)]="old_mobile_number" disabled>
@@ -67,8 +65,3 @@
       </div>
     </div>
   </div>
-  </mat-card> -->
-  <!--  -->
-  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
-  </ngx-loading>
-<router-outlet></router-outlet>

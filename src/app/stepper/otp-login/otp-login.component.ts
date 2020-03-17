@@ -69,7 +69,7 @@ export class OtpLoginComponent implements OnInit {
       if (this.stepperService.otpAuthRefId) {
         this.stepperService.verifyDetails(3, '', '', '', '', this.stepperService.otpAuthRefId, this.otpLoginForm.controls.mobileOTP.value, this.apiUniqueKey).subscribe(
           response => {
-            this.loading = false;
+            //this.loading = false;
             if (response['status']) {
               if (response['payload']['processResponse']['Error'] == '0' && response['payload']['processResponse']['ErrorCode'] == '200') {
                 if (response['payload']['processResponse']['ProcessVariables']['apiUniqueReqId'] == this.apiUniqueKey) {
@@ -77,7 +77,9 @@ export class OtpLoginComponent implements OnInit {
                     this.tokenStorage.setAccessToken(response['payload']['processResponse']['authentication-token']);
                     console.log(response['payload']['processResponse']['authentication-token'], 'token')
                     this.tokenStorage.setSrId(response['payload']['processResponse']['ProcessVariables']['srId']);
-                    this.router.navigate(['customer']);
+                       this.service.getCustomerDetails_And_Routing();
+                       return; 
+                    // this.router.navigate(['customer']);
                   } else {
                     this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
                     this.commonFunctions.showErrorPage();

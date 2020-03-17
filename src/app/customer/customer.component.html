@@ -14,7 +14,7 @@
         </mat-form-field>
       </div>
       <!-- Pan Data -->
-      <div class="col-sm-3 cols" *ngIf="sr_type == 1005">
+      <div class="col-sm-3 cols" *ngIf="sr_type == 1005 || sr_type == 1001">
         <mat-form-field>
           <input matInput placeholder="Old PAN Number" [(ngModel)]="data.old_pan_number" disabled>
         </mat-form-field>

@@ -126,6 +126,7 @@ export class OtpPageComponent implements OnInit {
     this.apiUniqueKey = new Date().getTime().toString();
     this.otpPageService.verifyOtp(this.refId, this.otp, this.apiUniqueKey).subscribe(
       res => {
+        console.log(res)
         if (!res['status']) {
           this.errorPage();
           this.loading = false;

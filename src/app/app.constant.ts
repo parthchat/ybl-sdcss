@@ -23,6 +23,7 @@ export class Constants {
     //                                        1st digit 2-to-9 and after that it can be 0 to 9  
     public static VALIDATION_REGEX_LANDLINE_NUMBER  = /^[1-9][0-9]/;
     public static VALIDATION_REGX_EMAIL = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    public static Validation_address_regex = /^[a-zA-Z0-9\s,/.'-]*$/
 }
 
 export module APIConstants {
@@ -107,6 +108,15 @@ export module APIConstants {
         PROCESS_ID = '72ded74a5d5711eaa3dc6adcd8a925ce',
         WORKFLOW_ID = '72aede785d5711ea81a56adcd8a925ce'
     }
+    export enum sr_submit {
+        PROCESS_ID = 'ee966c98d55f11e9933d8e7a151d5229',
+        WORKFLOW_ID = 'e254d6ead55f11e9933d8e7a151d5229'
+    }
+    export enum fd_sr_create {
+        PROCESS_ID = '72ded74a5d5711eaa3dc6adcd8a925ce',
+        WORKFLOW_ID = '72aede785d5711ea81a56adcd8a925ce'
+    }
+
 }
 
 export class AlertMessages {
@@ -118,4 +128,5 @@ export class AlertMessages {
     public static NA_BANK_MSG = 'Not available in the Bank records';
     public static invalid_Credentials = 'Invalid Credentials';
     public static resend_OTP_success = 'OTP has been sent';
+    public static non_pan_message_FD = 'Amount cannot be more than Rs.49999,Please update your PAN';
 }

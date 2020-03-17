@@ -17,6 +17,7 @@ import { UnderConstructionComponent } from './under-construction/under-construct
 import { AuthGuard } from './auth-guard/auth.guard';
 import { ProfileUpdateComponent } from './profile-update/profile-update.component';
 import { RecurringDepositComponent } from './recurring-deposit/recurring-deposit.component';
+import { FdComponent } from './fd/fd.component';
 
 
 const routes: Routes = [
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'result', component: AcceptRejectComponent },
   { path: 'emailverify', component: EmailverifyComponent },
   { path: 'recurring-deposit', component: RecurringDepositComponent,canActivate: [AuthGuard] },
+  { path: 'fixed-deposit', component: FdComponent,canActivate: [AuthGuard] },
   { path: 'error', component: ErrorpageComponent },
   { path: 'mobileverify', component: MobileVerifyComponent,canActivate: [AuthGuard] },
   { path: 'confirm-request', component: AuthorizationComponent,canActivate: [AuthGuard] },

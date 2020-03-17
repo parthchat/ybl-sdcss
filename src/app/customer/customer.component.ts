@@ -112,90 +112,132 @@ export class CustomerComponent implements OnInit {
     } else {
       this.mobile = false;
     }
-
+    console.log(this.service.customerDetails,'cust dea')
     console.log("mobile", this.mobile);
     if (this.tokenStorage.getAccessToken()) {
       this.apiUniqueKey = new Date().getTime().toString();
-      this.loading = true;
-      this.customerService.cust(this.apiUniqueKey).subscribe(res => {
-        this.loading = false;
-        this.res_ = res;
-        if (res['login_required'] == true) {
-          this.errorPage();
-          return;
-        }
-        if (res['ProcessVariables']['apiUniqueReqId'] != this.apiUniqueKey) {
-          this._snackBar.open('Invalid', 'Error', {
-            duration: 4000,
-          });
-          return;
-        }
-        if (this.res_['ProcessVariables']['srDetails']['srType']) {
-          this.sr_type = this.res_['ProcessVariables']['srDetails']['srType'];
-        } else {
-          this.errorPage();
-          return;
-        }
-        this.authorization = res['ProcessVariables']['isAuthorizationRequired'];
-        this.needDocs = res['ProcessVariables']['needDocs'];
+      this.loading = true; 
+      // get customer details from service
+      if(this.service.customerDetails){
+        this.res_ = this.service.customerDetails;
+       if (this.res_['login_required'] == true) {
+        this.errorPage();
+        return;
+      }
+      // if (this.res_['ProcessVariables']['apiUniqueReqId'] != this.apiUniqueKey) {
+      //   this._snackBar.open('Invalid', 'Error', {
+      //     duration: 4000,
+      //   });
+      //   return;
+      // }
+      if (this.res_['ProcessVariables']['srDetails']['srType']) {
+        this.sr_type = this.res_['ProcessVariables']['srDetails']['srType'];
+      } else {
+        this.errorPage();
+        return;
+      }
+      // 
+        this.sr_type = this.res_['ProcessVariables']['srDetails']['srType'];
+        this.authorization = this.res_['ProcessVariables']['isAuthorizationRequired'];
+        this.service.isAuthorize = this.authorization;
+        this.needDocs = this.res_['ProcessVariables']['needDocs'];
         console.log(this.authorization, this.needDocs, 'additional options')
-        this.service.srId = res['ProcessVariables']['srId'];
-        this.rejectReasonTxt = res['ProcessVariables']['srDetails']['rejectReason'];
-
-        // Recurring Deposit Service
-        if(this.sr_type == 1012){
-          this.rdService.setSessionDetails(res);
-          this.router.navigate(['recurring-deposit']);
-        }
-        
-        // Profile Update Service
-        if(this.sr_type == 1004){
-          this.router.navigate(['profile_update']);
-        }
-        // For DOB Service
-        if (this.sr_type == 1008) {
-          console.log("in DOB Sr");
-          this.old_Dob = this.res_['ProcessVariables']['dobUpdate']['oldDob'] ? this.res_['ProcessVariables']['dobUpdate']['oldDob'] : AlertMessages.NA_BANK_MSG;
-          this.new_dob = this.res_['ProcessVariables']['dobUpdate']['newDob'] ? this.res_['ProcessVariables']['dobUpdate']['newDob'] : AlertMessages.NA_BANK_MSG;
-        }
-        // Email Update Service
-        if (this.sr_type == 1006) {
-          console.log("in email Sr");
-          this.old_email = this.res_['ProcessVariables']['emailUpdate']['maskedOldEmail'] ? this.res_['ProcessVariables']['emailUpdate']['maskedOldEmail'] : AlertMessages.NA_BANK_MSG;
-          this.new_email = this.res_['ProcessVariables']['emailUpdate']['newEmail'] ? this.res_['ProcessVariables']['emailUpdate']['newEmail'] : AlertMessages.NA_BANK_MSG;
-          if (this.res_['ProcessVariables']['emailUpdate']['oldEmail'] && this.res_['ProcessVariables']['emailUpdate']['newEmail']) {
-            console.log("in email");
-            if (this.res_['ProcessVariables']['emailUpdate']['oldEmail'].toLowerCase() == this.res_['ProcessVariables']['emailUpdate']['newEmail'].toLowerCase()) {
-              console.log("in email err true");
-              this.isDuplicate = true;
-              this.duplicateErrMsg = "New Email ID entered is same as Existing Email ID, Kindly enter different Email ID to proceed.";
-            } else {
-              console.log("in email err false");
-              this.isDuplicate = false;
-              this.duplicateErrMsg = "";
-            }
+        this.service.srId = this.res_['ProcessVariables']['srId'];
+        this.rejectReasonTxt = this.res_['ProcessVariables']['srDetails']['rejectReason'];
+        this.services();
+      }else{
+        this.customerService.cust(this.apiUniqueKey).subscribe(res => {
+          console.log(res,'real')
+          this.loading = false;
+          this.res_ = res;
+          if (res['login_required'] == true) {
+            this.errorPage();
+            return;
           }
-        }
-        // Mobile Update Service
-        if (this.sr_type == 1007) {
-          console.log("in Mobile Sr");
-          this.old_mobile_number = this.res_['ProcessVariables']['custDetails']['mobileNumber'] ? this.res_['ProcessVariables']['custDetails']['mobileNumber'] : AlertMessages.NA_BANK_MSG;
-          this.new_mobile_number = this.res_['ProcessVariables']['mobileUpdate']['newMobile'] ? this.res_['ProcessVariables']['mobileUpdate']['newMobile'] : AlertMessages.NA_BANK_MSG;
-        }
-        this.getDropDownOptions(this.sr_type);
-      },
-        error => {
-          this._snackBar.open('Server Error', 'Error', {
-            duration: 4000,
-          });
-          return;
-        }
-      )
+          if (res['ProcessVariables']['apiUniqueReqId'] != this.apiUniqueKey) {
+            this._snackBar.open('Invalid', 'Error', {
+              duration: 4000,
+            });
+            return;
+          }
+          if (this.res_['ProcessVariables']['srDetails']['srType']) {
+            this.sr_type = this.res_['ProcessVariables']['srDetails']['srType'];
+          } else {
+            this.errorPage();
+            return;
+          }
+          this.authorization = res['ProcessVariables']['isAuthorizationRequired'];
+          this.service.isAuthorize = this.authorization;
+          this.needDocs = res['ProcessVariables']['needDocs'];
+          console.log(this.authorization, this.needDocs, 'additional options')
+          this.service.srId = res['ProcessVariables']['srId'];
+          this.rejectReasonTxt = res['ProcessVariables']['srDetails']['rejectReason'];
+  
+          // Recurring Deposit Service
+          // if(this.sr_type == 1012){
+          //   this.rdService.setSessionDetails(res);
+          //   this.router.navigate(['recurring-deposit']);
+          // }
+          //  // Fixed Deposit Service
+          //  if(this.sr_type == 1001){
+          //   this.rdService.setSessionDetails(res);
+          //   this.router.navigate(['fixed-deposit']);
+          // }
+          
+          // // Profile Update Service
+          // if(this.sr_type == 1004){
+          //   this.router.navigate(['profile_update']);
+          // }
+          this.services()
+        },
+          error => {
+            this._snackBar.open('Server Error', 'Error', {
+              duration: 4000,
+            });
+            return;
+          }
+        )
+      }
+  
     }
     else {
       this.errorPage();
       return;
     }
+  }
+
+  services(){
+       // For DOB Service
+       if (this.sr_type == 1008) {
+        console.log("in DOB Sr");
+        this.old_Dob = this.res_['ProcessVariables']['dobUpdate']['oldDob'] ? this.res_['ProcessVariables']['dobUpdate']['oldDob'] : AlertMessages.NA_BANK_MSG;
+        this.new_dob = this.res_['ProcessVariables']['dobUpdate']['newDob'] ? this.res_['ProcessVariables']['dobUpdate']['newDob'] : AlertMessages.NA_BANK_MSG;
+      }
+      // Email Update Service
+      if (this.sr_type == 1006) {
+        console.log("in email Sr");
+        this.old_email = this.res_['ProcessVariables']['emailUpdate']['maskedOldEmail'] ? this.res_['ProcessVariables']['emailUpdate']['maskedOldEmail'] : AlertMessages.NA_BANK_MSG;
+        this.new_email = this.res_['ProcessVariables']['emailUpdate']['newEmail'] ? this.res_['ProcessVariables']['emailUpdate']['newEmail'] : AlertMessages.NA_BANK_MSG;
+        if (this.res_['ProcessVariables']['emailUpdate']['oldEmail'] && this.res_['ProcessVariables']['emailUpdate']['newEmail']) {
+          console.log("in email");
+          if (this.res_['ProcessVariables']['emailUpdate']['oldEmail'].toLowerCase() == this.res_['ProcessVariables']['emailUpdate']['newEmail'].toLowerCase()) {
+            console.log("in email err true");
+            this.isDuplicate = true;
+            this.duplicateErrMsg = "New Email ID entered is same as Existing Email ID, Kindly enter different Email ID to proceed.";
+          } else {
+            console.log("in email err false");
+            this.isDuplicate = false;
+            this.duplicateErrMsg = "";
+          }
+        }
+      }
+      // Mobile Update Service
+      if (this.sr_type == 1007) {
+        console.log("in Mobile Sr");
+        this.old_mobile_number = this.res_['ProcessVariables']['custDetails']['mobileNumber'] ? this.res_['ProcessVariables']['custDetails']['mobileNumber'] : AlertMessages.NA_BANK_MSG;
+        this.new_mobile_number = this.res_['ProcessVariables']['mobileUpdate']['newMobile'] ? this.res_['ProcessVariables']['mobileUpdate']['newMobile'] : AlertMessages.NA_BANK_MSG;
+      }
+      this.getDropDownOptions(this.sr_type);
   }
 
   errorMsg() {
@@ -1065,7 +1107,7 @@ uploadToServer_back() {
 
     this.res_status = this.res_['ProcessVariables']['response'][0]['statusCode'];
     let cust_details = this.res_['ProcessVariables']['custDetails'];
-    let cust_id = cust_details['maskedCustId'];
+    let cust_id = cust_details['CustId'];
     let srType = this.res_['ProcessVariables']['srDetails']['srName'];
     let old_pan_number = this.res_['ProcessVariables']['panUpdate']['oldPan'] ? this.res_['ProcessVariables']['panUpdate']['oldPan'] : AlertMessages.NA_BANK_MSG;
     let new_pan_number = this.res_['ProcessVariables']['panUpdate']['newPan'] ? this.res_['ProcessVariables']['panUpdate']['newPan'] : AlertMessages.NA_BANK_MSG;

@@ -106,7 +106,8 @@ export class DebitCardComponent implements OnInit {
                 if (response['payload']['processResponse']['authentication-token']) { // set auth token
                   this.tokenStorage.setAccessToken(response['payload']['processResponse']['authentication-token']);
                   this.tokenStorage.setSrId(response['payload']['processResponse']['ProcessVariables']['srId']);
-                  this.router.navigate(['customer']);
+                  this.service.getCustomerDetails_And_Routing();
+                  // this.router.navigate(['customer']);
                 } else {
                   this.authService.alertToUser(AlertMessages.SOMETHING_WRONG);
                   this.commonFunctions.showErrorPage();

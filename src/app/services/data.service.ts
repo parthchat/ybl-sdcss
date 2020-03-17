@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Constants, APIConstants } from '../app.constant';
 import { BaseAPIService } from '../core/services/base-api-service.service';
 import { TokenStorage } from '../core/services/auth/token-storage.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,10 @@ export class DataService {
   accptRejct: any;
   srId: any;
   objc_details:any;
-  constructor(private tokenStorage: TokenStorage, private baseAPIService: BaseAPIService) { }
+  isAuthorize :boolean;
+  customerDetails: Object;
+  loading = false;
+  constructor(private tokenStorage: TokenStorage, private baseAPIService: BaseAPIService,private router: Router) { }
 
   getAcceptRejectValue(val: any) {
     this.accptRejct = val;
@@ -19,6 +23,8 @@ export class DataService {
   getDoc_srtype_details(val){
     this.objc_details = val;
   }
+  
+  
 //  complete Service request
   completeSR(apiUniqueReqId: any) {
     let processVariables = {
@@ -127,5 +133,67 @@ export class DataService {
       }
   
       return this.baseAPIService.post(APIConstants.Accept.WORKFLOW_ID, processVariables);
+    }
+
+    // get customer details
+    cust(apiUniqueReqId: any) {
+      let processVariables = {
+        "projectId": Constants.PROJECT_ID,
+        "workflowId": APIConstants.Details.WORKFLOW_ID,
+        "processId": APIConstants.Details.PROCESS_ID,
+        "ProcessVariables": {
+          "srId": this.tokenStorage.getSrId(),
+          "apiUniqueReqId": apiUniqueReqId
+        }
+      }
+      return this.baseAPIService.post(APIConstants.Details.WORKFLOW_ID, processVariables);
+    }
+    
+    getCustomerDetails_And_Routing(){
+      this.loading =  true
+      let apiUniqueKey = new Date().getTime().toString();
+      this.cust(apiUniqueKey).subscribe(res => {
+        this.loading = false;
+        console.log(res);
+        this.customerDetails = res;
+        if (res['login_required'] == true) {
+          this.errorPage();
+          return;
+        }
+        if (res['ProcessVariables']['srDetails']['srType']) {
+          let sr_type = res['ProcessVariables']['srDetails']['srType'];
+          
+          // Fixed Deposit
+          if(sr_type==1001){
+            console.log(sr_type,'srtype')
+            this.router.navigate(['fixed-deposit']);
+            return;
+          }
+          // Recurring Deposit
+          if(sr_type==1012){
+            this.router.navigate(['recurring-deposit']);
+            return;
+          }
+          // Profile Update
+          if(sr_type==1004){
+            this.router.navigate(['profile_update']);
+            return;
+          }
+          // PAN and Email 
+          if(sr_type==1005 || 1006){
+            this.router.navigate(['customer']);
+            return;
+          }
+        } else {
+          this.errorPage();
+          return;
+        }
+      })
+    }
+    // error page
+    errorPage() {
+      this.loading = false;
+      this.router.navigate(['error']);
+      this.tokenStorage.clear();
     }
 }

@@ -34,6 +34,8 @@ import { ProfileUpdateComponent } from './profile-update/profile-update.componen
 import { RecurringDepositComponent } from './recurring-deposit/recurring-deposit.component';
 import { OnlyNumberDirective } from './directives/only-numbers.directive';
 import { LessThanNumberDirective } from './directives/less-than-number.directive';
+import { FdComponent } from './fd/fd.component';
+import { CommonDetailsComponent } from './common-details/common-details.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,9 @@ import { LessThanNumberDirective } from './directives/less-than-number.directive
     ProfileUpdateComponent,
     RecurringDepositComponent,
     OnlyNumberDirective,
-    LessThanNumberDirective
+    LessThanNumberDirective,
+    FdComponent,
+    CommonDetailsComponent
   ],
   imports: [
     BrowserModule,
