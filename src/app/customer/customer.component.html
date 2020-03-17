@@ -58,6 +58,17 @@
           <input matInput placeholder="New Mobile Number" [(ngModel)]="new_mobile_number" disabled>
         </mat-form-field>
       </div>
+       <!--Landline Update  -->
+       <div class="col-sm-3 cols">
+        <mat-form-field>
+          <input matInput placeholder="Old Landline Number" [(ngModel)]="old_landline_number" disabled>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-3 cols">
+        <mat-form-field>
+          <input matInput placeholder="New Landline Number" [(ngModel)]="new_landline_number" disabled>
+        </mat-form-field>
+      </div>
     </div>
   </div>
 
@@ -115,7 +126,7 @@
     <!-- Upload DOB Proof Docs -->
 
     <!-- Common Docs Upload -->
-    <div class="upload text-center" *ngIf="sr_type!=1006">
+    <div class="upload text-center" *ngIf="sr_type!=1006 && sr_type!=1010">
       <h6 class="other-doc">Upload Identity Documents</h6>
       <mat-form-field class="mat-options" >
         <mat-label>Select Document Type</mat-label>

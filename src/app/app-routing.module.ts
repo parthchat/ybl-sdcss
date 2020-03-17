@@ -28,7 +28,7 @@ const routes: Routes = [
   { path: 'dcLogin', component: DebitCardComponent,canActivate: [AuthGuard]},
   { path: 'otpLogin', component: OtpLoginComponent},
   { path: 'credit_card', component: CreditCardComponent,canActivate: [AuthGuard]},
-  { path: 'profile_update', component: ProfileUpdateComponent,canActivate: [AuthGuard]},
+  { path: 'profile_update', component: ProfileUpdateComponent},
   { path: 'landline_update', component: LandlineUpdateComponent},
   { path: 'customer', component: CustomerComponent,canActivate: [AuthGuard] },
   { path: '404', component: NotFoundComponent },

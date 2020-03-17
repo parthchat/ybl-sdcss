@@ -66,6 +66,8 @@ export class CustomerComponent implements OnInit {
   new_email: any;
   old_mobile_number: any;
   new_mobile_number: any;
+  old_landline_number: any;
+  new_landline_number: any;
   errorTxtmsg = 'Invalid link. Either the link has already been used or session expired';
   showStatus = true;
   imgError = 'File upload failed! Retry after sometime';
@@ -148,7 +150,11 @@ export class CustomerComponent implements OnInit {
 
         // Landline Update Service
         if(this.sr_type == 1010){
-          this.router.navigate(['landline_update']);
+          // this.router.navigate(['landline_update']);
+          this.old_landline_number = this.res_['ProcessVariables']['landLineUpdate']['oldNumber'] ? this.res_['ProcessVariables']['landLineUpdate']['oldNumber'] : AlertMessages.NA_BANK_MSG;
+          this.new_landline_number = this.res_['ProcessVariables']['landLineUpdate']['newNumber'] ? this.res_['ProcessVariables']['landLineUpdate']['newNumber'] : AlertMessages.NA_BANK_MSG;
+          console.log("Old Number", this.old_landline_number)
+          console.log("New Landline number", this.new_landline_number)
         }
 
         // For DOB Service
@@ -265,6 +271,7 @@ export class CustomerComponent implements OnInit {
       res => {
         this.loading = false;
         this.newarayy = res['ProcessVariables']['validDocList'];
+        this.processResopnse();
         if(this.newarayy == null){
           return
         }
@@ -290,7 +297,6 @@ export class CustomerComponent implements OnInit {
             this.dob_Primary_Doc.push(this.newarayy[i]);
           }
         }
-        this.processResopnse();
       }, error => {
         this._snackBar.open('Error in Dropdown list', 'Error', {
           duration: 4000,
@@ -1048,7 +1054,7 @@ uploadToServer_back() {
 
     this.res_status = this.res_['ProcessVariables']['response'][0]['statusCode'];
     let cust_details = this.res_['ProcessVariables']['custDetails'];
-    let cust_id = cust_details['maskedCustId'];
+    let cust_id = cust_details['custId'];
     let srType = this.res_['ProcessVariables']['srDetails']['srName'];
     let old_pan_number = this.res_['ProcessVariables']['panUpdate']['oldPan'] ? this.res_['ProcessVariables']['panUpdate']['oldPan'] : AlertMessages.NA_BANK_MSG;
     let new_pan_number = this.res_['ProcessVariables']['panUpdate']['newPan'] ? this.res_['ProcessVariables']['panUpdate']['newPan'] : AlertMessages.NA_BANK_MSG;
@@ -1058,7 +1064,8 @@ uploadToServer_back() {
     this.checkSamePAN();
 
     console.log("old pan", this.res_['ProcessVariables']['panUpdate']['oldPan'], "level", this.matchLevel);
-    this.responses.push({ 'cust_id': cust_id, 'srType': srType, 'old_pan_number': old_pan_number, 'new_pan_number': new_pan_number });
+    this.responses.push({ 'cust_id': cust_id, 'srType': srType, 'old_pan_number': old_pan_number, 'new_pan_number': new_pan_number, 'old_landline_number': this.old_landline_number, 'new_landline_number': this.new_landline_number });
+    console.log("mama",this.responses)
   }
 
   //check name match on pan is same or different in NSDL

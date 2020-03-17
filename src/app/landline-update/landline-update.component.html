@@ -1,1 +1,74 @@
-<p>landline-update works!</p>
+<mat-card>
+  <!-- HEader label-->
+  <h3 class="title start-title">Customer Details</h3>
+
+  <div class="row view-row">
+      <div class="col-lg-6 col-sm-12 col-md-6 col-xl-6 col-12 view-grid-header">
+          <div class="inner-div">
+              <label class="detail-label">Customer ID</label>
+              <p class="detail-text">Sanket149</p>
+          </div>
+      </div>
+      
+      <div class="col-lg-6 col-sm-12 col-md-6 col-xl-6 col-12 view-grid-header">
+          <div class="inner-div">
+              <label class="detail-label">Customer Name</label>
+              <p class="detail-text">Sanket Thumma</p>
+          </div>
+      </div>
+  </div>
+  
+  <h3 class="header-title">Landline Details</h3>
+  <div class="div-main">
+    <form class="example-form" [formGroup]="form_group">
+      <!-- STD Code -->
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="text-center">
+            <mat-form-field class="example-full-width selectors">
+              <span matPrefix>+91 &nbsp;</span>
+              <input type="password" matInput placeholder="STD Code" maxlength="3" minlength="2" formControlName="std_form" [OnlyNumber]='true' (paste)="onPaste($event)" autocomplete="off" required>
+              <mat-error *ngIf="form_group.controls.std_form.invalid">STD code is required</mat-error>
+            </mat-form-field>
+        
+            <!-- Landline No.-->
+            <mat-form-field class="example-full-width">
+              <input type="password" matInput placeholder="Old Landline No." maxlength="8" minlength="7" formControlName="landline_number" [OnlyNumber]='true' (paste)="onPaste($event)" autocomplete="off">
+              <mat-icon matSuffix>phone</mat-icon>
+              <mat-error *ngIf="form_group.controls.landline_number.invalid">Landline number is required</mat-error>
+            </mat-form-field>
+        </div>
+        </div>
+        <!-- Re-enter Again -->
+        <div class="col-sm-6">
+          <div class="text-center">
+            <mat-form-field class="example-full-width selectors">
+              <span matPrefix>+91 &nbsp;</span>
+              <input matInput placeholder="STD Code" maxlength="3" minlength="2" formControlName="verify_std" [OnlyNumber]='true' (paste)="onPaste($event)" autocomplete="off">
+              <mat-error *ngIf="form_group.controls.verify_std.invalid">STD code is required</mat-error>
+            </mat-form-field>
+        
+            <!-- Verify Landline No. -->
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="New Landline No." maxlength="8" minlength="7" formControlName="verify_landline" [OnlyNumber]='true' (paste)="onPaste($event)" autocomplete="off">
+              <mat-icon matSuffix>phone</mat-icon>
+              <mat-error *ngIf="form_group.controls.verify_landline.invalid">Landline number is required</mat-error>
+            </mat-form-field>
+            </div>
+        </div>
+      </div>
+    
+      <!--  -->
+      <!-- Verify Same details Below fields -->
+      <!-- <h3 class="header-title">Re-Enter Landline Details</h3> -->
+      <!-- STD Code -->
+    
+      <!--  -->
+      <div class="bottom-div">
+        <button class="verify-btn" color="primary" mat-raised-button (click)="proceed()"
+          [disabled]="!form_group.valid">Proceed</button>
+      </div>
+    </form>
+  </div>
+</mat-card>

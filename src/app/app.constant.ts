@@ -129,6 +129,11 @@ export module APIConstants {
         PROCESS_ID = 'ff1599825eb111ea98b76adcd8a925ce',
         WORKFLOW_ID = 'fefa558c5eb111ea82796adcd8a925ce'
     }
+
+    export enum Create_srtype {
+        PROCESS_ID = '01ea2356c99a11e9933d8e7a151d5229',
+        WORKFLOW_ID = '75e5596ac95e11e9933d8e7a151d5229'
+    }
 }
 
 export class AlertMessages {
@@ -141,6 +146,11 @@ export class AlertMessages {
     public static invalid_Credentials = 'Invalid Credentials';
     public static resend_OTP_success = 'OTP has been sent';
     public static REQUIRED_FIELD_MSG = 'This field is required.';
+    public static not_equal_landline_number = 'Old and New Landline Number does not Match';
+    public static invalid_email = 'Invalid Email ID / Failed to get data';
+    public static EXECUTAION_FAILD = "Execution failed, duplicate reference id.";
+    public static SR_IN_PROGRESS_ERROR = "There is another SR in progress state, you cannot initiate new one.";
+    public static invalid_landline = 'Invalid Landline Number';
 }
 
 export const APP_VERSION = 'v01.24.26';
